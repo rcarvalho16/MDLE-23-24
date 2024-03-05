@@ -1,7 +1,0 @@
-git status
-git add -u
-git commit -m "mensagem qualquer"
-git push
-git restore 
-git pull 
-
