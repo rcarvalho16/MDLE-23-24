@@ -2,9 +2,19 @@
 convertQualitativeFeatures = function(dataset, qualitative_features){
   
   for(feature in qualitative_features){
-    dataset[feature] = factor(dataset[[feature]], labels = seq(1, length(unique(factor(dataset[[feature]])))))
+    dataset[feature] = as.numeric(factor(dataset[[feature]],
+                              labels = seq(1, length(unique(factor(dataset[[feature]])))),
+                              ordered = TRUE))
   }
   return(dataset)
+}
+
+calculateFeatureMean = function (dataset, classLabel, key){
+  return(sapply(dataset[dataset[[classLabel]] == key,],mean))
+}
+
+calculateFeatureVariance = function (dataset, classLabel, key){
+  return(sapply(dataset[dataset[[classLabel]] == key,],var))
 }
 ###############################################################
 
@@ -15,7 +25,10 @@ data_pima = pima
 qualitative_features_pima = c("age","menopause", "tumor.size", "inv.nodes", "node.caps",
                               "breast", "breast.quad","irradiat", "Class")
 
+qualitative_features_lisbon = c("name", "datetime", "preciptype", "conditions", "icon", "stations")
+
 data_pima = convertQualitativeFeatures(data_pima, qualitative_features_pima)
+data_lisbon = convertQualitativeFeatures(data_lisbon, qualitative_features_lisbon)
 
 
 # Alinea (a)
@@ -26,6 +39,9 @@ variances_pima <- sapply(data_pima, var)
 # Replace NA values with 0
 variances_lisbon[is.na(variances_lisbon)] = 0
 variances_pima[is.na(variances_pima)] = 0
+# Sort variances
+variances_lisbon = sort(variances_lisbon, decreasing = TRUE)
+variances_pima = sort(variances_pima, decreasing = TRUE)
 
 # Step 2: Compute the mean and median of each feature
 means_lisbon <- sapply(data_lisbon, mean)
@@ -41,49 +57,92 @@ medians_lisbon[is.na(medians_lisbon)] = 0
 medians_pima[is.na(medians_pima)] = 0
 
 # Step 3: Compute the absolute difference between the mean and median
-mean_median_lisbon <- abs(means_lisbon - medians_lisbon)
-mean_median_pima <- abs(means_pima - medians_pima)
+mean_median_lisbon <- sort(abs(means_lisbon - medians_lisbon), decreasing = TRUE)
+mean_median_pima <- sort(abs(means_pima - medians_pima), decreasing = TRUE)
 
 
-# Step 4: Combine variance and absolute difference as relevance measures
-relevance_measures_lisbon <- variances_lisbon * mean_median_lisbon
-relevance_measures_pima <- variances_pima * mean_median_pima
-
-relevance_measures_lisbon <- sort(relevance_measures_lisbon, decreasing = TRUE)
-relevance_measures_pima <- sort(relevance_measures_pima, decreasing = TRUE)
-
-
-# Step 5: Plot it
+# Step 4: Plot it
 x_axis_lisbon <- as.numeric(seq_along(data_lisbon))
 x_axis_pima <- as.numeric(seq_along(data_pima))
 
 
-par(mfrow = c(1,2))
+par(mfrow = c(2,2))
 
 
-plot(x = x_axis_lisbon, y = relevance_measures_lisbon,
+plot(x = x_axis_lisbon, y = variances_lisbon,
      xlab = "Features", ylab = "Relevance Measure", 
-     main = "Relevância das features [Lisbon]", 
+     main = "Relevância das features com base na variância [Lisbon]", 
      pch = 19,
      col = "blue",
      xlim = c(0, length(x_axis_lisbon)),
-     ylim = c(0, max(relevance_measures_lisbon) + 0.1 * max(relevance_measures_lisbon))
-     )
+     ylim = c(0, max(variances_lisbon) + 0.1 * max(variances_lisbon))
+)
+grid(nx = NULL, ny = NULL,
+           lty = 2,      # Grid line type
+           col = "gray", # Grid line color
+           lwd = 2)      # Grid line width
 
-plot(x = x_axis_pima, y = relevance_measures_pima,
+"""
+Para questões de plot de thresholds
+
+segments(x0 = 0, y0 = 0.99*max(variances_lisbon), x1 = 4, col = 'red', lty = 'dashed', lwd = 2)
+text(paste0(0.99 * 100, ""), x=4, y=0.95*max(variances_lisbon)+4000)
+segments(x0 = 4, y0 = 0.99*max(variances_lisbon), y1 = 0, col='red', lty = 'dashed', lwd = 2)
+
+segments(x0 = 0, y0 = 0.85*max(variances_lisbon), x1 = 3, col = 'blue', lty = 'dashed', lwd = 2)
+text(paste0(0.85 * 100, ""), x=3, y=0.85*max(variances_lisbon)+2000)
+segments(x0 = 3, y0 = 0.85*max(variances_lisbon), y1 = 0, col='blue', lty = 'dashed', lwd = 2)
+
+segments(x0 = 0, y0 = 0.75*max(variances_lisbon), x1 = 2, col = 'darkgreen', lty = 'dashed', lwd = 2)
+text(paste0(0.75 * 100, ""), x=2, y=0.75*max(variances_lisbon)+1000)
+segments(x0 = 2, y0 = 0.75*max(variances_lisbon), y1 = 0, col='darkgreen', lty = 'dashed', lwd = 2)
+"""
+
+plot(x = x_axis_lisbon, y = mean_median_lisbon,
      xlab = "Features", ylab = "Relevance Measure", 
-     main = "Relevância das features [Pima]", 
+     main = "Relevância das features com base na média-mediana [Lisbon]", 
+     pch = 19,
+     col = "blue",
+     xlim = c(0, length(x_axis_lisbon)),
+     ylim = c(0, max(mean_median_lisbon) + 0.1 * max(mean_median_lisbon))
+)
+grid(nx = NULL, ny = NULL,
+      lty = 2,      # Grid line type
+      col = "gray", # Grid line color
+      lwd = 2)      # Grid line width
+
+
+plot(x = x_axis_pima, y = variances_pima,
+     xlab = "Features", ylab = "Relevance Measure", 
+     main = "Relevância das features com base na variância [Pima]", 
      pch = 19,
      col = "blue",
      xlim = c(0, length(x_axis_pima)),
-     ylim = c(0, max(relevance_measures_pima) + 0.1 * max(relevance_measures_pima))
+     ylim = c(0, max(variances_pima) + 0.1 * max(variances_pima))
 )
+grid(nx = NULL, ny = NULL,
+      lty = 2,      # Grid line type
+      col = "gray", # Grid line color
+      lwd = 2)      # Grid line width
+
+plot(x = x_axis_pima, y = mean_median_pima,
+     xlab = "Features", ylab = "Relevance Measure", 
+     main = "Relevância das features com base na média-mediana [Pima]", 
+     pch = 19,
+     col = "blue",
+     xlim = c(0, length(x_axis_pima)),
+     ylim = c(0, max(mean_median_pima) + 0.1 * max(mean_median_pima))
+)
+grid(nx = NULL, ny = NULL,
+     lty = 2,      # Grid line type
+     col = "gray", # Grid line color
+     lwd = 2)      # Grid line width
+
 
 # ------------------------------------------------------------------------------------
 
 # Alinea (b)
-# Btw isto não deve estar certo lmao
-thresholds <- c(0.75, 0.85, 0.999999) # Example thresholds
+thresholds <- c(0.75, 0.85, 0.99) # Example thresholds
 adequate_features <- rep(0, length(thresholds))
 
 for (i in seq_along(thresholds)) {
@@ -93,6 +152,10 @@ for (i in seq_along(thresholds)) {
   cat("For threshold", threshold, "the number of adequate features in Lisbon dataset is:", m, "\n")
 }
 
+thresholds_lisbon = data.frame(paste(thresholds * 100, "%"), adequate_features)
+colnames(thresholds_lisbon) <- c("Threshold [%]", "Features adequadas")
+#View(thresholds_lisbon)
+
 for (i in seq_along(thresholds)) {
   threshold <- thresholds[i]
   m <- sum(cumsum(variances_pima) < threshold * sum(variances_pima)) + 1
@@ -100,21 +163,13 @@ for (i in seq_along(thresholds)) {
   cat("For threshold", threshold, "the number of adequate features in Pima dataset is:", m, "\n")
 }
 
+thresholds_pima = data.frame(paste(thresholds * 100, "%"), adequate_features)
+colnames(thresholds_pima) <- c("Threshold [%]", "Features adequadas")
+#View(thresholds_pima)
+
 # Alinea (c)
 
-# For Lisbon Dataset, we consider the conditions to be the classifier
-# So there are 4 different classes: 'Overcast', 'Partially cloudy'; 'Rain, Partially cloudy'; 'Clear'
-
-# For Pima dataset we have a feature
-
-calculateFeatureMean = function (dataset, classLabel, key){
-  return(sapply(dataset[dataset[[classLabel]] == key,],mean))
-}
-
-calculateFeatureVariance = function (dataset, classLabel, key){
-  return(sapply(dataset[dataset[[classLabel]] == key,],var))
-}
-# Epa somehow não consigo meter isto numa espécie de array ou qualquer coisa
+# Tenho de confirmar isto ainda
 
 # Means of lisbon classes
 mean_lisbon_overcast <- calculateFeatureMean(data_lisbon, "conditions", "Overcast")
