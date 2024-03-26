@@ -1,6 +1,22 @@
+################### AUX FUNCTIONS #############################
+convertQualitativeFeatures = function(dataset, qualitative_features){
+  
+  for(feature in qualitative_features){
+    dataset[feature] = factor(dataset[[feature]], labels = seq(1, length(unique(factor(dataset[[feature]])))))
+  }
+  return(dataset)
+}
+###############################################################
 
 data_lisbon = Lisbon_.2023.01.01_2023.01.31
 data_pima = pima
+
+# Preparing datasets
+qualitative_features_pima = c("age","menopause", "tumor.size", "inv.nodes", "node.caps",
+                              "breast", "breast.quad","irradiat", "Class")
+
+data_pima = convertQualitativeFeatures(data_pima, qualitative_features_pima)
+
 
 # Alinea (a)
 
