@@ -1,21 +1,64 @@
 ################### AUX FUNCTIONS #############################
+
+getCategoricalFeatures = function(dataset){
+  feature_types = sapply(dataset, class)
+  names(feature_types)[!(feature_types %in% c("numeric", "integer"))]
+}
+
+getClassMeans = function(dataset, classFeature){
+  labels_feature = unique(dataset[[classFeature]])
+  return(sapply(labels_feature, function(label) round(colMeans(dataset[dataset[[classFeature]] == label,]), digits = 2)))
+}
+
+getClassVars = function(dataset, classFeature){
+  labels_feature = unique(dataset[[classFeature]])
+  return(sapply(labels_feature, function(label) round(sapply(dataset[dataset[[classFeature]] == label,], var), digits = 2)))
+}
+
+"""
 convertQualitativeFeatures = function(dataset, qualitative_features){
   
-  for(feature in qualitative_features){
-    dataset[feature] = as.numeric(factor(dataset[[feature]],
-                              labels = seq(1, length(unique(factor(dataset[[feature]])))),
-                              ordered = TRUE))
+  categorical_features = getCategoricalFeatures(dataset)
+  
+  for(feature in categorical_features){
+    # Determine different categorical values in feature
+    categorical_types_of_feature = unique(dataset[[feature]])
+    print(categorical_types_of_feature)
+    
+    # Determine occurrences of each values
+    abs_freq = sapply(categorical_types_of_feature, function(categorical_types_of_feature) sum(dataset[[feature]] == categorical_types_of_feature))
+    # Calculate relative frequency of value
+    relative_freq = round(abs_freq / length(dataset[[feature]]), digits = 3)
+    
+    # Replace categorical feature with equivalent relative frequency
+    dataset[[feature]] = relative_freq
+    
+  }
+  return(dataset)
+}"""
+
+convertQualitativeFeatures = function(dataset, qualitative_features){
+  
+  categorical_features = getCategoricalFeatures(dataset)
+  
+  for(feature in categorical_features){
+    # Determine different categorical values in feature
+    categorical_types_of_feature = unique(dataset[[feature]])
+    
+    # Calculate relative frequency of each unique value
+    relative_freq = sapply(categorical_types_of_feature, function(value) {
+      round(sum(dataset[[feature]] == value) / length(dataset[[feature]]), digits = 4)
+    })
+    
+    # Replace categorical feature with equivalent relative frequency
+    dataset[[feature]] = sapply(dataset[[feature]], function(value) {
+      relative_freq[match(value, categorical_types_of_feature)]
+    })
   }
   return(dataset)
 }
+  
 
-calculateFeatureMean = function (dataset, classLabel, key){
-  return(sapply(dataset[dataset[[classLabel]] == key,],mean))
-}
-
-calculateFeatureVariance = function (dataset, classLabel, key){
-  return(sapply(dataset[dataset[[classLabel]] == key,],var))
-}
 ###############################################################
 
 data_lisbon = Lisbon_.2023.01.01_2023.01.31
@@ -27,6 +70,7 @@ qualitative_features_pima = c("age","menopause", "tumor.size", "inv.nodes", "nod
 
 qualitative_features_lisbon = c("name", "datetime", "preciptype", "conditions", "icon", "stations")
 
+
 data_pima = convertQualitativeFeatures(data_pima, qualitative_features_pima)
 data_lisbon = convertQualitativeFeatures(data_lisbon, qualitative_features_lisbon)
 
@@ -36,9 +80,7 @@ data_lisbon = convertQualitativeFeatures(data_lisbon, qualitative_features_lisbo
 # Step 1: Calculate the variance of each feature
 variances_lisbon <- sapply(data_lisbon, var)
 variances_pima <- sapply(data_pima, var)
-# Replace NA values with 0
-variances_lisbon[is.na(variances_lisbon)] = 0
-variances_pima[is.na(variances_pima)] = 0
+
 # Sort variances
 variances_lisbon = sort(variances_lisbon, decreasing = TRUE)
 variances_pima = sort(variances_pima, decreasing = TRUE)
@@ -46,15 +88,11 @@ variances_pima = sort(variances_pima, decreasing = TRUE)
 # Step 2: Compute the mean and median of each feature
 means_lisbon <- sapply(data_lisbon, mean)
 means_pima <- sapply(data_pima, mean)
-# Replace NA values with 0
-means_lisbon[is.na(means_lisbon)] = 0
-means_pima[is.na(means_pima)] = 0
+
 
 medians_lisbon <- sapply(data_lisbon, median)
 medians_pima <- sapply(data_pima, median)
-# Replace NA values with 0
-medians_lisbon[is.na(medians_lisbon)] = 0
-medians_pima[is.na(medians_pima)] = 0
+
 
 # Step 3: Compute the absolute difference between the mean and median
 mean_median_lisbon <- sort(abs(means_lisbon - medians_lisbon), decreasing = TRUE)
@@ -169,46 +207,29 @@ colnames(thresholds_pima) <- c("Threshold [%]", "Features adequadas")
 
 # Alinea (c)
 
-# Tenho de confirmar isto ainda
+# Considerando como class label as condições temporais para o dataset de lisboa
+# E a feature "Class" do dataset pima, podemos determinar os fishers ratio.
 
-# Means of lisbon classes
-mean_lisbon_overcast <- calculateFeatureMean(data_lisbon, "conditions", "Overcast")
-mean_lisbon_pcloudy <- calculateFeatureMean(data_lisbon, "conditions", "Partially cloudy")
-mean_lisbon_rainpcloudy <- calculateFeatureMean(data_lisbon, "conditions", "Rain, Partially cloudy")
-mean_lisbon_clear <- calculateFeatureMean(data_lisbon, "conditions", "Clear")
+# Means of lisbon and pima classes
+lisbon_class_means = getClassMeans(data_lisbon, "conditions")
+pima_class_means = getClassMeans(data_pima, "Class")
 
-# Means of pima classes
-mean_pima_norec <- calculateFeatureMean(data_pima, "Class", "no-recurrence-events")
-mean_pima_rec <- calculateFeatureMean(data_pima, "Class", "recurrence-events")
+# Variances of lisbon and pima classes
+lisbon_class_vars = getClassVars(data_lisbon, "conditions")
+pima_class_vars = getClassVars(data_pima, "Class")
 
-
-# Variances of lisbon classes
-var_lisbon_overcast <- calculateFeatureVariance(data_lisbon, "conditions", "Overcast")
-var_lisbon_pcloudy <- calculateFeatureVariance(data_lisbon, "conditions", "Partially cloudy")
-var_lisbon_rainpcloudy <- calculateFeatureVariance(data_lisbon, "conditions", "Rain, Partially cloudy")
-var_lisbon_clear <- calculateFeatureVariance(data_lisbon, "conditions", "Clear")
-
-# Variances of pima classes
-var_pima_norec <- calculateFeatureVariance(data_pima, "Class", "no-recurrence-events")
-var_pima_rec <- calculateFeatureVariance(data_pima, "Class", "recurrence-events")
 
 
 # Compute fishers ratio
 # Squared subtraction of the means of each class divided by the sum of the variance of each class
 # All this is done for all attributes
 # Therefore there will be a Fishers Ratio for each attribute in the dataset
-lisbon_fishers_ratio_numerator = 
-  (mean_lisbon_overcast - mean_lisbon_pcloudy - mean_lisbon_rainpcloudy - mean_lisbon_clear)^2
-
-lisbon_fishers_ratio_denominator = 
-  (var_lisbon_overcast + var_lisbon_pcloudy + var_lisbon_rainpcloudy + var_lisbon_clear)^2
+lisbon_fishers_ratio_numerator = (-1*sum(lisbon_class_means))^2
+lisbon_fishers_ratio_denominator = sum(lisbon_class_vars)^2
 
 
-pima_fishers_ratio_numerator = 
-  (mean_pima_norec - mean_pima_rec)^2
-
-pima_fishers_ratio_denominator = 
-  (var_pima_norec + var_pima_rec)^2
+pima_fishers_ratio_numerator = (-1*sum(pima_class_means))^2
+pima_fishers_ratio_denominator = sum(pima_class_vars)^2
 
 fishers_ratio_lisbon = lisbon_fishers_ratio_numerator / lisbon_fishers_ratio_denominator
 fishers_ratio_pima = pima_fishers_ratio_numerator / pima_fishers_ratio_denominator
