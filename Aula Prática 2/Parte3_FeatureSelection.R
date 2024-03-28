@@ -37,7 +37,7 @@ convertQualitativeFeatures = function(dataset, qualitative_features){
   return(dataset)
 }"""
 
-convertQualitativeFeatures = function(dataset, qualitative_features){
+convertQualitativeFeatures = function(dataset){
   
   categorical_features = getCategoricalFeatures(dataset)
   
@@ -65,14 +65,8 @@ data_lisbon = Lisbon_.2023.01.01_2023.01.31
 data_pima = pima
 
 # Preparing datasets
-qualitative_features_pima = c("age","menopause", "tumor.size", "inv.nodes", "node.caps",
-                              "breast", "breast.quad","irradiat", "Class")
-
-qualitative_features_lisbon = c("name", "datetime", "preciptype", "conditions", "icon", "stations")
-
-
-data_pima = convertQualitativeFeatures(data_pima, qualitative_features_pima)
-data_lisbon = convertQualitativeFeatures(data_lisbon, qualitative_features_lisbon)
+data_pima = convertQualitativeFeatures(data_pima)
+data_lisbon = convertQualitativeFeatures(data_lisbon)
 
 
 # Alinea (a)
