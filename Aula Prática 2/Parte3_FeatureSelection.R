@@ -218,19 +218,19 @@ pima_class_vars = getClassVars(data_pima, "Class")
 # Squared subtraction of the means of each class divided by the sum of the variance of each class
 # All this is done for all attributes
 # Therefore there will be a Fishers Ratio for each attribute in the dataset
-lisbon_fishers_ratio_numerator = (-1*sum(lisbon_class_means))^2
-lisbon_fishers_ratio_denominator = sum(lisbon_class_vars)^2
+lisbon_fishers_ratio_numerator = apply(lisbon_class_means, MARGIN = 1, function(x) (x[1] - sum(x[-1]))^2)
+pima_fishers_ratio_numerator = apply(pima_class_means, MARGIN = 1, function(x) x[1] - sum(x[-1]))
 
+lisbon_fishers_ratio_denominator =  apply(lisbon_class_vars, MARGIN = 1, sum)
+pima_fishers_ratio_denominator = apply(pima_class_vars, MARGIN = 1, sum)
 
-pima_fishers_ratio_numerator = (-1*sum(pima_class_means))^2
-pima_fishers_ratio_denominator = sum(pima_class_vars)^2
 
 fishers_ratio_lisbon = lisbon_fishers_ratio_numerator / lisbon_fishers_ratio_denominator
 fishers_ratio_pima = pima_fishers_ratio_numerator / pima_fishers_ratio_denominator
 
-
-
-
+# Quick summary of fishers ratio
+fishers_ratio_lisbon
+fishers_ratio_pima
 
 
 
