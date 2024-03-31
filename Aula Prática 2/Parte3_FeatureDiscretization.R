@@ -1,21 +1,42 @@
-#install.packages("classInt")
-library(classInt)
-
 data_lisbon <- read.csv("Lisbon_ 2023-01-01_2023-01-31.csv")
+
+# Equal Width Binning
+
+#bins <- floor(log(nrow(unsupervised_data_lisbon), 2))
+#for(feature in colnames(unsupervised_data_lisbon)){
+#  data <- unsupervised_data_lisbon[[feature]]
+#  if(class(data) %in% c("numeric", "integer")){
+#    minimumVal <- min(data)
+#    maximumVal <- max(data)
+#    width <- (maximumVal-minimumVal)/bins;
+#    if(width == 0)
+#      next
+#    unsupervised_data_lisbon[feature] <- cut(data, breaks=seq(minimumVal, maximumVal, width)) 
+#  }
+#}
 
 # Unsupervised Method
 # Equal Frequency Binning
 
-for(feature in colnames(data_lisbon)){
-  classes <- sapply(data_lisbon[feature], class)
-  
-  # For each column divide in bins. The number of bins must not be bigger than the number of unique values
-  if(any(c("numeric", "integer") %in% classes)){
-    bins <- floor(sqrt(length(unique(data_lisbon[[feature]]))))
-    if(bins > 1){
-      classIntervals(data_lisbon[[feature]], bins, style = 'quantile')
+unsupervised_data_lisbon <- data_lisbon
+
+for(feature in colnames(unsupervised_data_lisbon)){
+  data <- unsupervised_data_lisbon[[feature]]
+  if(class(data) %in% c("numeric", "integer")){
+    n_bins <- floor(log(length(unique(data)), 2))
+    print(n_bins)
+    if(n_bins == 0){
+      next
     }
+    bin_breaks <- quantile(data, probs = seq(0,1,1/n_bins)[-1])
+    bin_breaks <- unique(bin_breaks)
+    if(length(bin_breaks) <= 1){
+      next
+    }
+    unsupervised_data_lisbon[feature] <- cut(data, breaks = bin_breaks)
   }
 }
 
 # Supervised Method
+
+
