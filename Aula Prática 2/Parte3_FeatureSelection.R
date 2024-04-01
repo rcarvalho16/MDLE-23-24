@@ -15,27 +15,7 @@ getClassVars = function(dataset, classFeature){
   return(sapply(labels_feature, function(label) round(sapply(dataset[dataset[[classFeature]] == label,], var), digits = 2)))
 }
 
-"""
-convertQualitativeFeatures = function(dataset, qualitative_features){
-  
-  categorical_features = getCategoricalFeatures(dataset)
-  
-  for(feature in categorical_features){
-    # Determine different categorical values in feature
-    categorical_types_of_feature = unique(dataset[[feature]])
-    print(categorical_types_of_feature)
-    
-    # Determine occurrences of each values
-    abs_freq = sapply(categorical_types_of_feature, function(categorical_types_of_feature) sum(dataset[[feature]] == categorical_types_of_feature))
-    # Calculate relative frequency of value
-    relative_freq = round(abs_freq / length(dataset[[feature]]), digits = 3)
-    
-    # Replace categorical feature with equivalent relative frequency
-    dataset[[feature]] = relative_freq
-    
-  }
-  return(dataset)
-}"""
+
 
 convertQualitativeFeatures = function(dataset){
   
@@ -113,6 +93,9 @@ grid(nx = NULL, ny = NULL,
            lty = 2,      # Grid line type
            col = "gray", # Grid line color
            lwd = 2)      # Grid line width
+for (i in 1:length(x_axis_lisbon)) {
+  text(x = x_axis_lisbon[i], y = variances_lisbon[i], labels = names(variances_lisbon)[i], pos = 4, col = "black")
+}
 
 """
 Para questões de plot de thresholds
@@ -142,7 +125,9 @@ grid(nx = NULL, ny = NULL,
       lty = 2,      # Grid line type
       col = "gray", # Grid line color
       lwd = 2)      # Grid line width
-
+for (i in 1:length(x_axis_lisbon)) {
+  text(x = x_axis_lisbon[i], y = mean_median_lisbon[i], labels = names(mean_median_lisbon)[i], pos = 4, col = "black")
+}
 
 plot(x = x_axis_pima, y = variances_pima,
      xlab = "Features", ylab = "Relevance Measure", 
@@ -156,6 +141,10 @@ grid(nx = NULL, ny = NULL,
       lty = 2,      # Grid line type
       col = "gray", # Grid line color
       lwd = 2)      # Grid line width
+for (i in 1:length(x_axis_lisbon)) {
+  text(x = x_axis_pima[i], y = variances_pima[i], labels = names(variances_pima)[i], pos = 4, col = "black")
+}
+
 
 plot(x = x_axis_pima, y = mean_median_pima,
      xlab = "Features", ylab = "Relevance Measure", 
@@ -169,35 +158,69 @@ grid(nx = NULL, ny = NULL,
      lty = 2,      # Grid line type
      col = "gray", # Grid line color
      lwd = 2)      # Grid line width
-
+for (i in 1:length(x_axis_lisbon)) {
+  text(x = x_axis_pima[i], y = mean_median_pima[i], labels = names(mean_median_pima)[i], pos = 4, col = "black")
+}
 
 # ------------------------------------------------------------------------------------
 
 # Alinea (b)
-thresholds <- c(0.75, 0.85, 0.99) # Example thresholds
+thresholds <- c(0.75, 0.85, 0.95) # Example thresholds
 adequate_features <- rep(0, length(thresholds))
+
 
 for (i in seq_along(thresholds)) {
   threshold <- thresholds[i]
   m <- sum(cumsum(variances_lisbon) < threshold * sum(variances_lisbon)) + 1
   adequate_features[i] <- m
-  cat("For threshold", threshold, "the number of adequate features in Lisbon dataset is:", m, "\n")
+  # Get the names of the features
+  feature_names <- names(variances_lisbon)[1:m]
+  cat("For values of variances threshold", threshold * 100, "%", "we need features:", paste(feature_names, collapse = ", "), "\n")
 }
 
 thresholds_lisbon = data.frame(paste(thresholds * 100, "%"), adequate_features)
 colnames(thresholds_lisbon) <- c("Threshold [%]", "Features adequadas")
-#View(thresholds_lisbon)
+View(thresholds_lisbon)
+
+for (i in seq_along(thresholds)) {
+  threshold <- thresholds[i]
+  m <- sum(cumsum(mean_median_lisbon) < threshold * sum(mean_median_lisbon)) + 1
+  adequate_features[i] <- m
+  # Get the names of the features
+  feature_names <- names(variances_lisbon)[1:m]
+  cat("For values of mean-median threshold", threshold * 100, "%", " we need features:", paste(feature_names, collapse = ", "), "\n")
+}
+
+thresholds_lisbon = data.frame(paste(thresholds * 100, "%"), adequate_features)
+colnames(thresholds_lisbon) <- c("Threshold [%]", "Features adequadas")
+View(thresholds_lisbon)
+
 
 for (i in seq_along(thresholds)) {
   threshold <- thresholds[i]
   m <- sum(cumsum(variances_pima) < threshold * sum(variances_pima)) + 1
   adequate_features[i] <- m
-  cat("For threshold", threshold, "the number of adequate features in Pima dataset is:", m, "\n")
+  # Get the names of the features
+  feature_names <- names(variances_pima)[1:m]
+  cat("For values of variances threshold", threshold * 100, "%", " we need features:", paste(feature_names, collapse = ", "), "\n")
 }
 
 thresholds_pima = data.frame(paste(thresholds * 100, "%"), adequate_features)
 colnames(thresholds_pima) <- c("Threshold [%]", "Features adequadas")
-#View(thresholds_pima)
+View(thresholds_pima)
+
+for (i in seq_along(thresholds)) {
+  threshold <- thresholds[i]
+  m <- sum(cumsum(mean_median_pima) < threshold * sum(mean_median_pima)) + 1
+  adequate_features[i] <- m
+  # Get the names of the features
+  feature_names <- names(mean_median_pima)[1:m]
+  cat("For values of mean-median threshold", threshold * 100, "%", " we need features:", paste(feature_names, collapse = ", "), "\n")
+}
+
+thresholds_pima = data.frame(paste(thresholds * 100, "%"), adequate_features)
+colnames(thresholds_pima) <- c("Threshold [%]", "Features adequadas")
+View(thresholds_pima)
 
 # Alinea (c)
 
@@ -206,10 +229,18 @@ colnames(thresholds_pima) <- c("Threshold [%]", "Features adequadas")
 
 # Means of lisbon and pima classes
 lisbon_class_means = getClassMeans(data_lisbon, "conditions")
+
+# Icon produces de same result
+# lisbon_class_means = getClassMeans(data_lisbon, "icon")
+
 pima_class_means = getClassMeans(data_pima, "Class")
 
 # Variances of lisbon and pima classes
 lisbon_class_vars = getClassVars(data_lisbon, "conditions")
+
+# Icon produces de same result
+# lisbon_class_vars = getClassVars(data_lisbon, "icon")
+
 pima_class_vars = getClassVars(data_pima, "Class")
 
 
@@ -219,7 +250,7 @@ pima_class_vars = getClassVars(data_pima, "Class")
 # All this is done for all attributes
 # Therefore there will be a Fishers Ratio for each attribute in the dataset
 lisbon_fishers_ratio_numerator = apply(lisbon_class_means, MARGIN = 1, function(x) (x[1] - sum(x[-1]))^2)
-pima_fishers_ratio_numerator = apply(pima_class_means, MARGIN = 1, function(x) x[1] - sum(x[-1]))
+pima_fishers_ratio_numerator = apply(pima_class_means, MARGIN = 1, function(x) (x[1] - sum(x[-1]))^2)
 
 lisbon_fishers_ratio_denominator =  apply(lisbon_class_vars, MARGIN = 1, sum)
 pima_fishers_ratio_denominator = apply(pima_class_vars, MARGIN = 1, sum)
@@ -228,9 +259,76 @@ pima_fishers_ratio_denominator = apply(pima_class_vars, MARGIN = 1, sum)
 fishers_ratio_lisbon = lisbon_fishers_ratio_numerator / lisbon_fishers_ratio_denominator
 fishers_ratio_pima = pima_fishers_ratio_numerator / pima_fishers_ratio_denominator
 
+# Replace Inf and NaN values with 0
+fishers_ratio_lisbon[!is.finite(fishers_ratio_lisbon)] <- 0
+fishers_ratio_pima[!is.finite(fishers_ratio_pima)] <- 0
+
 # Quick summary of fishers ratio
-fishers_ratio_lisbon
-fishers_ratio_pima
+fishers_ratio_lisbon <- sort(fishers_ratio_lisbon, decreasing = TRUE)
+fishers_ratio_pima <- sort(fishers_ratio_pima, decreasing = TRUE)
+
+# Plot the features
+
+par(mfrow = c(1,2))
+
+plot(x = x_axis_lisbon, y = fishers_ratio_lisbon,
+     xlab = "Features", ylab = "Relevance Measure", 
+     main = "Relevância das features com base na média-mediana [Lisbon]", 
+     pch = 19,
+     col = "blue",
+     xlim = c(0, length(x_axis_lisbon)),
+     ylim = c(0, max(fishers_ratio_lisbon) + 0.1 * max(fishers_ratio_lisbon))
+)
+grid(nx = NULL, ny = NULL,
+     lty = 2,      # Grid line type
+     col = "gray", # Grid line color
+     lwd = 2)      # Grid line width
+for (i in 1:length(x_axis_lisbon)) {
+  text(x = x_axis_lisbon[i], y = fishers_ratio_lisbon[i], labels = names(fishers_ratio_lisbon)[i], pos = 4, col = "black")
+}
+
+for (i in seq_along(thresholds)) {
+  threshold <- thresholds[i]
+  m <- sum(cumsum(fishers_ratio_lisbon) < threshold * sum(fishers_ratio_lisbon)) + 1
+  adequate_features[i] <- m
+  # Get the names of the features
+  feature_names <- names(fishers_ratio_lisbon)[1:m]
+  cat("For values of FiRi threshold", threshold * 100, "%", " we need features:", paste(feature_names, collapse = ", "), "\n")
+}
+
+thresholds_lisbon = data.frame(paste(thresholds * 100, "%"), adequate_features)
+colnames(thresholds_lisbon) <- c("Threshold [%]", "Features adequadas")
+View(thresholds_lisbon)
+
+plot(x = x_axis_pima, y = fishers_ratio_pima,
+     xlab = "Features", ylab = "Relevance Measure", 
+     main = "Relevância das features com base na média-mediana [Lisbon]", 
+     pch = 19,
+     col = "blue",
+     xlim = c(0, length(x_axis_pima)),
+     ylim = c(0, max(fishers_ratio_pima) + 0.1 * max(fishers_ratio_pima))
+)
+grid(nx = NULL, ny = NULL,
+     lty = 2,      # Grid line type
+     col = "gray", # Grid line color
+     lwd = 2)      # Grid line width
+for (i in 1:length(x_axis_pima)) {
+  text(x = x_axis_pima[i], y = fishers_ratio_pima[i], labels = names(fishers_ratio_pima)[i], pos = 4, col = "black")
+}
+
+for (i in seq_along(thresholds)) {
+  threshold <- thresholds[i]
+  m <- sum(cumsum(fishers_ratio_pima) < threshold * sum(fishers_ratio_pima)) + 1
+  adequate_features[i] <- m
+  # Get the names of the features
+  feature_names <- names(fishers_ratio_pima)[1:m]
+  cat("For values of FiRi threshold", threshold * 100, "%", " we need features:", paste(feature_names, collapse = ", "), "\n")
+}
+
+thresholds_pima = data.frame(paste(thresholds * 100, "%"), adequate_features)
+colnames(thresholds_pima) <- c("Threshold [%]", "Features adequadas")
+View(thresholds_pima)
+
 
 
 
