@@ -67,7 +67,9 @@ corr_matrix_pima <- replace(corr_matrix_pima, is.na(corr_matrix_pima), 0)
 ggcorrplot(corr_matrix_lisbon)
 ggcorrplot(corr_matrix_pima)
 
-# a)
+########################################################
+# a) PCA Decomposition
+########################################################
 
 # Apply PCA to the correlation matrixes
 data_lisbon_pca <- prcomp(data_lisbon, scale. = FALSE)
@@ -79,70 +81,109 @@ summary_pima_pca <- summary(data_pima_pca)
 summary_lisbon_pca
 summary_pima_pca
 
-# The adequate dimensions are the ones with a cumulative proportion of variance of at least 90%
-adequate_dimensions_lisbon_pca <- min(which(summary_lisbon_pca$importance[3,] > 0.9))
-adequate_dimensions_pima_pca <- min(which(summary_pima_pca$importance[3,] > 0.9))
-
 # Plot PCA results
 # fviz_eig() plots the eigen values against the number of dimensions
 # You can also calculate the eigenvalues by squaring the standard deviation in pca
-# data_lisbon_pca$sdev ^ 2
 fviz_eig(data_lisbon_pca, addlabels = TRUE)
 fviz_eig(data_pima_pca, addlabels = TRUE)
 
-# b)
+# The eigenvalues display the variance of the original data preserved
+eig_values_lisbon = get_eig(data_lisbon_pca)
+eig_values_pima = get_eig(data_pima_pca)
+
+
+
+########################################################
+# b) SVD Decomposition 
+########################################################
 
 # Compute the SVD matrices for each dataset
+# SVD represents X dataset as a product of three matrices
+# X = UDV'
+# Note, svd() function produces the left and right singular vectors represented as 'u' and 'v'
+# And 'd' is a vector of singular values, corresponding to the diagonal of the matrix 'D'
+# Ref: https://bookdown.org/rdpeng/exdata/dimension-reduction.html
+
 data_lisbon_svd <- svd(data_lisbon)
 data_pima_svd <- svd(data_pima)
 singular_values_lisbon <- data_lisbon_svd$d
 singular_values_pima <- data_pima_svd$d
 
-par(mfrow = c(1, 2))
-# Plot singular values sorted in decreasing order for both datasets
-plot(singular_values_lisbon, type = "b", xlab = "Component", ylab = "Singular Value",
-     main = "Singular Values Sorted in Decreasing Order (Data Lisbon)")
-plot(singular_values_pima, type = "b", xlab = "Component", ylab = "Singular Value",
-     main = "Singular Values Sorted in Decreasing Order (Data Pima)")
+
+# !!! Duvida, com 90% fico com apenas 1 dimensão adequada não consigo calcular a redução !!!
+
+# The singular values, when squared, are proportional to the amount of variance
+# Given by a singular vector.
+# Given our 90% threshold, we can compute the adequate dimensions used to compute
+# the SVD matrix used in the reduction process
+svd_variance_lisbon <- data_lisbon_svd$d^2
+svd_variance_pima <- data_pima_svd$d^2
+adequate_dimensions_lisbon_svd <- min(which(cumsum(svd_variance_lisbon)/sum(svd_variance_lisbon) > 0.99))
+adequate_dimensions_pima_svd <- min(which(cumsum(svd_variance_pima)/sum(svd_variance_pima) > 0.95))
+
+# If we look at the plot of the variances, we can further comprehend how the data can be seen by just
+# a few singular vectors
+par(mfrow = c(1,2))
+
+# Plot for Lisbon SVD
+plot(svd_variance_lisbon/sum(svd_variance_lisbon),
+     type = "b",
+     xlab = "Singular Vector", ylab = "Variance", 
+     main = "Contribution of each vector to the variance of the original data [Lisbon]", 
+     pch = 19,
+     col = "blue",
+)
+grid(nx = NULL, ny = NULL,
+     lty = 2,      # Grid line type
+     col = "gray", # Grid line color
+     lwd = 2)      # Grid line width
+
+# Plot for pima SVD
+plot(svd_variance_pima/sum(svd_variance_pima),
+     type = "b",
+     xlab = "Singular Vector", ylab = "Variance", 
+     main = "Contribution of each vector to the variance of the original data [pima]", 
+     pch = 19,
+     col = "blue",
+)
+grid(nx = NULL, ny = NULL,
+     lty = 2,      # Grid line type
+     col = "gray", # Grid line color
+     lwd = 2)      # Grid line width
 
 
+#################################
+# c) Dimensionality Reduction
+#################################
 
-# The adequate dimensions are the ones with a cumulative proportion of variance of at least 95%
-# O SVD em lisboa não funciona para menos de 99% de relevância porque só fica com 1 coluna...
-adequate_dimensions_lisbon_svd <- min(which(cumsum(data_lisbon_svd$d^2)/sum(data_lisbon_svd$d^2) > 0.99))
-adequate_dimensions_pima_svd <- min(which(cumsum(data_pima_svd$d^2)/sum(data_pima_svd$d^2) > 0.95))
+###################
+# PCA Reduction
+###################
+# Preserve only principal components whose eigen values compute 90% of the variance
+adequate_dimensions_lisbon_pca <- min(which(eig_values_lisbon$cumulative.variance.percent > 90))
+adequate_dimensions_pima_pca <- min(which(eig_values_pima$cumulative.variance.percent > 90))
 
-# c)
+# Keep only the PCs that compute minimum adequate dimensions
+pcs_lisbon <- data_lisbon_pca$rotation[, 1:adequate_dimensions_lisbon_pca]
+pcs_pima <- data_pima_pca$rotation[, 1:adequate_dimensions_pima_pca]
 
-# FOR PCA NÃO FAÇO IDEIA
+# Compute the newly reduced dataset by applying the product of the original dataset
+# With the pca components
+rd_pca_lisbon <- as.matrix(data_lisbon) %*% as.matrix(pcs_lisbon)
+rd_pca_pima <- as.matrix(data_pima) %*% as.matrix(pcs_pima)
 
-# Apply PCA to the correlation matrixes
-rd_data_lisbon_pca <- prcomp(rd_corr_matrix_lisbon, scale. = FALSE)
-rd_data_pima_pca <- prcomp(rd_corr_matrix_pima, scale. = FALSE)
-summary(rd_data_lisbon_pca)
-summary(rd_data_pima_pca)
+# Quick summary of reduced dataset
+summary(rd_pca_lisbon)
+summary(rd_pca_pima)
 
-# Plot PCA results
-fviz_eig(rd_data_lisbon_pca, addlabels = TRUE)
-fviz_eig(rd_data_pima_pca, addlabels = TRUE)
+###################
+# SVD Reduction
+###################
 
-rd_data_lisbon_svd <- svd(corr_matrix_lisbon)
-rd_data_pima_svd <- svd(corr_matrix_pima)
-
-#
-plot(1:length(rd_data_lisbon_svd$d), rd_data_lisbon_svd$d)
-plot(1:length(rd_data_pima_svd$d), rd_data_pima_svd$d)
-
-# Cumulative plot
-plot(cumsum(rd_data_lisbon_svd$d^2)/sum(rd_data_lisbon_svd$d^2)*100,ylab="Percent variance",ylim=c(0,100),type="l")
-plot(cumsum(rd_data_pima_svd$d^2)/sum(rd_data_pima_svd$d^2)*100,ylab="Percent variance",ylim=c(0,100),type="l")
-
-# For SVD reduction the dimensionality reduction is done by neglecting the matrix V as 
-# it is used only for mapping the data to the reduced dimension space
-# so, we only need the 'U' and 'D' matrices, and the adequate number of dimensions
-
+# We can compute the approximation of the original values given our adequate dimensions and the svd
+# decomposition now. Remembering X = UDV', with 'U' and 'V' being respectively the left and right singular vector matrices
 reduced_lisbon_svd <- data_lisbon_svd$u[, 1:adequate_dimensions_lisbon_svd] %*% diag(data_lisbon_svd$d[1:adequate_dimensions_lisbon_svd]) 
-reduced_pima_svd <- data_pima_svd$u[, 1:adequate_dimensions_pima_svd] %*% diag(data_pima_svd$d[1:adequate_dimensions_pima_svd]) 
+reduced_pima_svd <- data_pima_svd$u[, 1:adequate_dimensions_pima_svd] %*% diag(data_pima_svd$d[1:adequate_dimensions_pima_svd]) %*% t(data_pima_svd$v[,1:adequate_dimensions_pima_svd])
 
 # Computes the correlation matrixes
 rd_corr_matrix_lisbon_svd <- cor(reduced_lisbon_svd)
@@ -155,5 +196,4 @@ rd_corr_matrix_pima_svd <- replace(rd_corr_matrix_pima_svd, is.na(rd_corr_matrix
 # Plot the correlation matrixes
 ggcorrplot(rd_corr_matrix_lisbon_svd)
 ggcorrplot(rd_corr_matrix_pima_svd)
-
 
