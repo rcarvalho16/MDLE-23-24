@@ -9,13 +9,13 @@ if(!exists("printConfusionMatrix", mode="function"))
 
 ################# Spark setup ################
 spark_disconnect_all() #just preventive code
-sc <- spark_connect('local', version = '3.3.2', hadoop_version = '3', config = list())
+sc <- spark_connect("local", version = '3.4.2', hadoop_version = '3', config = list())
 
 
 ################# Load data ################
-basepath <- "../data/Influenza-Outbreak-Dataset"
-tr.data <- c("train_data_25.csv","train_data_30.csv") #The data to use
-labels<- c("train_labels_25.csv","train_labels_30.csv") #the lables for the data
+basepath <- "data/Influenza-Outbreak-Dataset"
+tr.data <- c(list.files(paste(basepath, "train", sep = "/") , pattern = "train_data_")) #The data to use
+labels <- c(list.files(paste(basepath, "train", sep = "/") , pattern = "train_labels_")) #The data to use
 
 
 fun1 <- function(i) { #read CSV data
@@ -35,7 +35,11 @@ df <- copy_to(sc, df.local)
 
 ################# G2 #######################
 #Glimpse of the data set
-#TODO
+# Get a glimpse of the first and last 10 rows of the dataset
+head(df, n = 10)
+# Function stopifnot() prints NULL if all statements are true
+# Sparklyr's equivalent of nrow is sdf_nrow()
+print(stopifnot(sdf_nrow(df) != 2190))
 
 
 ################# G3 #######################

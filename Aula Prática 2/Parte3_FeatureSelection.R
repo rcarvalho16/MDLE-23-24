@@ -41,8 +41,9 @@ convertQualitativeFeatures = function(dataset){
 
 ###############################################################
 
-data_lisbon = Lisbon_.2023.01.01_2023.01.31
-data_pima = pima
+
+data_lisbon <- read.csv("Lisbon_ 2023-01-01_2023-01-31.csv")
+data_pima <- read.csv("pima.csv")
 
 # Preparing datasets
 data_pima = convertQualitativeFeatures(data_pima)

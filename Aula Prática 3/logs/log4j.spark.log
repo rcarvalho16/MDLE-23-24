@@ -1,0 +1,541 @@
+24/04/03 21:56:50.557 nioEventLoopGroup-2-2 INFO HiveConf: Found configuration file file:/C:/Users/rreis/AppData/Local/spark/spark-3.4.2-bin-hadoop3/conf/hive-site.xml
+24/04/03 21:56:50.849 nioEventLoopGroup-2-2 INFO SparkContext: Running Spark version 3.4.2
+24/04/03 21:56:50.882 nioEventLoopGroup-2-2 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+24/04/03 21:56:50.984 nioEventLoopGroup-2-2 WARN SparkConf: Note that spark.local.dir will be overridden by the value set by the cluster manager (via SPARK_LOCAL_DIRS in mesos/standalone/kubernetes and LOCAL_DIRS in YARN).
+24/04/03 21:56:51.017 nioEventLoopGroup-2-2 INFO ResourceUtils: ==============================================================
+24/04/03 21:56:51.019 nioEventLoopGroup-2-2 INFO ResourceUtils: No custom resources configured for spark.driver.
+24/04/03 21:56:51.019 nioEventLoopGroup-2-2 INFO ResourceUtils: ==============================================================
+24/04/03 21:56:51.020 nioEventLoopGroup-2-2 INFO SparkContext: Submitted application: sparklyr
+24/04/03 21:56:51.051 nioEventLoopGroup-2-2 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+24/04/03 21:56:51.060 nioEventLoopGroup-2-2 INFO ResourceProfile: Limiting resource is cpu
+24/04/03 21:56:51.061 nioEventLoopGroup-2-2 INFO ResourceProfileManager: Added ResourceProfile id: 0
+24/04/03 21:56:51.132 nioEventLoopGroup-2-2 INFO SecurityManager: Changing view acls to: rreis
+24/04/03 21:56:51.133 nioEventLoopGroup-2-2 INFO SecurityManager: Changing modify acls to: rreis
+24/04/03 21:56:51.133 nioEventLoopGroup-2-2 INFO SecurityManager: Changing view acls groups to: 
+24/04/03 21:56:51.134 nioEventLoopGroup-2-2 INFO SecurityManager: Changing modify acls groups to: 
+24/04/03 21:56:51.135 nioEventLoopGroup-2-2 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: rreis; groups with view permissions: EMPTY; users with modify permissions: rreis; groups with modify permissions: EMPTY
+24/04/03 21:56:51.257 nioEventLoopGroup-2-2 INFO Utils: Successfully started service 'sparkDriver' on port 55279.
+24/04/03 21:56:51.297 nioEventLoopGroup-2-2 INFO SparkEnv: Registering MapOutputTracker
+24/04/03 21:56:51.353 nioEventLoopGroup-2-2 INFO SparkEnv: Registering BlockManagerMaster
+24/04/03 21:56:51.381 nioEventLoopGroup-2-2 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+24/04/03 21:56:51.382 nioEventLoopGroup-2-2 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+24/04/03 21:56:51.385 nioEventLoopGroup-2-2 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+24/04/03 21:56:51.415 nioEventLoopGroup-2-2 INFO DiskBlockManager: Created local directory at C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\blockmgr-79291c60-a1ef-4318-9c71-c94147b3c2ee
+24/04/03 21:56:51.437 nioEventLoopGroup-2-2 INFO MemoryStore: MemoryStore started with capacity 1048.8 MiB
+24/04/03 21:56:51.466 nioEventLoopGroup-2-2 INFO SparkEnv: Registering OutputCommitCoordinator
+24/04/03 21:56:51.472 nioEventLoopGroup-2-2 WARN Utils: The configured local directories are not expected to be URIs; however, got suspicious values [C:/Users/rreis/AppData/Local/spark/spark-3.4.2-bin-hadoop3/tmp/local]. Please check your configured local directories.
+24/04/03 21:56:51.669 nioEventLoopGroup-2-2 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+24/04/03 21:56:51.779 nioEventLoopGroup-2-2 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+24/04/03 21:56:51.833 nioEventLoopGroup-2-2 INFO SparkContext: Added JAR file:/D:/Eu/ISEL/MEIC/Material/R-4.3.2/library/sparklyr/java/sparklyr-3.0-2.12.jar at spark://DESKTOP-1COTMM3:55279/jars/sparklyr-3.0-2.12.jar with timestamp 1712177810837
+24/04/03 21:56:51.923 nioEventLoopGroup-2-2 INFO Executor: Starting executor ID driver on host DESKTOP-1COTMM3
+24/04/03 21:56:51.930 nioEventLoopGroup-2-2 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+24/04/03 21:56:51.943 nioEventLoopGroup-2-2 INFO Executor: Fetching spark://DESKTOP-1COTMM3:55279/jars/sparklyr-3.0-2.12.jar with timestamp 1712177810837
+24/04/03 21:56:51.982 nioEventLoopGroup-2-2 INFO TransportClientFactory: Successfully created connection to DESKTOP-1COTMM3/192.168.56.1:55279 after 14 ms (0 ms spent in bootstraps)
+24/04/03 21:56:51.987 nioEventLoopGroup-2-2 INFO Utils: Fetching spark://DESKTOP-1COTMM3:55279/jars/sparklyr-3.0-2.12.jar to C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a\userFiles-6165d06a-c173-4d76-b956-c023bba7aa03\fetchFileTemp5980745409516274076.tmp
+24/04/03 21:56:52.097 nioEventLoopGroup-2-2 INFO Executor: Adding file:/C:/Users/rreis/AppData/Local/spark/spark-3.4.2-bin-hadoop3/tmp/local/spark-82fa1d21-6caf-4514-a4b7-86545842c42a/userFiles-6165d06a-c173-4d76-b956-c023bba7aa03/sparklyr-3.0-2.12.jar to class loader
+24/04/03 21:56:52.107 nioEventLoopGroup-2-2 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 55303.
+24/04/03 21:56:52.108 nioEventLoopGroup-2-2 INFO NettyBlockTransferService: Server created on DESKTOP-1COTMM3:55303
+24/04/03 21:56:52.110 nioEventLoopGroup-2-2 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+24/04/03 21:56:52.119 nioEventLoopGroup-2-2 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, DESKTOP-1COTMM3, 55303, None)
+24/04/03 21:56:52.124 dispatcher-BlockManagerMaster INFO BlockManagerMasterEndpoint: Registering block manager DESKTOP-1COTMM3:55303 with 1048.8 MiB RAM, BlockManagerId(driver, DESKTOP-1COTMM3, 55303, None)
+24/04/03 21:56:52.128 nioEventLoopGroup-2-2 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, DESKTOP-1COTMM3, 55303, None)
+24/04/03 21:56:52.130 nioEventLoopGroup-2-2 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, DESKTOP-1COTMM3, 55303, None)
+24/04/03 21:56:52.486 nioEventLoopGroup-2-2 INFO SharedState: Setting hive.metastore.warehouse.dir ('C:/Users/rreis/AppData/Local/spark/spark-3.4.2-bin-hadoop3/tmp/hive') to the value of spark.sql.warehouse.dir.
+24/04/03 21:56:52.496 nioEventLoopGroup-2-2 INFO SharedState: Warehouse path is 'file:/C:/Users/rreis/AppData/Local/spark/spark-3.4.2-bin-hadoop3/tmp/hive'.
+24/04/03 21:56:56.502 nioEventLoopGroup-2-2 INFO HiveUtils: Initializing HiveMetastoreConnection version 2.3.9 using Spark classes.
+24/04/03 21:56:56.801 nioEventLoopGroup-2-2 INFO HiveClientImpl: Warehouse location for Hive client (version 2.3.9) is file:/C:/Users/rreis/AppData/Local/spark/spark-3.4.2-bin-hadoop3/tmp/hive
+24/04/03 21:56:57.008 nioEventLoopGroup-2-2 WARN HiveConf: HiveConf of name hive.stats.jdbc.timeout does not exist
+24/04/03 21:56:57.009 nioEventLoopGroup-2-2 WARN HiveConf: HiveConf of name hive.stats.retries.wait does not exist
+24/04/03 21:56:57.009 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: Opening raw store with implementation class:org.apache.hadoop.hive.metastore.ObjectStore
+24/04/03 21:56:57.071 nioEventLoopGroup-2-2 INFO ObjectStore: ObjectStore, initialize called
+24/04/03 21:56:57.252 nioEventLoopGroup-2-2 INFO Persistence: Property hive.metastore.integral.jdo.pushdown unknown - will be ignored
+24/04/03 21:56:57.253 nioEventLoopGroup-2-2 INFO Persistence: Property datanucleus.cache.level2 unknown - will be ignored
+24/04/03 21:56:58.513 nioEventLoopGroup-2-2 INFO ObjectStore: Setting MetaStore object pin classes with hive.metastore.cache.pinobjtypes="Table,StorageDescriptor,SerDeInfo,Partition,Database,Type,FieldSchema,Order"
+24/04/03 21:56:59.990 nioEventLoopGroup-2-2 INFO MetaStoreDirectSql: Using direct SQL, underlying DB is DERBY
+24/04/03 21:56:59.993 nioEventLoopGroup-2-2 INFO ObjectStore: Initialized ObjectStore
+24/04/03 21:57:00.079 nioEventLoopGroup-2-2 WARN ObjectStore: Version information not found in metastore. hive.metastore.schema.verification is not enabled so recording the schema version 2.3.0
+24/04/03 21:57:00.079 nioEventLoopGroup-2-2 WARN ObjectStore: setMetaStoreSchemaVersion called but recording version is disabled: version = 2.3.0, comment = Set by MetaStore UNKNOWN@192.168.56.1
+24/04/03 21:57:00.112 nioEventLoopGroup-2-2 WARN ObjectStore: Failed to get database default, returning NoSuchObjectException
+24/04/03 21:57:00.265 nioEventLoopGroup-2-2 INFO HiveMetaStore: Added admin role in metastore
+24/04/03 21:57:00.267 nioEventLoopGroup-2-2 INFO HiveMetaStore: Added public role in metastore
+24/04/03 21:57:00.318 nioEventLoopGroup-2-2 INFO HiveMetaStore: No user is added in admin role, since config is empty
+24/04/03 21:57:00.458 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 21:57:00.460 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 21:57:00.485 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: global_temp
+24/04/03 21:57:00.486 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: global_temp	
+24/04/03 21:57:00.487 nioEventLoopGroup-2-2 WARN ObjectStore: Failed to get database global_temp, returning NoSuchObjectException
+24/04/03 21:57:00.488 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 21:57:00.488 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 21:57:00.491 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 21:57:00.491 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 21:57:00.494 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_tables: db=default pat=*
+24/04/03 21:57:00.494 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_tables: db=default pat=*	
+24/04/03 21:57:00.837 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 21:57:00.837 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 21:57:00.839 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 21:57:00.840 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 21:57:00.842 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_tables: db=default pat=*
+24/04/03 21:57:00.842 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_tables: db=default pat=*	
+24/04/03 22:07:13.368 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 22:07:13.369 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 22:07:13.370 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 22:07:13.371 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 22:07:13.373 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_tables: db=default pat=*
+24/04/03 22:07:13.373 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_tables: db=default pat=*	
+24/04/03 22:07:13.964 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 211.4424 ms
+24/04/03 22:07:14.135 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:07:14.144 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 0 finished: collect at utils.scala:26, took 0,006234 s
+24/04/03 22:07:50.560 nioEventLoopGroup-2-2 WARN package: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+24/04/03 22:07:53.865 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 12.8652 ms
+24/04/03 22:07:53.937 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:07:53.955 dag-scheduler-event-loop INFO DAGScheduler: Got job 1 (collect at utils.scala:26) with 1 output partitions
+24/04/03 22:07:53.955 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 0 (collect at utils.scala:26)
+24/04/03 22:07:53.956 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:07:53.957 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:07:53.960 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[7] at collect at utils.scala:26), which has no missing parents
+24/04/03 22:07:54.072 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 62.4 KiB, free 1048.7 MiB)
+24/04/03 22:07:54.129 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 12.7 KiB, free 1048.7 MiB)
+24/04/03 22:07:54.134 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 12.7 KiB, free: 1048.8 MiB)
+24/04/03 22:07:54.140 dag-scheduler-event-loop INFO SparkContext: Created broadcast 0 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:07:54.158 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[7] at collect at utils.scala:26) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:07:54.160 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 0.0 with 1 tasks resource profile 0
+24/04/03 22:07:54.234 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 7571 bytes) 
+24/04/03 22:07:54.254 Executor task launch worker for task 0.0 in stage 0.0 (TID 0) INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
+24/04/03 22:07:54.649 Executor task launch worker for task 0.0 in stage 0.0 (TID 0) INFO CodeGenerator: Code generated in 130.4235 ms
+24/04/03 22:07:54.676 Executor task launch worker for task 0.0 in stage 0.0 (TID 0) INFO Executor: Finished task 0.0 in stage 0.0 (TID 0). 1516 bytes result sent to driver
+24/04/03 22:07:54.687 task-result-getter-0 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 467 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:07:54.689 task-result-getter-0 INFO TaskSchedulerImpl: Removed TaskSet 0.0, whose tasks have all completed, from pool 
+24/04/03 22:07:54.695 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 0 (collect at utils.scala:26) finished in 0,711 s
+24/04/03 22:07:54.698 dag-scheduler-event-loop INFO DAGScheduler: Job 1 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:07:54.699 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 0: Stage finished
+24/04/03 22:07:54.700 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 1 finished: collect at utils.scala:26, took 0,761937 s
+24/04/03 22:07:54.835 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_0_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 12.7 KiB, free: 1048.8 MiB)
+24/04/03 22:07:55.105 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 272.3126 ms
+24/04/03 22:08:01.162 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:08:01.164 dag-scheduler-event-loop INFO DAGScheduler: Got job 2 (collect at utils.scala:26) with 1 output partitions
+24/04/03 22:08:01.164 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 1 (collect at utils.scala:26)
+24/04/03 22:08:01.164 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:08:01.164 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:08:01.164 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 1 (MapPartitionsRDD[10] at collect at utils.scala:26), which has no missing parents
+24/04/03 22:08:01.169 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_1 stored as values in memory (estimated size 62.4 KiB, free 1048.7 MiB)
+24/04/03 22:08:01.182 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 12.7 KiB, free 1048.7 MiB)
+24/04/03 22:08:01.183 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 12.7 KiB, free: 1048.8 MiB)
+24/04/03 22:08:01.184 dag-scheduler-event-loop INFO SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:08:01.185 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 1 (MapPartitionsRDD[10] at collect at utils.scala:26) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:08:01.185 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 1.0 with 1 tasks resource profile 0
+24/04/03 22:08:01.186 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 1.0 (TID 1) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 7571 bytes) 
+24/04/03 22:08:01.187 Executor task launch worker for task 0.0 in stage 1.0 (TID 1) INFO Executor: Running task 0.0 in stage 1.0 (TID 1)
+24/04/03 22:08:01.315 Executor task launch worker for task 0.0 in stage 1.0 (TID 1) INFO Executor: Finished task 0.0 in stage 1.0 (TID 1). 1516 bytes result sent to driver
+24/04/03 22:08:01.317 task-result-getter-1 INFO TaskSetManager: Finished task 0.0 in stage 1.0 (TID 1) in 131 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:08:01.317 task-result-getter-1 INFO TaskSchedulerImpl: Removed TaskSet 1.0, whose tasks have all completed, from pool 
+24/04/03 22:08:01.318 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 1 (collect at utils.scala:26) finished in 0,153 s
+24/04/03 22:08:01.319 dag-scheduler-event-loop INFO DAGScheduler: Job 2 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:08:01.319 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 1: Stage finished
+24/04/03 22:08:01.319 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 2 finished: collect at utils.scala:26, took 0,156343 s
+24/04/03 22:08:34.525 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 22:08:34.525 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 22:08:34.527 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_database: default
+24/04/03 22:08:34.528 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_database: default	
+24/04/03 22:08:34.529 nioEventLoopGroup-2-2 INFO HiveMetaStore: 0: get_tables: db=default pat=*
+24/04/03 22:08:34.529 nioEventLoopGroup-2-2 INFO audit: ugi=rreis	ip=unknown-ip-addr	cmd=get_tables: db=default pat=*	
+24/04/03 22:08:34.602 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 36.3375 ms
+24/04/03 22:08:34.652 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 6.8697 ms
+24/04/03 22:08:34.671 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:08:34.672 dag-scheduler-event-loop INFO DAGScheduler: Got job 3 (collect at utils.scala:26) with 1 output partitions
+24/04/03 22:08:34.673 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 2 (collect at utils.scala:26)
+24/04/03 22:08:34.673 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:08:34.673 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:08:34.673 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 2 (MapPartitionsRDD[13] at collect at utils.scala:26), which has no missing parents
+24/04/03 22:08:34.675 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_2 stored as values in memory (estimated size 7.1 KiB, free 1048.7 MiB)
+24/04/03 22:08:34.682 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_2_piece0 stored as bytes in memory (estimated size 3.7 KiB, free 1048.7 MiB)
+24/04/03 22:08:34.684 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_2_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 3.7 KiB, free: 1048.8 MiB)
+24/04/03 22:08:34.684 dag-scheduler-event-loop INFO SparkContext: Created broadcast 2 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:08:34.685 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 2 (MapPartitionsRDD[13] at collect at utils.scala:26) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:08:34.686 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 2.0 with 1 tasks resource profile 0
+24/04/03 22:08:34.692 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 2.0 (TID 2) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 7607 bytes) 
+24/04/03 22:08:34.693 Executor task launch worker for task 0.0 in stage 2.0 (TID 2) INFO Executor: Running task 0.0 in stage 2.0 (TID 2)
+24/04/03 22:08:34.702 Executor task launch worker for task 0.0 in stage 2.0 (TID 2) INFO Executor: Finished task 0.0 in stage 2.0 (TID 2). 1519 bytes result sent to driver
+24/04/03 22:08:34.703 task-result-getter-2 INFO TaskSetManager: Finished task 0.0 in stage 2.0 (TID 2) in 17 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:08:34.704 task-result-getter-2 INFO TaskSchedulerImpl: Removed TaskSet 2.0, whose tasks have all completed, from pool 
+24/04/03 22:08:34.705 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 2 (collect at utils.scala:26) finished in 0,030 s
+24/04/03 22:08:34.705 dag-scheduler-event-loop INFO DAGScheduler: Job 3 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:08:34.705 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 2: Stage finished
+24/04/03 22:08:34.705 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 3 finished: collect at utils.scala:26, took 0,033579 s
+24/04/03 22:08:34.715 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 7.663 ms
+24/04/03 22:08:52.425 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_2_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 3.7 KiB, free: 1048.8 MiB)
+24/04/03 22:08:52.432 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_1_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 12.7 KiB, free: 1048.8 MiB)
+24/04/03 22:09:05.875 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:09:05.876 dag-scheduler-event-loop INFO DAGScheduler: Got job 4 (collect at utils.scala:26) with 1 output partitions
+24/04/03 22:09:05.877 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 3 (collect at utils.scala:26)
+24/04/03 22:09:05.877 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:09:05.877 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:09:05.878 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 3 (MapPartitionsRDD[17] at collect at utils.scala:26), which has no missing parents
+24/04/03 22:09:05.883 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_3 stored as values in memory (estimated size 62.4 KiB, free 1048.7 MiB)
+24/04/03 22:09:05.888 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_3_piece0 stored as bytes in memory (estimated size 12.7 KiB, free 1048.7 MiB)
+24/04/03 22:09:05.889 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_3_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 12.7 KiB, free: 1048.8 MiB)
+24/04/03 22:09:05.890 dag-scheduler-event-loop INFO SparkContext: Created broadcast 3 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:09:05.890 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 3 (MapPartitionsRDD[17] at collect at utils.scala:26) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:09:05.891 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 3.0 with 1 tasks resource profile 0
+24/04/03 22:09:05.892 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 3.0 (TID 3) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 7571 bytes) 
+24/04/03 22:09:05.893 Executor task launch worker for task 0.0 in stage 3.0 (TID 3) INFO Executor: Running task 0.0 in stage 3.0 (TID 3)
+24/04/03 22:09:05.988 Executor task launch worker for task 0.0 in stage 3.0 (TID 3) INFO Executor: Finished task 0.0 in stage 3.0 (TID 3). 1473 bytes result sent to driver
+24/04/03 22:09:05.990 task-result-getter-3 INFO TaskSetManager: Finished task 0.0 in stage 3.0 (TID 3) in 98 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:09:05.990 task-result-getter-3 INFO TaskSchedulerImpl: Removed TaskSet 3.0, whose tasks have all completed, from pool 
+24/04/03 22:09:05.991 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 3 (collect at utils.scala:26) finished in 0,113 s
+24/04/03 22:09:05.991 dag-scheduler-event-loop INFO DAGScheduler: Job 4 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:09:05.991 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 3: Stage finished
+24/04/03 22:09:05.992 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 4 finished: collect at utils.scala:26, took 0,116129 s
+24/04/03 22:09:09.919 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:09:09.920 dag-scheduler-event-loop INFO DAGScheduler: Got job 5 (collect at utils.scala:26) with 1 output partitions
+24/04/03 22:09:09.920 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 4 (collect at utils.scala:26)
+24/04/03 22:09:09.920 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:09:09.920 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:09:09.921 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 4 (MapPartitionsRDD[20] at collect at utils.scala:26), which has no missing parents
+24/04/03 22:09:09.925 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_4 stored as values in memory (estimated size 62.4 KiB, free 1048.7 MiB)
+24/04/03 22:09:09.944 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_4_piece0 stored as bytes in memory (estimated size 12.7 KiB, free 1048.7 MiB)
+24/04/03 22:09:09.945 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_4_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 12.7 KiB, free: 1048.8 MiB)
+24/04/03 22:09:09.946 dag-scheduler-event-loop INFO SparkContext: Created broadcast 4 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:09:09.946 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 4 (MapPartitionsRDD[20] at collect at utils.scala:26) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:09:09.946 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 4.0 with 1 tasks resource profile 0
+24/04/03 22:09:09.948 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 4.0 (TID 4) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 7571 bytes) 
+24/04/03 22:09:09.949 Executor task launch worker for task 0.0 in stage 4.0 (TID 4) INFO Executor: Running task 0.0 in stage 4.0 (TID 4)
+24/04/03 22:09:10.013 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_3_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 12.7 KiB, free: 1048.8 MiB)
+24/04/03 22:09:10.043 Executor task launch worker for task 0.0 in stage 4.0 (TID 4) INFO Executor: Finished task 0.0 in stage 4.0 (TID 4). 1473 bytes result sent to driver
+24/04/03 22:09:10.045 task-result-getter-0 INFO TaskSetManager: Finished task 0.0 in stage 4.0 (TID 4) in 98 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:09:10.046 task-result-getter-0 INFO TaskSchedulerImpl: Removed TaskSet 4.0, whose tasks have all completed, from pool 
+24/04/03 22:09:10.046 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 4 (collect at utils.scala:26) finished in 0,124 s
+24/04/03 22:09:10.046 dag-scheduler-event-loop INFO DAGScheduler: Job 5 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:09:10.046 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 4: Stage finished
+24/04/03 22:09:10.047 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 5 finished: collect at utils.scala:26, took 0,127955 s
+24/04/03 22:09:46.595 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:09:46.596 dag-scheduler-event-loop INFO DAGScheduler: Got job 6 (collect at utils.scala:26) with 1 output partitions
+24/04/03 22:09:46.596 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 5 (collect at utils.scala:26)
+24/04/03 22:09:46.596 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:09:46.598 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:09:46.599 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 5 (MapPartitionsRDD[27] at collect at utils.scala:26), which has no missing parents
+24/04/03 22:09:46.627 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_5 stored as values in memory (estimated size 107.3 KiB, free 1048.6 MiB)
+24/04/03 22:09:46.629 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_4_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 12.7 KiB, free: 1048.8 MiB)
+24/04/03 22:09:46.634 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_5_piece0 stored as bytes in memory (estimated size 27.1 KiB, free 1048.7 MiB)
+24/04/03 22:09:46.635 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_5_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 27.1 KiB, free: 1048.8 MiB)
+24/04/03 22:09:46.636 dag-scheduler-event-loop INFO SparkContext: Created broadcast 5 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:09:46.636 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 5 (MapPartitionsRDD[27] at collect at utils.scala:26) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:09:46.636 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 5.0 with 1 tasks resource profile 0
+24/04/03 22:09:47.254 dispatcher-event-loop-0 WARN TaskSetManager: Stage 5 contains a task of very large size (229957 KiB). The maximum recommended task size is 1000 KiB.
+24/04/03 22:09:47.254 dispatcher-event-loop-0 INFO TaskSetManager: Starting task 0.0 in stage 5.0 (TID 5) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 235476302 bytes) 
+24/04/03 22:09:47.254 Executor task launch worker for task 0.0 in stage 5.0 (TID 5) INFO Executor: Running task 0.0 in stage 5.0 (TID 5)
+24/04/03 22:09:47.706 Executor task launch worker for task 0.0 in stage 5.0 (TID 5) INFO CodeGenerator: Code generated in 203.2074 ms
+24/04/03 22:09:53.796 Executor task launch worker for task 0.0 in stage 5.0 (TID 5) INFO MemoryStore: Block rdd_23_0 stored as values in memory (estimated size 13.2 MiB, free 1035.5 MiB)
+24/04/03 22:09:53.797 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added rdd_23_0 in memory on DESKTOP-1COTMM3:55303 (size: 13.2 MiB, free: 1035.6 MiB)
+24/04/03 22:09:53.812 Executor task launch worker for task 0.0 in stage 5.0 (TID 5) INFO CodeGenerator: Code generated in 4.2642 ms
+24/04/03 22:09:54.009 Executor task launch worker for task 0.0 in stage 5.0 (TID 5) INFO CodeGenerator: Code generated in 185.862 ms
+24/04/03 22:09:54.059 Executor task launch worker for task 0.0 in stage 5.0 (TID 5) INFO Executor: 1 block locks were not released by task 0.0 in stage 5.0 (TID 5)
+[rdd_23_0]
+24/04/03 22:09:54.061 Executor task launch worker for task 0.0 in stage 5.0 (TID 5) INFO Executor: Finished task 0.0 in stage 5.0 (TID 5). 1675 bytes result sent to driver
+24/04/03 22:09:54.062 task-result-getter-1 INFO TaskSetManager: Finished task 0.0 in stage 5.0 (TID 5) in 7424 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:09:54.063 task-result-getter-1 INFO TaskSchedulerImpl: Removed TaskSet 5.0, whose tasks have all completed, from pool 
+24/04/03 22:09:54.064 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 5 (collect at utils.scala:26) finished in 7,463 s
+24/04/03 22:09:54.064 dag-scheduler-event-loop INFO DAGScheduler: Job 6 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:09:54.064 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 5: Stage finished
+24/04/03 22:09:54.065 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 6 finished: collect at utils.scala:26, took 7,469637 s
+24/04/03 22:09:54.441 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 259.6724 ms
+24/04/03 22:14:26.617 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 7.1866 ms
+24/04/03 22:14:26.665 dag-scheduler-event-loop INFO DAGScheduler: Registering RDD 32 (count at NativeMethodAccessorImpl.java:0) as input to shuffle 0
+24/04/03 22:14:26.672 dag-scheduler-event-loop INFO DAGScheduler: Got map stage job 7 (count at NativeMethodAccessorImpl.java:0) with 1 output partitions
+24/04/03 22:14:26.672 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ShuffleMapStage 6 (count at NativeMethodAccessorImpl.java:0)
+24/04/03 22:14:26.673 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:14:26.676 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:14:26.678 dag-scheduler-event-loop INFO DAGScheduler: Submitting ShuffleMapStage 6 (MapPartitionsRDD[32] at count at NativeMethodAccessorImpl.java:0), which has no missing parents
+24/04/03 22:14:26.694 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_6 stored as values in memory (estimated size 83.8 KiB, free 1035.4 MiB)
+24/04/03 22:14:26.696 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_6_piece0 stored as bytes in memory (estimated size 22.0 KiB, free 1035.4 MiB)
+24/04/03 22:14:26.697 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_6_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 22.0 KiB, free: 1035.6 MiB)
+24/04/03 22:14:26.698 dag-scheduler-event-loop INFO SparkContext: Created broadcast 6 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:14:26.699 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 6 (MapPartitionsRDD[32] at count at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:14:26.699 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 6.0 with 1 tasks resource profile 0
+24/04/03 22:14:26.975 dispatcher-event-loop-1 WARN TaskSetManager: Stage 6 contains a task of very large size (229957 KiB). The maximum recommended task size is 1000 KiB.
+24/04/03 22:14:26.975 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 6.0 (TID 6) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 235476291 bytes) 
+24/04/03 22:14:26.976 Executor task launch worker for task 0.0 in stage 6.0 (TID 6) INFO Executor: Running task 0.0 in stage 6.0 (TID 6)
+24/04/03 22:14:27.161 Executor task launch worker for task 0.0 in stage 6.0 (TID 6) INFO BlockManager: Found block rdd_23_0 locally
+24/04/03 22:14:27.172 Executor task launch worker for task 0.0 in stage 6.0 (TID 6) INFO CodeGenerator: Code generated in 8.7546 ms
+24/04/03 22:14:27.259 Executor task launch worker for task 0.0 in stage 6.0 (TID 6) INFO Executor: Finished task 0.0 in stage 6.0 (TID 6). 2159 bytes result sent to driver
+24/04/03 22:14:27.264 task-result-getter-2 INFO TaskSetManager: Finished task 0.0 in stage 6.0 (TID 6) in 561 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:14:27.264 task-result-getter-2 INFO TaskSchedulerImpl: Removed TaskSet 6.0, whose tasks have all completed, from pool 
+24/04/03 22:14:27.267 dag-scheduler-event-loop INFO DAGScheduler: ShuffleMapStage 6 (count at NativeMethodAccessorImpl.java:0) finished in 0,587 s
+24/04/03 22:14:27.268 dag-scheduler-event-loop INFO DAGScheduler: looking for newly runnable stages
+24/04/03 22:14:27.269 dag-scheduler-event-loop INFO DAGScheduler: running: Set()
+24/04/03 22:14:27.270 dag-scheduler-event-loop INFO DAGScheduler: waiting: Set()
+24/04/03 22:14:27.271 dag-scheduler-event-loop INFO DAGScheduler: failed: Set()
+24/04/03 22:14:27.318 nioEventLoopGroup-2-2 INFO CodeGenerator: Code generated in 8.7144 ms
+24/04/03 22:14:27.357 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_5_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 27.1 KiB, free: 1035.6 MiB)
+24/04/03 22:14:27.364 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: count at NativeMethodAccessorImpl.java:0
+24/04/03 22:14:27.366 dag-scheduler-event-loop INFO DAGScheduler: Got job 8 (count at NativeMethodAccessorImpl.java:0) with 1 output partitions
+24/04/03 22:14:27.367 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 8 (count at NativeMethodAccessorImpl.java:0)
+24/04/03 22:14:27.367 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 7)
+24/04/03 22:14:27.367 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:14:27.368 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 8 (MapPartitionsRDD[35] at count at NativeMethodAccessorImpl.java:0), which has no missing parents
+24/04/03 22:14:27.377 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_7 stored as values in memory (estimated size 12.1 KiB, free 1035.5 MiB)
+24/04/03 22:14:27.379 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_7_piece0 stored as bytes in memory (estimated size 5.9 KiB, free 1035.5 MiB)
+24/04/03 22:14:27.381 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_7_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 5.9 KiB, free: 1035.6 MiB)
+24/04/03 22:14:27.382 dag-scheduler-event-loop INFO SparkContext: Created broadcast 7 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:14:27.382 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 8 (MapPartitionsRDD[35] at count at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:14:27.383 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 8.0 with 1 tasks resource profile 0
+24/04/03 22:14:27.386 dispatcher-event-loop-0 INFO TaskSetManager: Starting task 0.0 in stage 8.0 (TID 7) (DESKTOP-1COTMM3, executor driver, partition 0, NODE_LOCAL, 7363 bytes) 
+24/04/03 22:14:27.387 Executor task launch worker for task 0.0 in stage 8.0 (TID 7) INFO Executor: Running task 0.0 in stage 8.0 (TID 7)
+24/04/03 22:14:27.463 Executor task launch worker for task 0.0 in stage 8.0 (TID 7) INFO ShuffleBlockFetcherIterator: Getting 1 (60.0 B) non-empty blocks including 1 (60.0 B) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+24/04/03 22:14:27.466 Executor task launch worker for task 0.0 in stage 8.0 (TID 7) INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 38 ms
+24/04/03 22:14:27.482 Executor task launch worker for task 0.0 in stage 8.0 (TID 7) INFO Executor: Finished task 0.0 in stage 8.0 (TID 7). 3952 bytes result sent to driver
+24/04/03 22:14:27.483 task-result-getter-3 INFO TaskSetManager: Finished task 0.0 in stage 8.0 (TID 7) in 99 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:14:27.483 task-result-getter-3 INFO TaskSchedulerImpl: Removed TaskSet 8.0, whose tasks have all completed, from pool 
+24/04/03 22:14:27.484 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 8 (count at NativeMethodAccessorImpl.java:0) finished in 0,109 s
+24/04/03 22:14:27.484 dag-scheduler-event-loop INFO DAGScheduler: Job 8 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:14:27.484 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 8: Stage finished
+24/04/03 22:14:27.484 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 8 finished: count at NativeMethodAccessorImpl.java:0, took 0,119666 s
+24/04/03 22:16:31.217 dag-scheduler-event-loop INFO DAGScheduler: Registering RDD 40 (count at NativeMethodAccessorImpl.java:0) as input to shuffle 1
+24/04/03 22:16:31.218 dag-scheduler-event-loop INFO DAGScheduler: Got map stage job 9 (count at NativeMethodAccessorImpl.java:0) with 1 output partitions
+24/04/03 22:16:31.218 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ShuffleMapStage 9 (count at NativeMethodAccessorImpl.java:0)
+24/04/03 22:16:31.219 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:16:31.219 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:16:31.219 dag-scheduler-event-loop INFO DAGScheduler: Submitting ShuffleMapStage 9 (MapPartitionsRDD[40] at count at NativeMethodAccessorImpl.java:0), which has no missing parents
+24/04/03 22:16:31.223 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_8 stored as values in memory (estimated size 83.8 KiB, free 1035.4 MiB)
+24/04/03 22:16:31.224 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_8_piece0 stored as bytes in memory (estimated size 22.0 KiB, free 1035.4 MiB)
+24/04/03 22:16:31.226 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_8_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 22.0 KiB, free: 1035.6 MiB)
+24/04/03 22:16:31.226 dag-scheduler-event-loop INFO SparkContext: Created broadcast 8 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:16:31.227 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 9 (MapPartitionsRDD[40] at count at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:16:31.227 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 9.0 with 1 tasks resource profile 0
+24/04/03 22:16:31.408 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_7_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 5.9 KiB, free: 1035.6 MiB)
+24/04/03 22:16:31.411 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_6_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 22.0 KiB, free: 1035.6 MiB)
+24/04/03 22:16:31.485 dispatcher-event-loop-1 WARN TaskSetManager: Stage 9 contains a task of very large size (229957 KiB). The maximum recommended task size is 1000 KiB.
+24/04/03 22:16:31.486 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 9.0 (TID 8) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 235476291 bytes) 
+24/04/03 22:16:31.486 Executor task launch worker for task 0.0 in stage 9.0 (TID 8) INFO Executor: Running task 0.0 in stage 9.0 (TID 8)
+24/04/03 22:16:31.554 Executor task launch worker for task 0.0 in stage 9.0 (TID 8) INFO BlockManager: Found block rdd_23_0 locally
+24/04/03 22:16:31.595 Executor task launch worker for task 0.0 in stage 9.0 (TID 8) INFO Executor: Finished task 0.0 in stage 9.0 (TID 8). 2159 bytes result sent to driver
+24/04/03 22:16:31.596 task-result-getter-0 INFO TaskSetManager: Finished task 0.0 in stage 9.0 (TID 8) in 368 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:16:31.597 task-result-getter-0 INFO TaskSchedulerImpl: Removed TaskSet 9.0, whose tasks have all completed, from pool 
+24/04/03 22:16:31.597 dag-scheduler-event-loop INFO DAGScheduler: ShuffleMapStage 9 (count at NativeMethodAccessorImpl.java:0) finished in 0,377 s
+24/04/03 22:16:31.598 dag-scheduler-event-loop INFO DAGScheduler: looking for newly runnable stages
+24/04/03 22:16:31.598 dag-scheduler-event-loop INFO DAGScheduler: running: Set()
+24/04/03 22:16:31.598 dag-scheduler-event-loop INFO DAGScheduler: waiting: Set()
+24/04/03 22:16:31.598 dag-scheduler-event-loop INFO DAGScheduler: failed: Set()
+24/04/03 22:16:31.617 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: count at NativeMethodAccessorImpl.java:0
+24/04/03 22:16:31.618 dag-scheduler-event-loop INFO DAGScheduler: Got job 10 (count at NativeMethodAccessorImpl.java:0) with 1 output partitions
+24/04/03 22:16:31.619 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 11 (count at NativeMethodAccessorImpl.java:0)
+24/04/03 22:16:31.619 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 10)
+24/04/03 22:16:31.619 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:16:31.619 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 11 (MapPartitionsRDD[43] at count at NativeMethodAccessorImpl.java:0), which has no missing parents
+24/04/03 22:16:31.621 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_9 stored as values in memory (estimated size 12.1 KiB, free 1035.5 MiB)
+24/04/03 22:16:31.623 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_9_piece0 stored as bytes in memory (estimated size 5.8 KiB, free 1035.5 MiB)
+24/04/03 22:16:31.636 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_9_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 5.8 KiB, free: 1035.6 MiB)
+24/04/03 22:16:31.637 dag-scheduler-event-loop INFO SparkContext: Created broadcast 9 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:16:31.637 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 11 (MapPartitionsRDD[43] at count at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:16:31.638 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 11.0 with 1 tasks resource profile 0
+24/04/03 22:16:31.639 dispatcher-event-loop-0 INFO TaskSetManager: Starting task 0.0 in stage 11.0 (TID 9) (DESKTOP-1COTMM3, executor driver, partition 0, NODE_LOCAL, 7363 bytes) 
+24/04/03 22:16:31.640 Executor task launch worker for task 0.0 in stage 11.0 (TID 9) INFO Executor: Running task 0.0 in stage 11.0 (TID 9)
+24/04/03 22:16:31.643 Executor task launch worker for task 0.0 in stage 11.0 (TID 9) INFO ShuffleBlockFetcherIterator: Getting 1 (60.0 B) non-empty blocks including 1 (60.0 B) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+24/04/03 22:16:31.644 Executor task launch worker for task 0.0 in stage 11.0 (TID 9) INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 1 ms
+24/04/03 22:16:31.651 Executor task launch worker for task 0.0 in stage 11.0 (TID 9) INFO Executor: Finished task 0.0 in stage 11.0 (TID 9). 3909 bytes result sent to driver
+24/04/03 22:16:31.653 task-result-getter-1 INFO TaskSetManager: Finished task 0.0 in stage 11.0 (TID 9) in 14 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:16:31.653 task-result-getter-1 INFO TaskSchedulerImpl: Removed TaskSet 11.0, whose tasks have all completed, from pool 
+24/04/03 22:16:31.654 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 11 (count at NativeMethodAccessorImpl.java:0) finished in 0,034 s
+24/04/03 22:16:31.654 dag-scheduler-event-loop INFO DAGScheduler: Job 10 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:16:31.654 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 11: Stage finished
+24/04/03 22:16:31.654 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 10 finished: count at NativeMethodAccessorImpl.java:0, took 0,036749 s
+24/04/03 22:17:34.643 dag-scheduler-event-loop INFO DAGScheduler: Registering RDD 48 (count at NativeMethodAccessorImpl.java:0) as input to shuffle 2
+24/04/03 22:17:34.644 dag-scheduler-event-loop INFO DAGScheduler: Got map stage job 11 (count at NativeMethodAccessorImpl.java:0) with 1 output partitions
+24/04/03 22:17:34.644 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ShuffleMapStage 12 (count at NativeMethodAccessorImpl.java:0)
+24/04/03 22:17:34.644 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:17:34.645 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:17:34.645 dag-scheduler-event-loop INFO DAGScheduler: Submitting ShuffleMapStage 12 (MapPartitionsRDD[48] at count at NativeMethodAccessorImpl.java:0), which has no missing parents
+24/04/03 22:17:34.648 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_10 stored as values in memory (estimated size 83.8 KiB, free 1035.4 MiB)
+24/04/03 22:17:34.650 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_10_piece0 stored as bytes in memory (estimated size 22.0 KiB, free 1035.4 MiB)
+24/04/03 22:17:34.651 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_10_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 22.0 KiB, free: 1035.6 MiB)
+24/04/03 22:17:34.652 dag-scheduler-event-loop INFO SparkContext: Created broadcast 10 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:17:34.652 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ShuffleMapStage 12 (MapPartitionsRDD[48] at count at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:17:34.652 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 12.0 with 1 tasks resource profile 0
+24/04/03 22:17:34.735 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_9_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 5.8 KiB, free: 1035.6 MiB)
+24/04/03 22:17:34.814 dispatcher-event-loop-1 WARN TaskSetManager: Stage 12 contains a task of very large size (229957 KiB). The maximum recommended task size is 1000 KiB.
+24/04/03 22:17:34.814 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 12.0 (TID 10) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 235476291 bytes) 
+24/04/03 22:17:34.815 Executor task launch worker for task 0.0 in stage 12.0 (TID 10) INFO Executor: Running task 0.0 in stage 12.0 (TID 10)
+24/04/03 22:17:34.897 Executor task launch worker for task 0.0 in stage 12.0 (TID 10) INFO BlockManager: Found block rdd_23_0 locally
+24/04/03 22:17:34.932 Executor task launch worker for task 0.0 in stage 12.0 (TID 10) INFO Executor: Finished task 0.0 in stage 12.0 (TID 10). 2159 bytes result sent to driver
+24/04/03 22:17:34.933 task-result-getter-2 INFO TaskSetManager: Finished task 0.0 in stage 12.0 (TID 10) in 279 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:17:34.933 task-result-getter-2 INFO TaskSchedulerImpl: Removed TaskSet 12.0, whose tasks have all completed, from pool 
+24/04/03 22:17:34.934 dag-scheduler-event-loop INFO DAGScheduler: ShuffleMapStage 12 (count at NativeMethodAccessorImpl.java:0) finished in 0,288 s
+24/04/03 22:17:34.934 dag-scheduler-event-loop INFO DAGScheduler: looking for newly runnable stages
+24/04/03 22:17:34.934 dag-scheduler-event-loop INFO DAGScheduler: running: Set()
+24/04/03 22:17:34.934 dag-scheduler-event-loop INFO DAGScheduler: waiting: Set()
+24/04/03 22:17:34.934 dag-scheduler-event-loop INFO DAGScheduler: failed: Set()
+24/04/03 22:17:34.953 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: count at NativeMethodAccessorImpl.java:0
+24/04/03 22:17:34.954 dag-scheduler-event-loop INFO DAGScheduler: Got job 12 (count at NativeMethodAccessorImpl.java:0) with 1 output partitions
+24/04/03 22:17:34.954 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 14 (count at NativeMethodAccessorImpl.java:0)
+24/04/03 22:17:34.954 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List(ShuffleMapStage 13)
+24/04/03 22:17:34.954 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:17:34.954 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 14 (MapPartitionsRDD[51] at count at NativeMethodAccessorImpl.java:0), which has no missing parents
+24/04/03 22:17:34.956 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_11 stored as values in memory (estimated size 12.1 KiB, free 1035.4 MiB)
+24/04/03 22:17:34.957 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_11_piece0 stored as bytes in memory (estimated size 5.8 KiB, free 1035.4 MiB)
+24/04/03 22:17:34.958 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_11_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 5.8 KiB, free: 1035.6 MiB)
+24/04/03 22:17:34.958 dag-scheduler-event-loop INFO SparkContext: Created broadcast 11 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:17:34.959 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 14 (MapPartitionsRDD[51] at count at NativeMethodAccessorImpl.java:0) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:17:34.959 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 14.0 with 1 tasks resource profile 0
+24/04/03 22:17:34.959 dispatcher-event-loop-0 INFO TaskSetManager: Starting task 0.0 in stage 14.0 (TID 11) (DESKTOP-1COTMM3, executor driver, partition 0, NODE_LOCAL, 7363 bytes) 
+24/04/03 22:17:34.960 Executor task launch worker for task 0.0 in stage 14.0 (TID 11) INFO Executor: Running task 0.0 in stage 14.0 (TID 11)
+24/04/03 22:17:34.965 Executor task launch worker for task 0.0 in stage 14.0 (TID 11) INFO ShuffleBlockFetcherIterator: Getting 1 (60.0 B) non-empty blocks including 1 (60.0 B) local and 0 (0.0 B) host-local and 0 (0.0 B) push-merged-local and 0 (0.0 B) remote blocks
+24/04/03 22:17:34.965 Executor task launch worker for task 0.0 in stage 14.0 (TID 11) INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 0 ms
+24/04/03 22:17:34.968 Executor task launch worker for task 0.0 in stage 14.0 (TID 11) INFO Executor: Finished task 0.0 in stage 14.0 (TID 11). 3952 bytes result sent to driver
+24/04/03 22:17:34.969 task-result-getter-3 INFO TaskSetManager: Finished task 0.0 in stage 14.0 (TID 11) in 10 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:17:34.969 task-result-getter-3 INFO TaskSchedulerImpl: Removed TaskSet 14.0, whose tasks have all completed, from pool 
+24/04/03 22:17:34.970 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 14 (count at NativeMethodAccessorImpl.java:0) finished in 0,015 s
+24/04/03 22:17:34.970 dag-scheduler-event-loop INFO DAGScheduler: Job 12 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:17:34.970 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 14: Stage finished
+24/04/03 22:17:34.971 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 12 finished: count at NativeMethodAccessorImpl.java:0, took 0,017801 s
+24/04/03 22:17:35.002 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_8_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 22.0 KiB, free: 1035.6 MiB)
+24/04/03 22:18:40.983 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:18:40.985 dag-scheduler-event-loop INFO DAGScheduler: Got job 13 (collect at utils.scala:26) with 1 output partitions
+24/04/03 22:18:40.985 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 15 (collect at utils.scala:26)
+24/04/03 22:18:40.985 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:18:40.986 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:18:40.986 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 15 (MapPartitionsRDD[55] at collect at utils.scala:26), which has no missing parents
+24/04/03 22:18:40.990 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_12 stored as values in memory (estimated size 107.3 KiB, free 1035.4 MiB)
+24/04/03 22:18:40.992 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_12_piece0 stored as bytes in memory (estimated size 27.1 KiB, free 1035.4 MiB)
+24/04/03 22:18:40.993 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_12_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 27.1 KiB, free: 1035.6 MiB)
+24/04/03 22:18:40.993 dag-scheduler-event-loop INFO SparkContext: Created broadcast 12 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:18:40.994 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 15 (MapPartitionsRDD[55] at collect at utils.scala:26) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:18:40.994 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 15.0 with 1 tasks resource profile 0
+24/04/03 22:18:41.113 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_11_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 5.8 KiB, free: 1035.6 MiB)
+24/04/03 22:18:41.190 dispatcher-event-loop-0 WARN TaskSetManager: Stage 15 contains a task of very large size (229957 KiB). The maximum recommended task size is 1000 KiB.
+24/04/03 22:18:41.190 dispatcher-event-loop-0 INFO TaskSetManager: Starting task 0.0 in stage 15.0 (TID 12) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 235476302 bytes) 
+24/04/03 22:18:41.191 Executor task launch worker for task 0.0 in stage 15.0 (TID 12) INFO Executor: Running task 0.0 in stage 15.0 (TID 12)
+24/04/03 22:18:41.276 Executor task launch worker for task 0.0 in stage 15.0 (TID 12) INFO BlockManager: Found block rdd_23_0 locally
+24/04/03 22:18:41.302 Executor task launch worker for task 0.0 in stage 15.0 (TID 12) INFO Executor: 1 block locks were not released by task 0.0 in stage 15.0 (TID 12)
+[rdd_23_0]
+24/04/03 22:18:41.304 Executor task launch worker for task 0.0 in stage 15.0 (TID 12) INFO Executor: Finished task 0.0 in stage 15.0 (TID 12). 1894 bytes result sent to driver
+24/04/03 22:18:41.305 task-result-getter-0 INFO TaskSetManager: Finished task 0.0 in stage 15.0 (TID 12) in 310 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:18:41.305 task-result-getter-0 INFO TaskSchedulerImpl: Removed TaskSet 15.0, whose tasks have all completed, from pool 
+24/04/03 22:18:41.305 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 15 (collect at utils.scala:26) finished in 0,318 s
+24/04/03 22:18:41.306 dag-scheduler-event-loop INFO DAGScheduler: Job 13 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:18:41.306 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 15: Stage finished
+24/04/03 22:18:41.306 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 13 finished: collect at utils.scala:26, took 0,322409 s
+24/04/03 22:18:41.396 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_10_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 22.0 KiB, free: 1035.6 MiB)
+24/04/03 22:20:21.789 nioEventLoopGroup-2-2 INFO SparkContext: Starting job: collect at utils.scala:26
+24/04/03 22:20:21.789 dag-scheduler-event-loop INFO DAGScheduler: Got job 14 (collect at utils.scala:26) with 1 output partitions
+24/04/03 22:20:21.789 dag-scheduler-event-loop INFO DAGScheduler: Final stage: ResultStage 16 (collect at utils.scala:26)
+24/04/03 22:20:21.790 dag-scheduler-event-loop INFO DAGScheduler: Parents of final stage: List()
+24/04/03 22:20:21.790 dag-scheduler-event-loop INFO DAGScheduler: Missing parents: List()
+24/04/03 22:20:21.790 dag-scheduler-event-loop INFO DAGScheduler: Submitting ResultStage 16 (MapPartitionsRDD[59] at collect at utils.scala:26), which has no missing parents
+24/04/03 22:20:21.793 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_13 stored as values in memory (estimated size 107.3 KiB, free 1035.4 MiB)
+24/04/03 22:20:21.795 dag-scheduler-event-loop INFO MemoryStore: Block broadcast_13_piece0 stored as bytes in memory (estimated size 27.1 KiB, free 1035.4 MiB)
+24/04/03 22:20:21.796 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Added broadcast_13_piece0 in memory on DESKTOP-1COTMM3:55303 (size: 27.1 KiB, free: 1035.6 MiB)
+24/04/03 22:20:21.797 dag-scheduler-event-loop INFO SparkContext: Created broadcast 13 from broadcast at DAGScheduler.scala:1535
+24/04/03 22:20:21.797 dag-scheduler-event-loop INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 16 (MapPartitionsRDD[59] at collect at utils.scala:26) (first 15 tasks are for partitions Vector(0))
+24/04/03 22:20:21.797 dag-scheduler-event-loop INFO TaskSchedulerImpl: Adding task set 16.0 with 1 tasks resource profile 0
+24/04/03 22:20:22.016 dispatcher-event-loop-1 WARN TaskSetManager: Stage 16 contains a task of very large size (229957 KiB). The maximum recommended task size is 1000 KiB.
+24/04/03 22:20:22.016 dispatcher-event-loop-1 INFO TaskSetManager: Starting task 0.0 in stage 16.0 (TID 13) (DESKTOP-1COTMM3, executor driver, partition 0, PROCESS_LOCAL, 235476302 bytes) 
+24/04/03 22:20:22.017 Executor task launch worker for task 0.0 in stage 16.0 (TID 13) INFO Executor: Running task 0.0 in stage 16.0 (TID 13)
+24/04/03 22:20:22.113 Executor task launch worker for task 0.0 in stage 16.0 (TID 13) INFO BlockManager: Found block rdd_23_0 locally
+24/04/03 22:20:22.140 Executor task launch worker for task 0.0 in stage 16.0 (TID 13) INFO Executor: 1 block locks were not released by task 0.0 in stage 16.0 (TID 13)
+[rdd_23_0]
+24/04/03 22:20:22.142 Executor task launch worker for task 0.0 in stage 16.0 (TID 13) INFO Executor: Finished task 0.0 in stage 16.0 (TID 13). 1834 bytes result sent to driver
+24/04/03 22:20:22.143 task-result-getter-1 INFO TaskSetManager: Finished task 0.0 in stage 16.0 (TID 13) in 345 ms on DESKTOP-1COTMM3 (executor driver) (1/1)
+24/04/03 22:20:22.143 task-result-getter-1 INFO TaskSchedulerImpl: Removed TaskSet 16.0, whose tasks have all completed, from pool 
+24/04/03 22:20:22.144 dag-scheduler-event-loop INFO DAGScheduler: ResultStage 16 (collect at utils.scala:26) finished in 0,352 s
+24/04/03 22:20:22.144 dag-scheduler-event-loop INFO DAGScheduler: Job 14 is finished. Cancelling potential speculative or zombie tasks for this job
+24/04/03 22:20:22.144 dag-scheduler-event-loop INFO TaskSchedulerImpl: Killing all running tasks in stage 16: Stage finished
+24/04/03 22:20:22.144 nioEventLoopGroup-2-2 INFO DAGScheduler: Job 14 finished: collect at utils.scala:26, took 0,355262 s
+24/04/03 22:20:22.258 dispatcher-BlockManagerMaster INFO BlockManagerInfo: Removed broadcast_12_piece0 on DESKTOP-1COTMM3:55303 in memory (size: 27.1 KiB, free: 1035.6 MiB)
+24/04/03 22:22:45.546 shutdown-hook-0 INFO SparkContext: Invoking stop() from shutdown hook
+24/04/03 22:22:45.546 shutdown-hook-0 INFO SparkContext: SparkContext is stopping with exitCode 0.
+24/04/03 22:22:45.571 shutdown-hook-0 INFO SparkUI: Stopped Spark web UI at http://DESKTOP-1COTMM3:4040
+24/04/03 22:22:45.589 dispatcher-event-loop-1 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+24/04/03 22:22:45.639 shutdown-hook-0 INFO MemoryStore: MemoryStore cleared
+24/04/03 22:22:45.640 shutdown-hook-0 INFO BlockManager: BlockManager stopped
+24/04/03 22:22:45.642 shutdown-hook-0 INFO BlockManagerMaster: BlockManagerMaster stopped
+24/04/03 22:22:45.646 dispatcher-event-loop-1 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+24/04/03 22:22:45.649 shutdown-hook-0 WARN SparkEnv: Exception while deleting Spark temp dir: C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a\userFiles-6165d06a-c173-4d76-b956-c023bba7aa03
+java.io.IOException: Failed to delete: C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a\userFiles-6165d06a-c173-4d76-b956-c023bba7aa03\sparklyr-3.0-2.12.jar
+	at org.apache.spark.network.util.JavaUtils.deleteRecursivelyUsingJavaIO(JavaUtils.java:150)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:121)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursivelyUsingJavaIO(JavaUtils.java:133)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:121)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:94)
+	at org.apache.spark.util.Utils$.deleteRecursively(Utils.scala:1231)
+	at org.apache.spark.SparkEnv.stop(SparkEnv.scala:108)
+	at org.apache.spark.SparkContext.$anonfun$stop$25(SparkContext.scala:2175)
+	at org.apache.spark.util.Utils$.tryLogNonFatalError(Utils.scala:1509)
+	at org.apache.spark.SparkContext.stop(SparkContext.scala:2175)
+	at org.apache.spark.SparkContext.stop(SparkContext.scala:2081)
+	at org.apache.spark.SparkContext.$anonfun$new$31(SparkContext.scala:664)
+	at org.apache.spark.util.SparkShutdownHook.run(ShutdownHookManager.scala:214)
+	at org.apache.spark.util.SparkShutdownHookManager.$anonfun$runAll$2(ShutdownHookManager.scala:188)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:2088)
+	at org.apache.spark.util.SparkShutdownHookManager.$anonfun$runAll$1(ShutdownHookManager.scala:188)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at scala.util.Try$.apply(Try.scala:213)
+	at org.apache.spark.util.SparkShutdownHookManager.runAll(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anon$2.run(ShutdownHookManager.scala:178)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+24/04/03 22:22:45.650 shutdown-hook-0 INFO SparkContext: Successfully stopped SparkContext
+24/04/03 22:22:45.651 shutdown-hook-0 INFO ShutdownHookManager: Shutdown hook called
+24/04/03 22:22:45.651 shutdown-hook-0 INFO ShutdownHookManager: Deleting directory C:\Users\rreis\AppData\Local\Temp\spark-af4a7ca1-3b4f-484c-89b2-ef73556b43d6
+24/04/03 22:22:45.653 shutdown-hook-0 INFO ShutdownHookManager: Deleting directory C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a\userFiles-6165d06a-c173-4d76-b956-c023bba7aa03
+24/04/03 22:22:45.655 shutdown-hook-0 ERROR ShutdownHookManager: Exception while deleting Spark temp dir: C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a\userFiles-6165d06a-c173-4d76-b956-c023bba7aa03
+java.io.IOException: Failed to delete: C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a\userFiles-6165d06a-c173-4d76-b956-c023bba7aa03\sparklyr-3.0-2.12.jar
+	at org.apache.spark.network.util.JavaUtils.deleteRecursivelyUsingJavaIO(JavaUtils.java:150)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:121)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursivelyUsingJavaIO(JavaUtils.java:133)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:121)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:94)
+	at org.apache.spark.util.Utils$.deleteRecursively(Utils.scala:1231)
+	at org.apache.spark.util.ShutdownHookManager$.$anonfun$new$4(ShutdownHookManager.scala:65)
+	at org.apache.spark.util.ShutdownHookManager$.$anonfun$new$4$adapted(ShutdownHookManager.scala:62)
+	at scala.collection.IndexedSeqOptimized.foreach(IndexedSeqOptimized.scala:36)
+	at scala.collection.IndexedSeqOptimized.foreach$(IndexedSeqOptimized.scala:33)
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:198)
+	at org.apache.spark.util.ShutdownHookManager$.$anonfun$new$2(ShutdownHookManager.scala:62)
+	at org.apache.spark.util.SparkShutdownHook.run(ShutdownHookManager.scala:214)
+	at org.apache.spark.util.SparkShutdownHookManager.$anonfun$runAll$2(ShutdownHookManager.scala:188)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:2088)
+	at org.apache.spark.util.SparkShutdownHookManager.$anonfun$runAll$1(ShutdownHookManager.scala:188)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at scala.util.Try$.apply(Try.scala:213)
+	at org.apache.spark.util.SparkShutdownHookManager.runAll(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anon$2.run(ShutdownHookManager.scala:178)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+24/04/03 22:22:45.656 shutdown-hook-0 INFO ShutdownHookManager: Deleting directory C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a
+24/04/03 22:22:45.658 shutdown-hook-0 ERROR ShutdownHookManager: Exception while deleting Spark temp dir: C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a
+java.io.IOException: Failed to delete: C:\Users\rreis\AppData\Local\spark\spark-3.4.2-bin-hadoop3\tmp\local\spark-82fa1d21-6caf-4514-a4b7-86545842c42a\userFiles-6165d06a-c173-4d76-b956-c023bba7aa03\sparklyr-3.0-2.12.jar
+	at org.apache.spark.network.util.JavaUtils.deleteRecursivelyUsingJavaIO(JavaUtils.java:150)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:121)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursivelyUsingJavaIO(JavaUtils.java:133)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:121)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursivelyUsingJavaIO(JavaUtils.java:133)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:121)
+	at org.apache.spark.network.util.JavaUtils.deleteRecursively(JavaUtils.java:94)
+	at org.apache.spark.util.Utils$.deleteRecursively(Utils.scala:1231)
+	at org.apache.spark.util.ShutdownHookManager$.$anonfun$new$4(ShutdownHookManager.scala:65)
+	at org.apache.spark.util.ShutdownHookManager$.$anonfun$new$4$adapted(ShutdownHookManager.scala:62)
+	at scala.collection.IndexedSeqOptimized.foreach(IndexedSeqOptimized.scala:36)
+	at scala.collection.IndexedSeqOptimized.foreach$(IndexedSeqOptimized.scala:33)
+	at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:198)
+	at org.apache.spark.util.ShutdownHookManager$.$anonfun$new$2(ShutdownHookManager.scala:62)
+	at org.apache.spark.util.SparkShutdownHook.run(ShutdownHookManager.scala:214)
+	at org.apache.spark.util.SparkShutdownHookManager.$anonfun$runAll$2(ShutdownHookManager.scala:188)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:2088)
+	at org.apache.spark.util.SparkShutdownHookManager.$anonfun$runAll$1(ShutdownHookManager.scala:188)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at scala.util.Try$.apply(Try.scala:213)
+	at org.apache.spark.util.SparkShutdownHookManager.runAll(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anon$2.run(ShutdownHookManager.scala:178)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
