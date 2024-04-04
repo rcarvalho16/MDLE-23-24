@@ -1,4 +1,5 @@
 # IMPORTS
+#install.packages("hydroTSM")
 library(dplyr)
 library(ggplot2)
 
@@ -10,6 +11,22 @@ readWeatherFun <- function(i) { #read CSV data
 
 readEnergyFun <- function(i) { #read CSV data
   read.csv(paste(data_path,i,sep = "/"), header=TRUE,stringsAsFactors = FALSE, sep = ";")
+}
+
+# Define a function to map month to season
+get_season <- function(timestamp) {
+  timestamp <- as.Date(timestamp)
+  day <- as.numeric(format(timestamp, "%d"))
+  month <- as.numeric(format(timestamp, "%m"))
+  if ((month == 12 && day >= 21) || (month <= 3 && day < 20)) {
+    return("Winter")
+  } else if ((month == 3 && day >= 21) || (month <= 6 && day < 20)) {
+    return("Spring")
+  } else if ((month == 6 && day >= 21) || (month <= 9 && day < 20)) {
+    return("Summer")
+  } else {
+    return("Fall")
+  }
 }
 
 #########################
@@ -43,13 +60,8 @@ energy_data$Date.Time <- apply(
 
 # Plot the power consumption distribution in Lisbon, per hour
 mean_energy <- energy_data %>%
-  group_by(Date.Time, Hour) %>%
-  summarise(mean_energy = mean(Active.Energy..kWh.)) %>%
   group_by(Hour) %>%
-  summarise(mean_energy = mean(mean_energy))
-
-# Rearrange df to start at 5AM
-mean_energy <- rbind(mean_energy[-(1:5),], mean_energy[1:5,])
+  summarise(mean_energy = mean(Active.Energy..kWh.))
 
 plot.ts(mean_energy$mean_energy, main = "Mean Energy Consumption per Hour from Dec2022 - Oct2023",
         xlab = "Hour",
@@ -75,5 +87,16 @@ lisbon_consumption <- lisbon_consumption %>%
 # 3 - Remove duplicate entries by using unique()
 lisbon_consumption <- unique(lisbon_consumption)
 
+lisbon_consumption_season_energy <- lisbon_consumption
 
+lisbon_consumption_season_energy$Day <- sapply(
+  lisbon_consumption_season_energy$datetime,
+  function(datetime) format(as.Date(datetime), "%d"))
 
+# Extract month from timestamp and map to season
+lisbon_consumption_season_energy$season <- sapply(lisbon_consumption_season_energy$datetime, get_season)
+
+# Group by timestamp, calculating the mean of Energetic Consumption
+lisbon_consumption_season_energy <- lisbon_consumption_season_energy %>%
+  group_by(Day, Hour, season) %>%
+  summarize(Active.Energy..kWh. = mean(Active.Energy..kWh.))
