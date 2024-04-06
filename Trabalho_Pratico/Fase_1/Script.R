@@ -12,6 +12,9 @@ readEnergyFun <- function(i) { #read CSV data
   read.csv(paste(data_path,i,sep = "/"), header=TRUE,stringsAsFactors = FALSE, sep = ";")
 }
 
+if(!exists("getCategoricalFeatures", mode="function")) 
+  source("helperfunctions.R")
+
 #########################
 
 # Prepare data path
@@ -48,8 +51,6 @@ mean_energy <- energy_data %>%
   group_by(Hour) %>%
   summarise(mean_energy = mean(mean_energy))
 
-# Rearrange df to start at 5AM
-mean_energy <- rbind(mean_energy[-(1:5),], mean_energy[1:5,])
 
 plot.ts(mean_energy$mean_energy, main = "Mean Energy Consumption per Hour from Dec2022 - Oct2023",
         xlab = "Hour",
