@@ -104,21 +104,22 @@ eig_values_pima = get_eig(data_pima_pca)
 # And 'd' is a vector of singular values, corresponding to the diagonal of the matrix 'D'
 # Ref: https://bookdown.org/rdpeng/exdata/dimension-reduction.html
 
-data_lisbon_svd <- svd(data_lisbon)
-data_pima_svd <- svd(data_pima)
-singular_values_lisbon <- data_lisbon_svd$d
-singular_values_pima <- data_pima_svd$d
+# Given previous results of SVD decomposition giving only 1 good vector
+# We understood it was due to very low contribution from the different features, so we scale them down first
+# Ref: https://stackoverflow.com/a/15364319
+data_lisbon_svd <- apply(data_lisbon, 2, function(y) (y - mean(y)) / sd(y) ^ as.logical(sd(y)))
+data_pima_svd <- apply(data_pima, 2, function(y) (y - mean(y)) / sd(y) ^ as.logical(sd(y)))
 
-
+data_lisbon_svd <- svd(data_lisbon_svd)
+data_pima_svd <- svd(data_pima_svd)
 
 # The singular values, when squared, are proportional to the amount of variance
 # Given by a singular vector.
-# Given a 99% threshold for Lisbon and 95% for pima, we can compute the adequate dimensions used to compute
+# Given a 90% threshold for Lisbon and 90% for pima, we can compute the adequate dimensions used to compute
 # the SVD matrix used in the reduction process
 svd_variance_lisbon <- data_lisbon_svd$d^2
 svd_variance_pima <- data_pima_svd$d^2
-adequate_dimensions_lisbon_svd <- min(which(cumsum(svd_variance_lisbon)/sum(svd_variance_lisbon) > 0.90))
-adequate_dimensions_pima_svd <- min(which(cumsum(svd_variance_pima)/sum(svd_variance_pima) > 0.90))
+
 
 # If we look at the plot of the variances, we can further comprehend how the data can be seen by just
 # a few singular vectors
@@ -178,6 +179,9 @@ summary(rd_pca_pima)
 ###################
 # SVD Reduction
 ###################
+
+adequate_dimensions_lisbon_svd <- min(which(cumsum(svd_variance_lisbon)/sum(svd_variance_lisbon) > 0.90))
+adequate_dimensions_pima_svd <- min(which(cumsum(svd_variance_pima)/sum(svd_variance_pima) > 0.90))
 
 diag_lisbon <- diag(data_lisbon_svd$d)
 diag_pima <- diag(data_pima_svd$d)
