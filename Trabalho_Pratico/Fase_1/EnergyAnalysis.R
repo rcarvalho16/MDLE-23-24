@@ -5,10 +5,6 @@ library(cowplot)
 
 # AUX FUNCTIONS
 ######################
-readEnergyFun <- function(i) { #read CSV data
-  read.csv(paste(data_path,i,sep = "/"), header=TRUE,stringsAsFactors = FALSE, sep = ";")
-}
-
 if(!exists("getCategoricalFeatures", mode="function")) 
   source("helperfunctions.R")
 #########################

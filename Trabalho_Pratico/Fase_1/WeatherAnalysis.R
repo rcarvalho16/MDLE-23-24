@@ -2,16 +2,11 @@
 library(dplyr)
 library(ggplot2)
 library(gridExtra)
+library(cowplot)
+library(lubridate)
 
 # AUX FUNCTIONS
 ######################
-readWeatherFun <- function(i) { #read CSV data
-  read.csv(paste(weather_path,i,sep = "/"), header=TRUE,stringsAsFactors = FALSE)
-}
-
-readEnergyFun <- function(i) { #read CSV data
-  read.csv(paste(data_path,i,sep = "/"), header=TRUE,stringsAsFactors = FALSE, sep = ";")
-}
 
 if(!exists("getCategoricalFeatures", mode="function")) 
   source("helperfunctions.R")
@@ -44,49 +39,83 @@ energy_data$Date.Time <- apply(
   function(row) paste(row["Date"], "T", row["Hour"], ":00", sep = "")
 )
 
-
-# Plot the power consumption distribution in Lisbon, per hour
-mean_energy <- energy_data %>%
-  group_by(Date.Time, Hour) %>%
-  summarise(mean_energy = mean(Active.Energy..kWh.)) %>%
-  group_by(Hour) %>%
-  summarise(mean_energy = mean(mean_energy))
-
-
-plot.ts(mean_energy$mean_energy, main = "Mean Energy Consumption per Hour from Dec2022 - Oct2023",
-        xlab = "Hour",
-        ylab = "Mean Energy Consumption [KW/h]")
-grid(lty = 3)  # Add a thin grid
-
 #######################################################
-# Compute mean energetic consumption per timestamp in Lisbon City
+# Compute the energetic consumption per icon in certain zip_codes in Lisbon City
 
-# Choose a list of 3 residential zip codes and 3 industrial zip codes
+# Choose a list of 3 residential zip codes and 2 industrial zip codes
 # to study how the weather influences the energy consumption
-#energy_data_res_ind <- energy_data[energy_data$Zip.Code %in% c(1700, 1600, 7520, 2350, 2950), ]
-energy_data_res_ind <- energy_data[energy_data$Zip.Code %in% c(1700), ]
+res_zip_codes <- c(1000, 1600, 1700)
+ind_zip_codes <- c(1300, 1250)
+
+energy_data_res <- energy_data[energy_data$Zip.Code %in% res_zip_codes, ]
+energy_data_ind <- energy_data[energy_data$Zip.Code %in% ind_zip_codes, ]
 
 # Join power consumption dataset to weather dataset by timestamp
 # Discard redundant columns (ie: Timestamp on both datasets is equal)
-lisbon_consumption <- merge(weather_data, energy_data_res_ind, by.x = "datetime", by.y = "Date.Time")
+lisbon_consumption_res <- merge(weather_data, energy_data_res, by.x = "datetime", by.y = "Date.Time")
+lisbon_consumption_ind <- merge(weather_data, energy_data_ind, by.x = "datetime", by.y = "Date.Time")
 
-# 1 - Remove ZIP Code and Redundant Lisbon tag
-remove <- c(2, ncol(lisbon_consumption) - 1)
-lisbon_consumption <- lisbon_consumption[,-remove]
+# Add day of the week
+lisbon_consumption_res$Day_of_Week <- wday(lisbon_consumption_res$Date, label = TRUE, abbr = FALSE)
+lisbon_consumption_ind$Day_of_Week <- wday(lisbon_consumption_ind$Date, label = TRUE, abbr = FALSE)
 
-# 2 - Group by timestamp, calculating the mean of Energetic Consumption
-lisbon_consumption <- lisbon_consumption %>%
-  group_by(datetime) %>%
-  mutate(Active.Energy..kWh. = mean(Active.Energy..kWh.))
+# Remove redundant Datetime, Lisbon tag
+remove <- c(1, 2)
+lisbon_consumption_res <- lisbon_consumption_res[,-remove]
+lisbon_consumption_ind <- lisbon_consumption_ind[,-remove]
 
-# 3 - Remove duplicate entries by using unique()
-lisbon_consumption <- unique(lisbon_consumption
+# Group by icon and Zip.Code, calculating the mean of Energetic Consumption
+lisbon_consumption_res <- lisbon_consumption_res %>%
+  group_by(icon, Day_of_Week, Zip.Code) %>%
+  summarize(Active.Energy..kWh. = mean(Active.Energy..kWh.))
+
+lisbon_consumption_ind <- lisbon_consumption_ind %>%
+  group_by(icon, Day_of_Week, Zip.Code) %>%
+  summarize(Active.Energy..kWh. = mean(Active.Energy..kWh.))
+
+industrial_plot <- list()
+residential_plot <- list()
+for(i in 1:length(ind_zip_codes)){
+  lisbon_consumption_ind_single_zip_code <<- lisbon_consumption_ind[lisbon_consumption_ind$Zip.Code %in% zip_codes_ind[i],]
+  
+  # Plot the average icon consumption per Zip.Code bar chart
+  barra_ind <<- ggplot(lisbon_consumption_ind_single_zip_code, aes(x = icon, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
+    geom_bar(stat = "identity", position = "dodge") +
+    labs(title = paste("Residential Consumption by icon and for Zip Code", zip_codes_ind[i]),
+         x = "icon",
+         y = "Average Consumption (kWh)",
+         fill = "Day of Week",
+         margin = element_text()) +
+    theme_minimal()
+  
+  industrial_plot[[i]] <- barra_ind
+  
+  rm(lisbon_consumption_ind_single_zip_code, barra_ind)
+}
+for(i in 1:length(res_zip_codes)){
+  lisbon_consumption_res_single_day <<- lisbon_consumption_res[lisbon_consumption_res$Zip.Code %in% zip_codes_res[i],]
+
+  barra_res <- ggplot(lisbon_consumption_res_single_day, aes(x = icon, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
+    geom_bar(stat = "identity", position = "dodge") +
+    labs(title = paste("Industrial Consumption by icon and for Zip Code", zip_codes_res[i]),
+         x = "icon",
+         y = "Average Consumption (kWh)",
+         fill = "Day of Week",
+         margin = element_text()) +
+    theme_minimal()
+  
+  residential_plot[[i]] <- barra_res
+  
+  rm(lisbon_consumption_res_single_day, barra_res)
+}
+
+grid.arrange(grobs = industrial_plot, nrow = length(ind_zip_codes))
+grid.arrange(grobs = residential_plot, nrow = length(res_zip_codes))
 
 ########################################################
 # Check the influence of weather on the energy consumption
 
 zip_codes <- sample(energy_data$Zip.Code, 6)
-#c(1700, 1600, 1495, 1900, 1350, 1675)
 
 multiple_zip_code_plots <- list()
 for(i in 1:length(zip_codes)){
