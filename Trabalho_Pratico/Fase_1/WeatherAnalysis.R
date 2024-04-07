@@ -76,12 +76,12 @@ lisbon_consumption_ind <- lisbon_consumption_ind %>%
 industrial_plot <- list()
 residential_plot <- list()
 for(i in 1:length(ind_zip_codes)){
-  lisbon_consumption_ind_single_zip_code <<- lisbon_consumption_ind[lisbon_consumption_ind$Zip.Code %in% zip_codes_ind[i],]
+  lisbon_consumption_ind_single_zip_code <<- lisbon_consumption_ind[lisbon_consumption_ind$Zip.Code %in% ind_zip_codes[i],]
   
   # Plot the average icon consumption per Zip.Code bar chart
   barra_ind <<- ggplot(lisbon_consumption_ind_single_zip_code, aes(x = icon, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
     geom_bar(stat = "identity", position = "dodge") +
-    labs(title = paste("Residential Consumption by icon and for Zip Code", zip_codes_ind[i]),
+    labs(title = paste("Residential Consumption by icon and for Zip Code", ind_zip_codes[i]),
          x = "icon",
          y = "Average Consumption (kWh)",
          fill = "Day of Week",
@@ -93,11 +93,11 @@ for(i in 1:length(ind_zip_codes)){
   rm(lisbon_consumption_ind_single_zip_code, barra_ind)
 }
 for(i in 1:length(res_zip_codes)){
-  lisbon_consumption_res_single_day <<- lisbon_consumption_res[lisbon_consumption_res$Zip.Code %in% zip_codes_res[i],]
+  lisbon_consumption_res_single_day <<- lisbon_consumption_res[lisbon_consumption_res$Zip.Code %in% res_zip_codes[i],]
 
   barra_res <- ggplot(lisbon_consumption_res_single_day, aes(x = icon, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
     geom_bar(stat = "identity", position = "dodge") +
-    labs(title = paste("Industrial Consumption by icon and for Zip Code", zip_codes_res[i]),
+    labs(title = paste("Industrial Consumption by icon and for Zip Code", res_zip_codes[i]),
          x = "icon",
          y = "Average Consumption (kWh)",
          fill = "Day of Week",
