@@ -4,6 +4,7 @@ library(lubridate)
 library(cowplot)
 library(ggcorrplot)
 library(factoextra)
+library(arulesCBA)
 
 # AUX FUNCTIONS
 ######################
@@ -185,7 +186,7 @@ energy_data_labeled <- rbind(energy_data_res, energy_data_ind)
 
 # Given the categorical data, and thinking about possible learning models we can
 # apply. Convert dataset using one-hot encoding for day of the week 
-energy_data_labeled$Zone <- factor(energy_data_labeled$Zone, labels = c(0,1))
+energy_data_labeled$Zone <- factor(energy_data_labeled$Zone, labels = c(1,2))
 energy_data_labeled$Day_of_Week <- factor(energy_data_labeled$Day_of_Week, labels = c(1,2,3,4,5,6,7))
 
 ##############################################################
@@ -208,7 +209,7 @@ energy_data_labeled[] <- lapply(energy_data_labeled, function(x) {
 ggcorrplot(cor(energy_data_labeled))
 
 # Store labels 
-labels <- energy_data_labeled$Zone
+labels <- as.numeric(energy_data_labeled$Zone)
 zip_codes <- energy_data_labeled$Zip.Code
 
 # Prepare matrix for PCA (remove label and zip code in last columns)
@@ -257,10 +258,16 @@ rd_pca_scaled <- as.matrix(pca_energy) %*% as.matrix(pcs_scaled)
 
 # Reattach the class labels to the newly reduced matrix
 rd_pca_scaled <- as.matrix(rd_pca_scaled)
-rd_pca_scaled <- data.frame(cbind(rd_pca_scaled, zip_codes,labels))
 
 # Observe correlation plot
 ggcorrplot(cor(rd_pca_scaled))
+
+# Compute discretization on features
+rd_pca_scaled <- apply(rd_pca_scaled, MARGIN = 2, discretize)
+
+# Reattach zip codes and labels
+rd_pca_scaled <- data.frame(cbind(rd_pca_scaled, zip_codes,labels))
+
 
 
 ##############################################################
