@@ -27,9 +27,29 @@ convertTimestamps = function(dataset){
   # Remove redundant date columns
   dataset <- dataset[, -c(1,2,3)]
   # Reorder columns
-  dataset <- dataset[, c(6,5,4,7,3,1,2)]
+  dataset <- dataset[, c(6,5,4,7,3,2,1)]
   
   return(dataset)
+}
+
+getClassMeans = function(dataset, classFeature){
+  labels_feature = unique(dataset[[classFeature]])
+  res <- sapply(labels_feature, function(label) round(colMeans(dataset[dataset[[classFeature]] == label,]), digits = 2))
+  
+  # Remove label from mean, as it does not matter in the variance calculator
+  label_index <- grep(classFeature, colnames(dataset))
+  res <- res[-label_index,]
+  return(res)
+}
+
+getClassVars = function(dataset, classFeature){
+  labels_feature = unique(dataset[[classFeature]])
+  res <- sapply(labels_feature, function(label) round(sapply(dataset[dataset[[classFeature]] == label,], var), digits = 2))
+  
+  # Remove label from vars, as it does not matter in the variance calculator
+  label_index <- grep(classFeature, colnames(dataset))
+  res <- res[-label_index,]
+  return(res)
 }
 
 if(!exists("getCategoricalFeatures", mode="function")) 
@@ -44,6 +64,10 @@ data_path <- "data"
 energy_data <- c(list.files(data_path, pattern = ".csv"))
 energy_data <- do.call(rbind, lapply(energy_data, readEnergyFun ))
 energy_data <- as.data.frame(energy_data)
+
+# Check empty rows in weather dataset
+# Commented because it will return 0 missing values, and takes a while to run
+# apply(energy_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 
 # Perform analysis on Residential vs Non-Residential ZIP codes
@@ -161,7 +185,7 @@ energy_data_labeled <- rbind(energy_data_res, energy_data_ind)
 
 # Given the categorical data, and thinking about possible learning models we can
 # apply. Convert dataset using one-hot encoding for day of the week 
-energy_data_labeled$Zone <- factor(energy_data_labeled$Zone, labels = c(1,2))
+energy_data_labeled$Zone <- factor(energy_data_labeled$Zone, labels = c(0,1))
 energy_data_labeled$Day_of_Week <- factor(energy_data_labeled$Day_of_Week, labels = c(1,2,3,4,5,6,7))
 
 ##############################################################
@@ -169,7 +193,7 @@ energy_data_labeled$Day_of_Week <- factor(energy_data_labeled$Day_of_Week, label
 # PCA Analysis
 # Note: Apply PCA only to features (excluding class label)
 # PCA applies a linear transformation, therefore
-# We reattach the class labels again after PCA FR
+# We reattach the class labels and zip codes again after PCA FR
 
 # Convert all factors to integers
 energy_data_labeled[] <- lapply(energy_data_labeled, function(x) {
@@ -185,9 +209,14 @@ ggcorrplot(cor(energy_data_labeled))
 
 # Store labels 
 labels <- energy_data_labeled$Zone
+zip_codes <- energy_data_labeled$Zip.Code
 
-# Prepare matrix for PCA (remove label in last column)
-pca_energy <- energy_data_labeled[-ncol(energy_data_labeled)]
+# Prepare matrix for PCA (remove label and zip code in last columns)
+labels_index <- ncol(energy_data_labeled)
+zip_index <- ncol(energy_data_labeled) - 1
+
+# Prepared matrix for PCA
+pca_energy <- energy_data_labeled[-c(labels_index, zip_index)]
 
 # Apply PCA to the matrices
 unscaled_energy_pca <- prcomp(pca_energy, scale. = FALSE)
@@ -228,7 +257,40 @@ rd_pca_scaled <- as.matrix(pca_energy) %*% as.matrix(pcs_scaled)
 
 # Reattach the class labels to the newly reduced matrix
 rd_pca_scaled <- as.matrix(rd_pca_scaled)
-rd_pca_scaled <- cbind(rd_pca_scaled, labels)
+rd_pca_scaled <- data.frame(cbind(rd_pca_scaled, zip_codes,labels))
 
 # Observe correlation plot
 ggcorrplot(cor(rd_pca_scaled))
+
+
+##############################################################
+# FEATURE SELECTION
+# Fisher's Ratio
+# CORRIGIR ESTA PARTE 
+
+# Removing zip codes as they are a numeric but symbolic value
+fr_no_zip <- energy_data_labeled[-zip_index]
+
+# Prepare fisher's ratio matrix by removing Zip codes (Unique variable)
+# Zips are removed because they are a numeric, but symbolic value
+fr_energy_unscaled <- fr_no_zip
+fr_energy_scaled <- as.data.frame(round(scale(fr_no_zip), 3))
+
+# Calculate class means and class vars to perform Fisher's Ratio (scaled and unscaled)
+class_means_unscaled <- getClassMeans(fr_energy_unscaled, "Zone")
+class_vars_unscaled <- getClassVars(fr_energy_unscaled, "Zone")
+
+class_means_scaled <- getClassMeans(fr_energy_scaled, "Zone")
+class_vars_scaled <- getClassVars(fr_energy_scaled, "Zone")
+
+# Compute numerator and denominator for calculation
+
+fr_numerator_unscaled = apply(class_means_unscaled, MARGIN = 1, function(x) (x[1] - sum(x[-1]))^2)
+fr_denominator_unscaled =  apply(class_vars_unscaled, MARGIN = 1, sum)
+
+fr_numerator_scaled = apply(class_means_scaled, MARGIN = 1, function(x) (x[1] - sum(x[-1]))^2)
+fr_denominator_scaled =  apply(class_vars_scaled, MARGIN = 1, sum)
+
+# Compute final fisher's ratio
+fr_unscaled = fr_numerator_unscaled / fr_denominator_unscaled
+fr_scaled = fr_numerator_scaled / fr_denominator_scaled

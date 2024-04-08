@@ -27,6 +27,20 @@ energy_data <- do.call(rbind, lapply(energy_data, readEnergyFun ))
 weather_data <- as.data.frame(weather_data)
 energy_data <- as.data.frame(energy_data)
 
+# Check empty rows in weather dataset
+apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
+
+# Impute missing data
+# This will be a topic where we need further opinions given the bias introduced by imputing based on the mean values.
+weather_data$preciptype[is.na(weather_data$preciptype) | weather_data$preciptype == ""] <- "no rain"
+weather_data$solarradiation[is.na(weather_data$solarradiation) | weather_data$solarradiation == ""] <- round(mean(weather_data$solarradiation, na.rm = TRUE))
+weather_data$solarenergy[is.na(weather_data$solarenergy) | weather_data$solarenergy == ""] <- mean(as.integer(weather_data$solarenergy), na.rm = TRUE)
+weather_data$uvindex[is.na(weather_data$uvindex) | weather_data$uvindex == ""] <- round(mean(weather_data$uvindex, na.rm = TRUE))
+weather_data$severerisk[is.na(weather_data$severerisk) | weather_data$severerisk == ""] <- 0
+
+# Check empty rows in weather dataset
+apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
+
 # Get only lisbon power consumption
 # Zip code format is 1xxx
 energy_data <- energy_data[energy_data$Zip.Code <= 1999,]
@@ -165,3 +179,4 @@ for(i in 1:length(zip_codes)){
 }
 
 grid.arrange(grobs = multiple_zip_code_plots, nrow = 3)
+
