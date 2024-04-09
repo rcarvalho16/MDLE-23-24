@@ -41,3 +41,15 @@ convertQualitativeFeatures = function(dataset){
   }
   return(dataset)
 }
+
+calculate_summary <- function(data) {
+  summary_df <- data.frame(variable = character(), mean = numeric(), sd = numeric(), stringsAsFactors = FALSE)
+  for (col in names(data)) {
+    if (is.numeric(data[[col]])) {
+      mean_val <- mean(data[[col]], na.rm = TRUE)
+      sd_val <- sd(data[[col]], na.rm = TRUE)
+      summary_df <- rbind(summary_df, data.frame(variable = col, mean = mean_val, sd = sd_val))
+    }
+  }
+  return(summary_df)
+}

@@ -66,10 +66,19 @@ energy_data <- c(list.files(data_path, pattern = ".csv"))
 energy_data <- do.call(rbind, lapply(energy_data, readEnergyFun ))
 energy_data <- as.data.frame(energy_data)
 
+
+
 # Check empty rows in weather dataset
 # Commented because it will return 0 missing values, and takes a while to run
 # apply(energy_data, MARGIN = 2, function(col) sum(is.na(col)))
 
+# Calculate mean and standard deviation
+mean_energy <- mean(energy_data$Active.Energy..kWh)
+sd_energy <- sd(energy_data$Active.Energy..kWh)
+
+# Create a summary dataframe
+summary_energy <- data.frame(statistic = c("Mean", "Standard Deviation"),
+                         value = c(mean_energy, sd_energy))
 
 # Perform analysis on Residential vs Non-Residential ZIP codes
 # This classification was done by hand. Prone to human-error

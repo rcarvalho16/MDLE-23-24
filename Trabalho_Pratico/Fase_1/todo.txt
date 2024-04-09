@@ -1,0 +1,11 @@
+10/04/2024, 00h38 (Rafael)
+
+	- Adicionei uma função calculate_summary() que retorna a média e desvio padrão de cada feature numérica do dataset
+	- Corrigi a imputação no uvindex, troquei para median pois o desvio padrão é muito elevado
+	- Corrigi a imputação do preciptype para "unknown" (Ver ref: https://www.visualcrossing.com/resources/documentation/weather-data/weather-data-documentation/)
+
+
+TODOS (Urgente): 
+	Realizar análise para apenas o zip code 1000 (Manter a análise dos dias da semana, pode ser útil)
+	Realizar FS e FR (Testar ambos) para o novo dataset resultante do merge dos timestamps para o zip code 1000
+	Aplicar discretização 

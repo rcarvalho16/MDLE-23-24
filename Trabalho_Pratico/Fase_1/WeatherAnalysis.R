@@ -32,17 +32,17 @@ apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 # Impute missing data
 # This will be a topic where we need further opinions given the bias introduced by imputing based on the mean values.
-weather_data$preciptype[is.na(weather_data$preciptype) | weather_data$preciptype == ""] <- "no rain"
+# REF for preciptype imputation: https://www.visualcrossing.com/resources/documentation/weather-data/weather-data-documentation/
+weather_data$preciptype[is.na(weather_data$preciptype) | weather_data$preciptype == ""] <- "unknown"
 weather_data$solarradiation[is.na(weather_data$solarradiation) | weather_data$solarradiation == ""] <- round(mean(weather_data$solarradiation, na.rm = TRUE))
 weather_data$solarenergy[is.na(weather_data$solarenergy) | weather_data$solarenergy == ""] <- mean(as.integer(weather_data$solarenergy), na.rm = TRUE)
-weather_data$uvindex[is.na(weather_data$uvindex) | weather_data$uvindex == ""] <- round(mean(weather_data$uvindex, na.rm = TRUE))
+weather_data$uvindex[is.na(weather_data$uvindex) | weather_data$uvindex == ""] <- round(median(weather_data$uvindex, na.rm = TRUE))
 weather_data$severerisk[is.na(weather_data$severerisk) | weather_data$severerisk == ""] <- 0
 
 # Check empty rows in weather dataset
 apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 # Get only lisbon power consumption
-# Zip code format is 1xxx
 energy_data <- energy_data[energy_data$Zip.Code <= 1999,]
 
 # 1 - Convert Timestamps to same format
