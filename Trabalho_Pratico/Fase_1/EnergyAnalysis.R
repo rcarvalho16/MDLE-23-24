@@ -301,3 +301,16 @@ fr_denominator_scaled =  apply(class_vars_scaled, MARGIN = 1, sum)
 # Compute final fisher's ratio
 fr_unscaled = fr_numerator_unscaled / fr_denominator_unscaled
 fr_scaled = fr_numerator_scaled / fr_denominator_scaled
+
+
+############ TODO #################
+# Compare consumption per hour of all days of a month
+# And try to create a new dataset labeling if there or there wasn't an event at 
+# that day and time
+# Example, SL Benfica game day, Zip Code = 1500
+# We chose Benfica due to bigger fan mass, not any club related choice
+slbenfica_Zip = 1500
+energy_benfica = energy_data[energy_data$Zip.Code == slbenfica_zip, ]
+energy_benfica <- convertTimestamps(energy_benfica)
+
+
