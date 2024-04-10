@@ -88,7 +88,7 @@ lisbon_zipcode_consumption <- lisbon_zipcode_consumption[,-remove]
 # Transform Date to Day Month Year Hour (minutes are always 00 so no need)
 
 # Normalize the energy consumption
-lisbon_zipcode_consumption$Active.Energy..kWh. <- lisbon_zipcode_consumption$Active.Energy..kWh./max(fixed_zipcode_lisbon_consumption$Active.Energy..kWh.)
+lisbon_zipcode_consumption$Active.Energy..kWh. <- lisbon_zipcode_consumption$Active.Energy..kWh./max(lisbon_zipcode_consumption$Active.Energy..kWh.)
 
 # Plot the average conditions consumption per Zip.Code bar chart
 ggplot(lisbon_zipcode_consumption, aes(x = conditions, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
@@ -136,7 +136,7 @@ extreme_conditions_lisbon_consumption <- merge(rain_conditions_lisbon_consumptio
 # Plot the line chart
 ggplot(extreme_conditions_lisbon_consumption, aes(x = Hour, y = Active.Energy..kWh., color = factor(conditions))) +
   geom_line(aes(group = conditions)) +
-  labs(title = paste("Average Consumption by Hour and Weather Condition of zip code", zip_code),
+  labs(title = paste("Average Consumption by Hour and Weather Condition of zip code", lisbon_zip_code),
        x = "Hour of the Day",
        y = "Average Consumption (kWh)",
        color = "Weather Conditions") +
