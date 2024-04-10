@@ -1,10 +1,8 @@
-library(dplyr)
-library(ggplot2)
-library(lubridate)
-library(cowplot)
-library(ggcorrplot)
-library(factoextra)
-library(arulesCBA)
+# Load libraries
+libs <- c("dplyr","ggplot2","lubridate","cowplot","ggcorrplot","factoextra","arulesCBA","FSelectorRcpp")
+sapply(libs, library, character.only = TRUE)
+rm(libs)
+
 
 # AUX FUNCTIONS
 ######################
@@ -33,25 +31,7 @@ convertTimestamps = function(dataset){
   return(dataset)
 }
 
-getClassMeans = function(dataset, classFeature){
-  labels_feature = unique(dataset[[classFeature]])
-  res <- sapply(labels_feature, function(label) round(colMeans(dataset[dataset[[classFeature]] == label,]), digits = 2))
-  
-  # Remove label from mean, as it does not matter in the variance calculator
-  label_index <- grep(classFeature, colnames(dataset))
-  res <- res[-label_index,]
-  return(res)
-}
 
-getClassVars = function(dataset, classFeature){
-  labels_feature = unique(dataset[[classFeature]])
-  res <- sapply(labels_feature, function(label) round(sapply(dataset[dataset[[classFeature]] == label,], var), digits = 2))
-  
-  # Remove label from vars, as it does not matter in the variance calculator
-  label_index <- grep(classFeature, colnames(dataset))
-  res <- res[-label_index,]
-  return(res)
-}
 
 if(!exists("getCategoricalFeatures", mode="function")) 
   source("helperfunctions.R")
@@ -72,13 +52,8 @@ energy_data <- as.data.frame(energy_data)
 # Commented because it will return 0 missing values, and takes a while to run
 # apply(energy_data, MARGIN = 2, function(col) sum(is.na(col)))
 
-# Calculate mean and standard deviation
-mean_energy <- mean(energy_data$Active.Energy..kWh)
-sd_energy <- sd(energy_data$Active.Energy..kWh)
-
-# Create a summary dataframe
-summary_energy <- data.frame(statistic = c("Mean", "Standard Deviation"),
-                         value = c(mean_energy, sd_energy))
+# Check Standard deviation and mean value of numeric features
+print(calculate_summary(energy_data))
 
 # Perform analysis on Residential vs Non-Residential ZIP codes
 # This classification was done by hand. Prone to human-error
@@ -161,7 +136,7 @@ linha_ind = ggplot(normalized_average_consumption_hour_ind, aes(x = Hours, y = A
        color = "Zip Code") +
   theme_minimal()
 
-plot_grid(linha_res, linha_ind, labels = "AUTO", ncol = 1)
+plot_grid(linha_res, linha_ind, labels = "AUTO")
 
 
 
@@ -272,7 +247,7 @@ rd_pca_scaled <- as.matrix(rd_pca_scaled)
 ggcorrplot(cor(rd_pca_scaled))
 
 # Compute discretization on features
-rd_pca_scaled <- apply(rd_pca_scaled, MARGIN = 2, discretize)
+rd_pca_scaled <- apply(rd_pca_scaled, MARGIN = 2, arules::discretize)
 
 # Reattach zip codes and labels
 rd_pca_scaled <- data.frame(cbind(rd_pca_scaled, zip_codes,labels))
@@ -310,6 +285,54 @@ fr_denominator_scaled =  apply(class_vars_scaled, MARGIN = 1, sum)
 # Compute final fisher's ratio
 fr_unscaled = fr_numerator_unscaled / fr_denominator_unscaled
 fr_scaled = fr_numerator_scaled / fr_denominator_scaled
+
+
+
+#################### Information Gain ##############################
+ig_energy = information_gain(formula = Zone ~ ., data = energy_data_labeled, type = "infogain")
+
+# Make ig_energy same format as fr_scaled and fr_unscaled
+names <- ig_energy$attributes[-length(ig_energy$attributes)]
+ig_energy <- as.data.frame(ig_energy[,-1])
+# Remove Zip.Code as it is a unique value and does not make sense in IG
+ig_energy <- ig_energy[-nrow(ig_energy),]
+ig_energy <- as.data.frame(ig_energy)
+rownames(ig_energy) <- names
+colnames(ig_energy) <- "Information Gain"
+
+
+# Bind both metrics together for comparison
+View(cbind(fr_scaled, fr_unscaled, ig_energy))
+
+###################### FS Reduction #############################
+# Given both FS results, we can pretty much reduce our dataset to be the Zip.Codes, Class label, and Active Consumption
+
+fs_reduced_energy <- energy_data_labeled[, c("Zip.Code", "Active.Energy..kWh.", "Zone")]
+
+# Discretize FS result
+fs_reduced_energy$Active.Energy..kWh. <- arules::discretize(fs_reduced_energy$Active.Energy..kWh., breaks = 20)
+View(fs_reduced_energy)
+
+# Plot the discretized consumption by zone
+
+# Randomly select 500 indices
+set.seed(123)
+random_indices <- sample(1:nrow(fs_reduced_energy), 500)
+
+# Subset the dataframe using the randomly selected indices
+subset_df <- fs_reduced_energy[random_indices, ]
+
+# Plot the discretized consumption per zone
+ggplot(
+  data = subset_df,
+  aes(x = Zone, y = `Active.Energy..kWh.`, label = ifelse(Zone == 1, "Industrial", "Residential"), color = as.factor(Zone))) +
+  geom_point(size = 3) +
+  labs(x = "Zone", y = "Active Energy (kWh)", color = "Zone", title = "Discretized Consumption Per Zone") +
+  scale_color_manual(labels = c("Industrial", "Residencial"), values = c("blue", "red")) +
+  scale_x_continuous(breaks = seq(0, 3, 1)) +  # Adjust Y axis to start from 0 with unitary steps
+  theme_minimal() +
+  theme(axis.title = element_text(size = 12),  # Adjust axis label size
+        axis.text = element_text(size = 10))  # Adjust axis tick label size
 
 
 ############ TODO #################

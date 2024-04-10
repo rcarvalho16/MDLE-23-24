@@ -5,12 +5,22 @@ getCategoricalFeatures = function(dataset){
 
 getClassMeans = function(dataset, classFeature){
   labels_feature = unique(dataset[[classFeature]])
-  return(sapply(labels_feature, function(label) round(colMeans(dataset[dataset[[classFeature]] == label,]), digits = 2)))
+  res <- sapply(labels_feature, function(label) round(colMeans(dataset[dataset[[classFeature]] == label,]), digits = 2))
+  
+  # Remove label from mean, as it does not matter in the variance calculator
+  label_index <- grep(classFeature, colnames(dataset))
+  res <- res[-label_index,]
+  return(res)
 }
 
 getClassVars = function(dataset, classFeature){
   labels_feature = unique(dataset[[classFeature]])
-  return(sapply(labels_feature, function(label) round(sapply(dataset[dataset[[classFeature]] == label,], var), digits = 2)))
+  res <- sapply(labels_feature, function(label) round(sapply(dataset[dataset[[classFeature]] == label,], var), digits = 2))
+  
+  # Remove label from vars, as it does not matter in the variance calculator
+  label_index <- grep(classFeature, colnames(dataset))
+  res <- res[-label_index,]
+  return(res)
 }
 
 readWeatherFun <- function(i) { #read CSV data

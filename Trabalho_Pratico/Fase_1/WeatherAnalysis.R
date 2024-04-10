@@ -47,7 +47,7 @@ apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 # Get only lisbon power consumption
 energy_data <- energy_data[energy_data$Zip.Code <= 1999,]
-# energy_data_lisbon <- [energy_data$Zip.Code == 1000,]
+# energy_data_lisbon <- energy_data[energy_data$Zip.Code == 1000,]
 
 # 1 - Convert Timestamps to same format
 # Take Date and Hour features and join them in the same format as weather dataset
