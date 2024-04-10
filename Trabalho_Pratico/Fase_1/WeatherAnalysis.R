@@ -30,11 +30,14 @@ energy_data <- as.data.frame(energy_data)
 # Check empty rows in weather dataset
 apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 
+# Check SD and mean of each feature
+calculate_summary(weather_data)
+
 # Impute missing data
 # This will be a topic where we need further opinions given the bias introduced by imputing based on the mean values.
 # REF for preciptype imputation: https://www.visualcrossing.com/resources/documentation/weather-data/weather-data-documentation/
 weather_data$preciptype[is.na(weather_data$preciptype) | weather_data$preciptype == ""] <- "unknown"
-weather_data$solarradiation[is.na(weather_data$solarradiation) | weather_data$solarradiation == ""] <- round(mean(weather_data$solarradiation, na.rm = TRUE))
+weather_data$solarradiation[is.na(weather_data$solarradiation) | weather_data$solarradiation == ""] <- round(median(weather_data$solarradiation, na.rm = TRUE))
 weather_data$solarenergy[is.na(weather_data$solarenergy) | weather_data$solarenergy == ""] <- mean(as.integer(weather_data$solarenergy), na.rm = TRUE)
 weather_data$uvindex[is.na(weather_data$uvindex) | weather_data$uvindex == ""] <- round(median(weather_data$uvindex, na.rm = TRUE))
 weather_data$severerisk[is.na(weather_data$severerisk) | weather_data$severerisk == ""] <- 0
@@ -44,6 +47,7 @@ apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 # Get only lisbon power consumption
 energy_data <- energy_data[energy_data$Zip.Code <= 1999,]
+# energy_data_lisbon <- [energy_data$Zip.Code == 1000,]
 
 # 1 - Convert Timestamps to same format
 # Take Date and Hour features and join them in the same format as weather dataset
@@ -52,6 +56,12 @@ energy_data$Date.Time <- apply(
   MARGIN = 1,
   function(row) paste(row["Date"], "T", row["Hour"], ":00", sep = "")
 )
+
+#energy_data_lisbon$Date.Time <- apply(
+#  energy_data,
+#  MARGIN = 1,
+#  function(row) paste(row["Date"], "T", row["Hour"], ":00", sep = "")
+#)
 
 #######################################################
 # Compute the energetic consumption per icon in certain zip_codes in Lisbon City
@@ -68,23 +78,38 @@ energy_data_ind <- energy_data[energy_data$Zip.Code %in% ind_zip_codes, ]
 # Discard redundant columns (ie: Timestamp on both datasets is equal)
 lisbon_consumption_res <- merge(weather_data, energy_data_res, by.x = "datetime", by.y = "Date.Time")
 lisbon_consumption_ind <- merge(weather_data, energy_data_ind, by.x = "datetime", by.y = "Date.Time")
+# lisbon_consumption_weather <- merge(weather_data, energy_data, by.x = "datetime", by.y = "Date.Time")
 
 # Add day of the week
 lisbon_consumption_res$Day_of_Week <- wday(lisbon_consumption_res$Date, label = TRUE, abbr = FALSE)
 lisbon_consumption_ind$Day_of_Week <- wday(lisbon_consumption_ind$Date, label = TRUE, abbr = FALSE)
+# lisbon_consumption_weather$Day_of_Week <- wday(lisbon_consumption_weather$Date, label = TRUE, abbr = FALSE)
+
+# Remove redundant columns such as Zip.Code, name, datetime, stations, icon
+# Transform Date to Day, Month, Year, Hour
+# We can use conditions as a class label
+
+
+
+
 
 # Remove redundant Datetime, Lisbon tag
-remove <- c(1, 2)
+remove <- c(1,2,23,24,27)
+# remove_lisbon <- c(1,2,23,24,27)
 lisbon_consumption_res <- lisbon_consumption_res[,-remove]
 lisbon_consumption_ind <- lisbon_consumption_ind[,-remove]
+# lisbon_consumption_weather <- lisbon_consumption_weather[,-remove_lisbon]
 
-# Group by icon and Zip.Code, calculating the mean of Energetic Consumption
+# Transform Date to Day Month Year Hour (minutes are always 00 so no need)
+
+# CORRIGIR ISTO (N REMOVER NO LISBON_CONSUMPTION_RES O ZIP CODE)
+# Group by conditions and Zip.Code, calculating the mean of Energetic Consumption
 lisbon_consumption_res <- lisbon_consumption_res %>%
-  group_by(icon, Day_of_Week, Zip.Code) %>%
+  group_by(conditions, Day_of_Week, Zip.Code) %>%
   summarize(Active.Energy..kWh. = mean(Active.Energy..kWh.))
 
 lisbon_consumption_ind <- lisbon_consumption_ind %>%
-  group_by(icon, Day_of_Week, Zip.Code) %>%
+  group_by(conditions, Day_of_Week, Zip.Code) %>%
   summarize(Active.Energy..kWh. = mean(Active.Energy..kWh.))
 
 industrial_plot <- list()
@@ -92,11 +117,11 @@ residential_plot <- list()
 for(i in 1:length(ind_zip_codes)){
   lisbon_consumption_ind_single_zip_code <<- lisbon_consumption_ind[lisbon_consumption_ind$Zip.Code %in% ind_zip_codes[i],]
   
-  # Plot the average icon consumption per Zip.Code bar chart
-  barra_ind <<- ggplot(lisbon_consumption_ind_single_zip_code, aes(x = icon, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
+  # Plot the average conditions consumption per Zip.Code bar chart
+  barra_ind <<- ggplot(lisbon_consumption_ind_single_zip_code, aes(x = conditions, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
     geom_bar(stat = "identity", position = "dodge") +
-    labs(title = paste("Residential Consumption by icon and for Zip Code", ind_zip_codes[i]),
-         x = "icon",
+    labs(title = paste("Residential Consumption by conditions and for Zip Code", ind_zip_codes[i]),
+         x = "conditions",
          y = "Average Consumption (kWh)",
          fill = "Day of Week",
          margin = element_text()) +
@@ -109,10 +134,10 @@ for(i in 1:length(ind_zip_codes)){
 for(i in 1:length(res_zip_codes)){
   lisbon_consumption_res_single_day <<- lisbon_consumption_res[lisbon_consumption_res$Zip.Code %in% res_zip_codes[i],]
 
-  barra_res <- ggplot(lisbon_consumption_res_single_day, aes(x = icon, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
+  barra_res <- ggplot(lisbon_consumption_res_single_day, aes(x = conditions, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
     geom_bar(stat = "identity", position = "dodge") +
-    labs(title = paste("Industrial Consumption by icon and for Zip Code", res_zip_codes[i]),
-         x = "icon",
+    labs(title = paste("Industrial Consumption by conditions and for Zip Code", res_zip_codes[i]),
+         x = "conditions",
          y = "Average Consumption (kWh)",
          fill = "Day of Week",
          margin = element_text()) +

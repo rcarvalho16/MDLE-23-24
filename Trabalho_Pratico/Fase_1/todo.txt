@@ -8,4 +8,10 @@
 TODOS (Urgente): 
 	Realizar análise para apenas o zip code 1000 (Manter a análise dos dias da semana, pode ser útil)
 	Realizar FS e FR (Testar ambos) para o novo dataset resultante do merge dos timestamps para o zip code 1000
-	Aplicar discretização 
+	Aplicar discretização
+
+10/04/2024, 13H03 (Rafael)
+
+TODOS (URGENTE):
+	Colocar num ficheiro à parte, ex: WeatherWeekly.R os consumos energéticos para 'x' códigos postais residenciais e industriais num determinado dia da semana. (ou seja, passar o que tinhamos no Weather Analysis para esse ficheiro e usar apenas o WeatherAnalysis para fazer o merge do código postal 1000)
+	Nota: Deixei em comentário ao longo do código alguns dos comandos para tratar já do merge com o código postal 1000

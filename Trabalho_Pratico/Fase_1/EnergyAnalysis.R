@@ -161,7 +161,7 @@ linha_ind = ggplot(normalized_average_consumption_hour_ind, aes(x = Hours, y = A
        color = "Zip Code") +
   theme_minimal()
 
-plot_grid(linha_res, linha_ind, labels = "AUTO")
+plot_grid(linha_res, linha_ind, labels = "AUTO", ncol = 1)
 
 
 
