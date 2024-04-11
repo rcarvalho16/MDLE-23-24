@@ -125,7 +125,7 @@ FisherRatioFeatureSelection = function(dataset, class_label, threshold){
   last_relevant_feature <- which((fisher_ratio_cumulative_sum >= threshold_fishers_ratio) == TRUE)[1]
   
   # The features with a relevance above 0 are stored
-  relevant_features <- names(fishers_ratio_dataset[1:last_relevant_feature])
+  relevant_features <- c(names(fishers_ratio_dataset[1:last_relevant_feature]), class_label)
   
   return(as.data.frame(dataset_original[,relevant_features]))
 }
