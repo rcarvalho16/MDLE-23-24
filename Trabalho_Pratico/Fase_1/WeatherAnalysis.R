@@ -1,14 +1,11 @@
 # IMPORTS
 library(dplyr)
-library(ggplot2)
 library(lubridate)
 
 # AUX FUNCTIONS
 ######################
-
 if(!exists("getCategoricalFeatures", mode="function")) 
   source("helperfunctions.R")
-
 #########################
 
 # Prepare data path
@@ -45,7 +42,6 @@ apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 # Get only lisbon power consumption
 energy_data <- energy_data[energy_data$Zip.Code <= 1999,]
-# energy_data_lisbon <- energy_data[energy_data$Zip.Code == 1000,]
 
 # 1 - Convert Timestamps to same format
 # Take Date and Hour features and join them in the same format as weather dataset
@@ -55,52 +51,22 @@ energy_data$Date.Time <- apply(
   function(row) paste(row["Date"], "T", row["Hour"], ":00", sep = "")
 )
 
-#energy_data_lisbon$Date.Time <- apply(
-#  energy_data,
-#  MARGIN = 1,
-#  function(row) paste(row["Date"], "T", row["Hour"], ":00", sep = "")
-#)
-
 ########################################################
 # Check the influence of weather on the energy consumption
+
 lisbon_zip_code <- 1000
 class_label <- "conditions"
 fisher_ratio_threshold <- 0.95
   
-# Obtain the energy data of lisbon
-lisbon_zipcode_energy_data <- energy_data[energy_data$Zip.Code %in% lisbon_zip_code, ]
+# Obtain the energy data of Lisbon
+lisbon_zipcode_energy_data <- energy_data[energy_data$Zip.Code == lisbon_zip_code, ]
 
+# Relate the energy data with the weather data of Lisbon
 lisbon_zipcode_consumption <- merge(weather_data, lisbon_zipcode_energy_data, by.x = "datetime", by.y = "Date.Time")
-  
-# undersample the consumptions when its raining
-rain_conditions_lisbon_consumption <- lisbon_zipcode_consumption[lisbon_zipcode_consumption$conditions %in% c("Rain, Overcast", "Rain, Partially cloudy"), ]
-rain_conditions_lisbon_consumption$conditions <- "Rain"
 
-# undersample the consumptions when the weather is clear and the hours match with the hours when its raining
-clear_conditions_lisbon_consumption <- lisbon_zipcode_consumption[lisbon_zipcode_consumption$conditions %in% c("Clear") & lisbon_zipcode_consumption$Hour %in% rain_conditions_lisbon_consumption$Hour, ]
+# Divide the timestamps into multiple columns to check if certain members of
+# the date (day, month or year) could also influence the consumption
+lisbon_zipcode_consumption <- convertTimestamps(lisbon_zipcode_consumption)
 
 # Feature Selection - Fisher's Ratio
-#rain_conditions_lisbon_consumption <- FisherRatioFeatureSelection(rain_conditions_lisbon_consumption, class_label, fisher_ratio_threshold)
-#clear_conditions_lisbon_consumption <- FisherRatioFeatureSelection(clear_conditions_lisbon_consumption, class_label, fisher_ratio_threshold)
-
-# Compute the mean consumption per hour
-rain_conditions_lisbon_consumption <- rain_conditions_lisbon_consumption %>%
-  group_by(Hour, conditions) %>%
-  summarize(Active.Energy..kWh. = mean(Active.Energy..kWh.))
-
-clear_conditions_lisbon_consumption <- clear_conditions_lisbon_consumption %>%
-  group_by(Hour, conditions) %>%
-  summarize(Active.Energy..kWh. = mean(Active.Energy..kWh.))
-  
-# Merge the raining table with the clear weather table
-extreme_conditions_lisbon_consumption <- merge(rain_conditions_lisbon_consumption, clear_conditions_lisbon_consumption, all = TRUE)
-
-# Plot the line chart
-ggplot(extreme_conditions_lisbon_consumption, aes(x = Hour, y = Active.Energy..kWh., color = factor(conditions))) +
-  geom_line(aes(group = conditions)) +
-  labs(title = paste("Average Consumption by Hour and Weather Condition of zip code", lisbon_zip_code),
-       x = "Hour of the Day",
-       y = "Average Consumption (kWh)",
-       color = "Weather Conditions") +
-  theme_minimal()
-
+lisbon_zipcode_consumption_fisher_ratio <- FisherRatioFeatureSelection(lisbon_zipcode_consumption, class_label, fisher_ratio_threshold)

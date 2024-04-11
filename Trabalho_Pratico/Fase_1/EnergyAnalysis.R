@@ -6,33 +6,6 @@ rm(libs)
 
 # AUX FUNCTIONS
 ######################
-readEnergyFun <- function(i) { #read CSV data
-  read.csv(paste(data_path,i,sep = "/"), header=TRUE,stringsAsFactors = FALSE, sep = ";")
-}
-
-convertTimestamps = function(dataset){
-  
-  # Add day of the week
-  dataset$Day_of_Week <- wday(dataset$Date, label = TRUE, abbr = FALSE)
-  
-  # Convert date into different columns
-  dates <- as.Date(dataset$Date)
-  dataset$Year <- as.integer(format(dates, "%Y"))
-  dataset$Month <- as.integer(format(dates, "%m"))
-  dataset$Day <- as.integer(format(dates, "%e"))
-  dataset$Hours <- hour(as.POSIXct(dataset$Hour, format = "%H:%M"))
-  rm(dates)
-  
-  # Remove redundant date columns
-  dataset <- dataset[, -c(1,2,3)]
-  # Reorder columns
-  dataset <- dataset[, c(6,5,4,7,3,2,1)]
-  
-  return(dataset)
-}
-
-
-
 if(!exists("getCategoricalFeatures", mode="function")) 
   source("helperfunctions.R")
 #########################
