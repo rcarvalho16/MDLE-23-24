@@ -64,30 +64,30 @@ calculate_summary <- function(data) {
   return(summary_df)
 }
 
-# VarianceThresholdFeatureSelection = function(dataset, threshold){
-#   dataset_original <- dataset
-#   
-#   # Step 1: Convert all the qualitative features into numerical
-#   dataset <- convertQualitativeFeatures(dataset)
-#   
-#   # Step 2: Normalize the data
-#   dataset <- apply(dataset, 2, function(column) column/max(column))
-#   
-#   # Step 3: Calculate the variance of each feature
-#   variances_dataset <- apply(dataset, 2, var)
-#   
-#   # Sort variances
-#   variances_dataset <- sort(variances_dataset, decreasing = TRUE)
-#   
-#   print(variances_dataset)
-#   
-#   # Step 3: Calculate the minimum number of features with a cumulative sum of variance of at least threshold value
-#   cumulative_sum_variance_above_threshold <- cumsum(variances_dataset) >= threshold
-#   
-#   reduced_col_number <- which(colnames(dataset) == names(which(cumulative_sum_variance_above_threshold)[1]))[1]
-#   
-#   return(as.data.frame(dataset_original[,1:reduced_col_number]))
-# }
+VarianceThresholdFeatureSelection = function(dataset, threshold){
+  dataset_original <- dataset
+
+  # Step 1: Convert all the qualitative features into numerical
+  dataset <- convertQualitativeFeatures(dataset)
+
+  # Step 2: Normalize the data
+  dataset <- apply(dataset, 2, function(column) column/max(column))
+
+  # Step 3: Calculate the variance of each feature
+  variances_dataset <- apply(dataset, 2, var)
+
+  # Sort variances
+  variances_dataset <- sort(variances_dataset, decreasing = TRUE)
+
+  # Step 3: Calculate the minimum number of features with a cumulative sum of variance of at least threshold value
+  cumulative_sum_variance_above_threshold <- cumsum(variances_dataset) >= threshold
+
+  last_relevant_feature <- which(cumulative_sum_variance_above_threshold == TRUE)[1]
+  
+  relevant_features <- names(variances_dataset[1:last_relevant_feature])
+
+  return(as.data.frame(dataset_original[,relevant_features]))
+}
 
 FisherRatioFeatureSelection = function(dataset, class_label, threshold){
   dataset_original <- dataset
@@ -145,7 +145,7 @@ convertTimestamps = function(dataset){
   
   # Remove redundant date columns
   #dataset <- dataset[, -c(1,2,3)]
-  remove <- c("Date.Time", "Date", "Hour")
+  remove <- c("Date.Time", "Date", "Hour", "datetime")
   dataset <- dataset[, !names(dataset) %in% remove]
   
   # Reorder columns
@@ -156,3 +156,20 @@ convertTimestamps = function(dataset){
   return(dataset)
 }
 
+equalFrequencyBinning = function(data){
+  if(class(data) %in% c("numeric", "integer")){
+    n_bins <- ceiling(log(length(unique(data)), 2)+1)
+    if(n_bins == 0){
+      next
+    }
+    bin_breaks <- quantile(data, probs = seq(0,1,1/n_bins)[-1])
+    bin_breaks <- unique(bin_breaks)
+    if(length(bin_breaks) <= 1){
+      next
+    }
+    bin_breaks <- c(-Inf, bin_breaks)
+    data <- cut(data, breaks = bin_breaks)
+  }
+  
+  return(data)
+}

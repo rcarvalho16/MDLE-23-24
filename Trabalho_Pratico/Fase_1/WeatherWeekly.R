@@ -1,5 +1,5 @@
 # IMPORTS
-library(ggplot2)
+#library(ggplot2)
 library(lubridate)
 
 # AUX FUNCTIONS
@@ -68,28 +68,19 @@ lisbon_zipcode_consumption <- merge(weather_data, lisbon_zipcode_energy_data, by
 # the date (day, month or year) could also influence the consumption
 lisbon_zipcode_consumption <- convertTimestamps(lisbon_zipcode_consumption)
 
-# É PRECISO CORRIGIR ISTO!!!
-# O FISHER'S RATIO RETIRA A COLUNA DOS DIAS DA SEMANA E POR ISSO NÃO DÁ PARA CRIAR A RELAÇÃO
-lisbon_zipcode_days_of_week <- lisbon_zipcode_consumption[, c("Day_of_Week")]
-
-# Remove redundant columns such as Zip.Code, name, datetime, stations, icon
-# Transform Date to Day, Month, Year, Hour
-# We can use conditions as a class label
-lisbon_zipcode_consumption <- FisherRatioFeatureSelection(lisbon_zipcode_consumption, "conditions", 0.95)
-
-# The fisher's ration removes the column of Day_of_Week so we add it after the
-# Feature Selection to relate the consumption with the day of the week
-lisbon_zipcode_consumption$Day_of_Week <- lisbon_zipcode_days_of_week
+# Remove redundant columns such as Zip.Code, name, stations, icon
+remove <- c("Zip.Code", "name", "stations", "icon")
+lisbon_zipcode_consumption <- lisbon_zipcode_consumption[,!names(lisbon_zipcode_consumption) %in% remove]
 
 # Normalize the energy consumption
 lisbon_zipcode_consumption$Active.Energy..kWh. <- lisbon_zipcode_consumption$Active.Energy..kWh./max(lisbon_zipcode_consumption$Active.Energy..kWh.)
 
 # Plot the conditions and consumption per Zip.Code in a bar chart
-ggplot(lisbon_zipcode_consumption, aes(x = conditions, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
-  geom_bar(stat = "identity", position = "dodge") +
-  labs(title = paste("Residential Consumption by conditions and for Zip Code", lisbon_zip_code),
-       x = "Conditions",
-       y = "Consumption (kWh)",
-       fill = "Day of Week",
-       margin = element_text()) +
-  theme_minimal()
+# ggplot(lisbon_zipcode_consumption, aes(x = conditions, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
+#   geom_bar(stat = "identity", position = "dodge") +
+#   labs(title = paste("Residential Consumption by conditions and for Zip Code", lisbon_zip_code),
+#        x = "Conditions",
+#        y = "Consumption (kWh)",
+#        fill = "Day of Week",
+#        margin = element_text()) +
+#   theme_minimal()

@@ -56,7 +56,7 @@ energy_data$Date.Time <- apply(
 
 lisbon_zip_code <- 1000
 class_label <- "conditions"
-fisher_ratio_threshold <- 0.95
+selection_threshold <- 0.95
   
 # Obtain the energy data of Lisbon
 lisbon_zipcode_energy_data <- energy_data[energy_data$Zip.Code == lisbon_zip_code, ]
@@ -68,5 +68,17 @@ lisbon_zipcode_consumption <- merge(weather_data, lisbon_zipcode_energy_data, by
 # the date (day, month or year) could also influence the consumption
 lisbon_zipcode_consumption <- convertTimestamps(lisbon_zipcode_consumption)
 
-# Feature Selection - Fisher's Ratio
-lisbon_zipcode_consumption_fisher_ratio <- FisherRatioFeatureSelection(lisbon_zipcode_consumption, class_label, fisher_ratio_threshold)
+# Remove the column icons because its is directly related to conditions which is the
+# class label. Because of this direct correlation the trained model could possibly
+# classify based only on the icon of the data
+remove <- "icon"
+lisbon_zipcode_consumption <- lisbon_zipcode_consumption[,!names(lisbon_zipcode_consumption) %in% remove]
+
+# Normalize the energy consumption
+lisbon_zipcode_consumption$Active.Energy..kWh. <- lisbon_zipcode_consumption$Active.Energy..kWh./max(lisbon_zipcode_consumption$Active.Energy..kWh.)
+
+# Supervised Feature Selection - Fisher's Ratio
+lisbon_zipcode_consumption_fisher_ratio <- FisherRatioFeatureSelection(lisbon_zipcode_consumption, class_label, selection_threshold)
+
+# Unsupervised Feature Selection - Variance Threshold
+# lisbon_zipcode_consumption_variance_threshold <- VarianceThresholdFeatureSelection(lisbon_zipcode_consumption, selection_threshold)
