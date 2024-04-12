@@ -63,9 +63,17 @@ stopifnot(actual_rows == expected_rows,
 #Feature Selection
 idx <- c(1,2,5,6,9,10,11,14,16,17,19,21,24,25,26,31,32,33,34,35,41,44,49,50,54)
 
+<<<<<<< Updated upstream
 # Select the features using the select function and magrittr's pipe operator
 df.sel <- df %>%
   select(selected_indexes)
+=======
+# Reduce features from df
+df.sel <- df %>% select(all_of(idx))
+
+# Overview the resulting dataset
+head(df.sel)
+>>>>>>> Stashed changes
 
 # Display the resulting Spark DataFrame df.sel
 df.sel
@@ -89,11 +97,15 @@ df.test <- splits[[2]]
 
 #Generating train and test data
 
-#df.split <- #TODO
-#df.train <- #TODO
-#df.test <-  #TODO
+# Split the dataframe into training (2/3) and testing (1/3) sets
+df.split <- df.sel_tbl %>% sdf_random_split(seed = 123, training = 2/3, testing = 1/3)
+
+# Assign training and testing dataframes
+df_train <- df.split$training
+df_test <- df.split$testing
 
 #TODO Baseline
+rf_model <- ml_random_forest(df_train, CLASS ~ ., type = "classification")
 
 # Convert Spark DataFrames to R data frames
 df.train_local <- collect(df.train)
