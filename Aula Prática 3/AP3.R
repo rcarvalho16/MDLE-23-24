@@ -8,7 +8,9 @@ if(!exists("printConfusionMatrix", mode="function"))
   source("helperfunctions.R")
 
 ################# Spark setup ################
+
 spark_disconnect_all() #just preventive code
+#options(sparklyr.log.console = TRUE)
 sc <- spark_connect("local", version = '3.4.2', hadoop_version = '3', config = list())
 
 
@@ -33,23 +35,58 @@ df.local<- cbind(df.l,df) #bind them together
 
 df <- copy_to(sc, df.local)
 
+# a) Check the schema of the df variable
+sdf_schema(spark_connection, "df")
+
+
 ################# G2 #######################
-#Glimpse of the data set
+# b) Check the content of the SPARK data frame df using the head function
+head(df)
+
 # Get a glimpse of the first and last 10 rows of the dataset
 head(df, n = 10)
+
+#Glimpse of the data set
 # Function stopifnot() prints NULL if all statements are true
 # Sparklyr's equivalent of nrow is sdf_nrow()
 print(stopifnot(sdf_nrow(df) != 2190))
 
 
+# Get the actual number of rows and columns in the Spark DataFrame df
+actual_rows <- nrow(df)
+actual_cols <- ncol(df)
+# Compare the actual and expected values using stopifnot
+stopifnot(actual_rows == expected_rows,
+          actual_cols == expected_cols)
+
 ################# G3 #######################
 #Feature Selection
 idx <- c(1,2,5,6,9,10,11,14,16,17,19,21,24,25,26,31,32,33,34,35,41,44,49,50,54)
 
-#TODO
+# Select the features using the select function and magrittr's pipe operator
+df.sel <- df %>%
+  select(selected_indexes)
 
+# Display the resulting Spark DataFrame df.sel
+df.sel
+head(df.sel)
 
 ################# G4 #######################
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the split proportions
+train_proportion <- 2 / 3
+test_proportion <- 1 - train_proportion
+
+# Split the dataset into training and testing sets
+splits <- sdf_random_split(df.sel, c(train_proportion, test_proportion))
+
+# Extract the training and testing sets
+df.train <- splits[[1]]
+df.test <- splits[[2]]
+
 #Generating train and test data
 
 #df.split <- #TODO
@@ -57,6 +94,44 @@ idx <- c(1,2,5,6,9,10,11,14,16,17,19,21,24,25,26,31,32,33,34,35,41,44,49,50,54)
 #df.test <-  #TODO
 
 #TODO Baseline
+
+# Convert Spark DataFrames to R data frames
+df.train_local <- collect(df.train)
+df.test_local <- collect(df.test)
+
+# Use the table function to determine the number of instances for each class in both datasets
+class_distribution_train <- table(df.train_local$CLASS)
+class_distribution_test <- table(df.test_local$CLASS)
+
+# Display the class distributions
+print("Class Distribution in Training Set:")
+print(class_distribution_train)
+print("Class Distribution in Testing Set:")
+print(class_distribution_test)
+
+# Define the formula for classification
+formula <- "CLASS ~ ."
+
+# Train a Random Forest classification model
+rf_model <- ml_random_forest(df.train, formula)
+
+# Print the trained model
+print(rf_model)
+
+
+# Define a function to print confusion matrix
+mdle.printConfusionMatrix <- function(predictions) {
+  confusion_matrix <- table(predictions$prediction, df.test$CLASS)
+  print(confusion_matrix)
+  accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+  cat("Accuracy:", accuracy, "\n")
+}
+
+# Make predictions on the test dataset
+predictions <- ml_predict(rf_model, df.test)
+
+# Print confusion matrix and evaluate model performance
+mdle.printConfusionMatrix(predictions)
 
 ################# G5 #######################
 #Using imbalanced correcting sampling techniques
