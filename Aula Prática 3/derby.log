@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Wed Apr 03 21:56:57 WEST 2024:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-018e-a5c0-27c5-0000029fb9d8 
-on database directory memory:D:\Eu\ISEL\MEIC\2_Semestre\MDLE-23-24\Aula Pr√°tica 3\databaseName=metastore_db with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@c387f44 
-Loaded from file:/C:/Users/rreis/AppData/Local/spark/spark-3.4.2-bin-hadoop3/jars/derby-10.14.2.0.jar
-java.vendor=Oracle Corporation
-java.runtime.version=18.0.2.1+1-1
-user.dir=D:\Eu\ISEL\MEIC\2_Semestre\MDLE-23-24\Aula Pr√°tica 3
+Sat Apr 13 20:11:30 BST 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-018e-d8df-3441-00000ecfa8f8 
+on database directory memory:C:\Users\Ricardo\Github\MDLE-23-24\Aula Pr·tica 3\databaseName=metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@7d47e637 
+Loaded from file:/C:/Users/Ricardo/AppData/Local/spark/spark-3.4.2-bin-hadoop3/jars/derby-10.14.2.0.jar
+java.vendor=Amazon.com Inc.
+java.runtime.version=1.8.0_402-b06
+user.dir=C:\Users\Ricardo\Github\MDLE-23-24\Aula Pr·tica 3
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

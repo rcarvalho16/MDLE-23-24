@@ -1,4 +1,5 @@
 ################# Preparation ################
+install.packages(c("dplyr", "sparklyr", "smotefamily", "data.table", "caret"))
 library(dplyr) #data manipulation
 library(sparklyr) #spark 
 library(smotefamily) #For SMOTE sampling
@@ -36,7 +37,7 @@ df.local<- cbind(df.l,df) #bind them together
 df <- copy_to(sc, df.local)
 
 # a) Check the schema of the df variable
-sdf_schema(spark_connection, "df")
+sdf_schema(df)
 
 
 ################# G2 #######################
@@ -63,17 +64,15 @@ stopifnot(actual_rows == expected_rows,
 #Feature Selection
 idx <- c(1,2,5,6,9,10,11,14,16,17,19,21,24,25,26,31,32,33,34,35,41,44,49,50,54)
 
-<<<<<<< Updated upstream
 # Select the features using the select function and magrittr's pipe operator
 df.sel <- df %>%
   select(selected_indexes)
-=======
+
 # Reduce features from df
 df.sel <- df %>% select(all_of(idx))
 
 # Overview the resulting dataset
 head(df.sel)
->>>>>>> Stashed changes
 
 # Display the resulting Spark DataFrame df.sel
 df.sel
@@ -89,7 +88,7 @@ train_proportion <- 2 / 3
 test_proportion <- 1 - train_proportion
 
 # Split the dataset into training and testing sets
-splits <- sdf_random_split(df.sel, c(train_proportion, test_proportion))
+splits <- sdf_random_split(df.sel, training = train_proportion, test = test_proportion)
 
 # Extract the training and testing sets
 df.train <- splits[[1]]
@@ -98,7 +97,7 @@ df.test <- splits[[2]]
 #Generating train and test data
 
 # Split the dataframe into training (2/3) and testing (1/3) sets
-df.split <- df.sel_tbl %>% sdf_random_split(seed = 123, training = 2/3, testing = 1/3)
+df.split <- df.sel %>% sdf_random_split(seed = 123, training = 2/3, testing = 1/3)
 
 # Assign training and testing dataframes
 df_train <- df.split$training
@@ -130,20 +129,11 @@ rf_model <- ml_random_forest(df.train, formula)
 # Print the trained model
 print(rf_model)
 
-
-# Define a function to print confusion matrix
-mdle.printConfusionMatrix <- function(predictions) {
-  confusion_matrix <- table(predictions$prediction, df.test$CLASS)
-  print(confusion_matrix)
-  accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
-  cat("Accuracy:", accuracy, "\n")
-}
-
 # Make predictions on the test dataset
-predictions <- ml_predict(rf_model, df.test)
+predictions <- mdle.predict(rf_model, df.test)
 
 # Print confusion matrix and evaluate model performance
-mdle.printConfusionMatrix(predictions)
+mdle.printConfusionMatrix(predictions, "")
 
 ################# G5 #######################
 #Using imbalanced correcting sampling techniques
