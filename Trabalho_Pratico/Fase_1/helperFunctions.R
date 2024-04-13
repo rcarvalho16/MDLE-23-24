@@ -130,6 +130,23 @@ FisherRatioFeatureSelection = function(dataset, class_label, threshold){
   return(as.data.frame(dataset_original[,relevant_features]))
 }
 
+# InfoGainFeatureSelection = function(formula, dataset, type, threshold){
+#   info_gain <- information_gain(formula = conditions ~ ., data = lisbon_zipcode_consumption, type = "infogain")
+#   info_gain <- info_gain[order(info_gain$importance, decreasing = TRUE),]
+#   
+#   info_gain_importance_threshold <- sum(info_gain$importance) * threshold
+#   
+#   info_gain_cumulative_sum <- cumsum(info_gain$importance)  
+#   
+#   last_relevant_feature <- which((info_gain_cumulative_sum >= info_gain_importance_threshold) == TRUE)[1]
+#   
+#   # The features with a relevance above 0 are stored
+#   relevant_features <- info_gain[1:last_relevant_feature,][1]
+#   relevant_features <- unlist(relevant_features)
+#   
+#   return(as.data.frame(dataset[,relevant_features]))
+# }
+
 convertTimestamps = function(dataset){
   
   # Add day of the week

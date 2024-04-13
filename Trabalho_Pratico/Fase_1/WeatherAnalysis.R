@@ -1,6 +1,9 @@
-# IMPORTS
-library(dplyr)
-library(lubridate)
+libs <- c("dplyr", "lubridate", "FSelectorRcpp")
+# Install libraries
+install.packages(libs)
+# Load libraries
+sapply(libs, library, character.only = TRUE)
+rm(libs)
 
 # AUX FUNCTIONS
 ######################
@@ -77,8 +80,12 @@ lisbon_zipcode_consumption <- lisbon_zipcode_consumption[,!names(lisbon_zipcode_
 # Normalize the energy consumption
 lisbon_zipcode_consumption$Active.Energy..kWh. <- lisbon_zipcode_consumption$Active.Energy..kWh./max(lisbon_zipcode_consumption$Active.Energy..kWh.)
 
-# Supervised Feature Selection - Fisher's Ratio
+# Supervised Feature Selection
+# Fisher's Ratio
 lisbon_zipcode_consumption_fisher_ratio <- FisherRatioFeatureSelection(lisbon_zipcode_consumption, class_label, selection_threshold)
+
+# Information Gain
+# lisbon_zipcode_consumption_info_gain <- InfoGainFeatureSelection("consumption ~ .", lisbon_zipcode_consumption, "infogain", selection_threshold)
 
 # Unsupervised Feature Selection - Variance Threshold
 # lisbon_zipcode_consumption_variance_threshold <- VarianceThresholdFeatureSelection(lisbon_zipcode_consumption, selection_threshold)

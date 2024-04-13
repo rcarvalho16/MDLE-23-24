@@ -1,5 +1,7 @@
-# Load libraries
 libs <- c("dplyr","ggplot2","lubridate","cowplot","ggcorrplot","factoextra","arulesCBA","FSelectorRcpp")
+# Install libraries
+install.packages(libs)
+# Load libraries
 sapply(libs, library, character.only = TRUE)
 rm(libs)
 

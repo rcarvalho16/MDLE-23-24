@@ -1,13 +1,14 @@
-# IMPORTS
-#library(ggplot2)
-library(lubridate)
+libs <- c("ggplot2", "lubridate")
+# Install libraries
+install.packages(libs)
+# Load libraries
+sapply(libs, library, character.only = TRUE)
+rm(libs)
 
 # AUX FUNCTIONS
 ######################
-
 if(!exists("getCategoricalFeatures", mode="function")) 
   source("helperfunctions.R")
-
 #########################
 
 # Prepare data path
@@ -76,11 +77,11 @@ lisbon_zipcode_consumption <- lisbon_zipcode_consumption[,!names(lisbon_zipcode_
 lisbon_zipcode_consumption$Active.Energy..kWh. <- lisbon_zipcode_consumption$Active.Energy..kWh./max(lisbon_zipcode_consumption$Active.Energy..kWh.)
 
 # Plot the conditions and consumption per Zip.Code in a bar chart
-# ggplot(lisbon_zipcode_consumption, aes(x = conditions, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
-#   geom_bar(stat = "identity", position = "dodge") +
-#   labs(title = paste("Residential Consumption by conditions and for Zip Code", lisbon_zip_code),
-#        x = "Conditions",
-#        y = "Consumption (kWh)",
-#        fill = "Day of Week",
-#        margin = element_text()) +
-#   theme_minimal()
+ggplot(lisbon_zipcode_consumption, aes(x = conditions, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = paste("Energy Consumption by conditions and Day of Week for Zip Code", lisbon_zip_code),
+       x = "Conditions",
+       y = "Consumption (kWh)",
+       fill = "Day of Week",
+       margin = element_text()) +
+  theme_minimal()
