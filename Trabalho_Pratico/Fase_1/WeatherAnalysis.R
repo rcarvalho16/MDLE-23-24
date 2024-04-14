@@ -60,7 +60,6 @@ energy_data$Date.Time <- apply(
 ########################################################
 # Check the influence of weather on the energy consumption
 
-
 class_label <- "conditions"
 selection_threshold <- 0.95
   
@@ -85,8 +84,34 @@ lisbon_zipcode_consumption <- lisbon_zipcode_consumption[,!names(lisbon_zipcode_
 rd_fishers_ratio <- FisherRatioFeatureSelection(lisbon_zipcode_consumption, class_label, selection_threshold)
 
 # Information Gain
-rd_info_gain <- InfoGainFeatureSelection("conditions ~ .", lisbon_zipcode_consumption, "infogain", selection_threshold)
-
+rd_info_gain <- information_gain(formula = conditions ~ ., data = lisbon_zipcode_consumption, type = "infogain")
+rd_info_gain <- rd_info_gain[order(rd_info_gain$importance, decreasing = TRUE),]
+importance <- rd_info_gain$importance
+attributes <- rd_info_gain$attributes
+rd_info_gain <- as.array(importance)
+rownames(rd_info_gain) <- attributes
+rm(importance, attributes)
 
 # Unsupervised Feature Selection - Variance Threshold
-# lisbon_zipcode_consumption_variance_threshold <- VarianceThresholdFeatureSelection(lisbon_zipcode_consumption, selection_threshold)
+rd_variance_threshold <- VarianceThresholdFeatureSelection(lisbon_zipcode_consumption, selection_threshold)
+
+# Comparison between the metrics
+View(cbind(rd_fishers_ratio, rd_info_gain, rd_variance_threshold))
+
+# Discretize all the type double values in the dataset
+lisbon_zipcode_discretized <- lisbon_zipcode_consumption
+for(i in 1:ncol(lisbon_zipcode_discretized)){
+  col <- lisbon_zipcode_discretized[,i]
+  
+  if(is.double(col)){
+    col <- equalFrequencyBinning(col)
+  }
+  
+  lisbon_zipcode_discretized[,i] <- col
+  rm(col)
+}
+
+# Obtain the dataset after feature selection
+rd_fishers_ratio_dataset <- selectMostRelevantFeatures(lisbon_zipcode_discretized, rd_fishers_ratio, selection_threshold, class_label)
+rd_info_gain_dataset <- selectMostRelevantFeatures(lisbon_zipcode_discretized, rd_info_gain, selection_threshold, class_label)
+rd_variance_threshold_dataset <- selectMostRelevantFeatures(lisbon_zipcode_discretized, rd_variance_threshold, selection_threshold)

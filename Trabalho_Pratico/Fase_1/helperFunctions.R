@@ -65,28 +65,21 @@ calculate_summary <- function(data) {
 }
 
 VarianceThresholdFeatureSelection = function(dataset, threshold){
-  dataset_original <- dataset
-
   # Step 1: Convert all the qualitative features into numerical
   dataset <- convertQualitativeFeatures(dataset)
-
+  
   # Step 2: Normalize the data
   dataset <- apply(dataset, 2, function(column) column/max(column))
 
   # Step 3: Calculate the variance of each feature
   variances_dataset <- apply(dataset, 2, var)
-
-  # Sort variances
-  variances_dataset <- sort(variances_dataset, decreasing = TRUE)
-
-  # Step 3: Calculate the minimum number of features with a cumulative sum of variance of at least threshold value
-  cumulative_sum_variance_above_threshold <- cumsum(variances_dataset) >= threshold
-
-  last_relevant_feature <- which(cumulative_sum_variance_above_threshold == TRUE)[1]
   
-  relevant_features <- names(variances_dataset[1:last_relevant_feature])
-
-  return(as.data.frame(dataset_original[,relevant_features]))
+  # Sort variances
+  variances_dataset <- sort(variances_dataset, na.last = TRUE, decreasing = TRUE)
+  
+  View(variances_dataset)
+  
+  return(variances_dataset)
 }
 
 FisherRatioFeatureSelection = function(dataset, class_label, threshold){
@@ -118,32 +111,25 @@ FisherRatioFeatureSelection = function(dataset, class_label, threshold){
   
   # Quick summary of fishers ratio
   fishers_ratio_dataset <- sort(fishers_ratio_dataset, decreasing = TRUE)
-  threshold_fishers_ratio <- sum(fishers_ratio_dataset) * threshold
   
-  fisher_ratio_cumulative_sum <- cumsum(fishers_ratio_dataset)
-  
-  last_relevant_feature <- which((fisher_ratio_cumulative_sum >= threshold_fishers_ratio) == TRUE)[1]
-  
-  # The features with a relevance above 0 are stored
-  relevant_features <- c(names(fishers_ratio_dataset[1:last_relevant_feature]), class_label)
-  
-  return(as.data.frame(dataset_original[,relevant_features]))
+  return(fishers_ratio_dataset)
 }
 
-InfoGainFeatureSelection = function(formula, dataset, type, threshold){
-  info_gain <- information_gain(formula = formula, data = dataset, type = type)
-  info_gain <- info_gain[order(info_gain$importance, decreasing = TRUE),]
-
-  info_gain_importance_threshold <- sum(info_gain$importance) * threshold
-
-  info_gain_cumulative_sum <- cumsum(info_gain$importance)
-
-  last_relevant_feature <- which((info_gain_cumulative_sum >= info_gain_importance_threshold) == TRUE)[1]
-
+selectMostRelevantFeatures = function(dataset, ordered_relevance_table, threshold, class_label = NA){
+  relevance_threshold <- sum(ordered_relevance_table) * threshold
+  
+  relevance_cumulative_sum <- cumsum(ordered_relevance_table)
+  
+  last_relevant_feature <- which((relevance_cumulative_sum >= relevance_threshold) == TRUE)[1]
+  
   # The features with a relevance above 0 are stored
-  relevant_features <- info_gain[1:last_relevant_feature,][1]
+  relevant_features <- names(ordered_relevance_table[1:last_relevant_feature])
   relevant_features <- unlist(relevant_features)
-
+  
+  if(!is.na(class_label)){
+    relevant_features <- c(relevant_features, class_label)
+  }
+  
   return(as.data.frame(dataset[,relevant_features]))
 }
 
@@ -175,6 +161,7 @@ convertTimestamps = function(dataset){
 
 equalFrequencyBinning = function(data){
   if(class(data) %in% c("numeric", "integer")){
+    # Sturge's Rule
     n_bins <- ceiling(log(length(unique(data)), 2)+1)
     if(n_bins == 0){
       next
