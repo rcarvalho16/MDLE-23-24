@@ -1,6 +1,8 @@
 libs <- c("dplyr", "lubridate", "FSelectorRcpp")
-# Install libraries
-install.packages(libs)
+
+# Install libraries, uncomment only on the 1st run
+# install.packages(libs)
+
 # Load libraries
 sapply(libs, library, character.only = TRUE)
 rm(libs)
@@ -44,7 +46,8 @@ weather_data$severerisk[is.na(weather_data$severerisk) | weather_data$severerisk
 apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 # Get only lisbon power consumption
-energy_data <- energy_data[energy_data$Zip.Code <= 1999,]
+lisbon_zip_code <- 1000
+energy_data <- energy_data[energy_data$Zip.Code == lisbon_zip_code,]
 
 # 1 - Convert Timestamps to same format
 # Take Date and Hour features and join them in the same format as weather dataset
@@ -57,12 +60,12 @@ energy_data$Date.Time <- apply(
 ########################################################
 # Check the influence of weather on the energy consumption
 
-lisbon_zip_code <- 1000
+
 class_label <- "conditions"
 selection_threshold <- 0.95
   
 # Obtain the energy data of Lisbon
-lisbon_zipcode_energy_data <- energy_data[energy_data$Zip.Code == lisbon_zip_code, ]
+lisbon_zipcode_energy_data <- energy_data
 
 # Relate the energy data with the weather data of Lisbon
 lisbon_zipcode_consumption <- merge(weather_data, lisbon_zipcode_energy_data, by.x = "datetime", by.y = "Date.Time")
@@ -77,15 +80,13 @@ lisbon_zipcode_consumption <- convertTimestamps(lisbon_zipcode_consumption)
 remove <- "icon"
 lisbon_zipcode_consumption <- lisbon_zipcode_consumption[,!names(lisbon_zipcode_consumption) %in% remove]
 
-# Normalize the energy consumption
-lisbon_zipcode_consumption$Active.Energy..kWh. <- lisbon_zipcode_consumption$Active.Energy..kWh./max(lisbon_zipcode_consumption$Active.Energy..kWh.)
-
 # Supervised Feature Selection
 # Fisher's Ratio
-lisbon_zipcode_consumption_fisher_ratio <- FisherRatioFeatureSelection(lisbon_zipcode_consumption, class_label, selection_threshold)
+rd_fishers_ratio <- FisherRatioFeatureSelection(lisbon_zipcode_consumption, class_label, selection_threshold)
 
 # Information Gain
-# lisbon_zipcode_consumption_info_gain <- InfoGainFeatureSelection("consumption ~ .", lisbon_zipcode_consumption, "infogain", selection_threshold)
+rd_info_gain <- InfoGainFeatureSelection("conditions ~ .", lisbon_zipcode_consumption, "infogain", selection_threshold)
+
 
 # Unsupervised Feature Selection - Variance Threshold
 # lisbon_zipcode_consumption_variance_threshold <- VarianceThresholdFeatureSelection(lisbon_zipcode_consumption, selection_threshold)

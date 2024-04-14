@@ -1,6 +1,8 @@
 libs <- c("dplyr","ggplot2","lubridate","cowplot","ggcorrplot","factoextra","arulesCBA","FSelectorRcpp")
-# Install libraries
-install.packages(libs)
+
+# Install libraries, uncomment only on the 1st run
+# install.packages(libs)
+
 # Load libraries
 sapply(libs, library, character.only = TRUE)
 rm(libs)
@@ -28,7 +30,7 @@ energy_data <- as.data.frame(energy_data)
 # apply(energy_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 # Check Standard deviation and mean value of numeric features
-print(calculate_summary(energy_data))
+calculate_summary(energy_data)
 
 # Perform analysis on Residential vs Non-Residential ZIP codes
 # This classification was done by hand. Prone to human-error
@@ -172,11 +174,10 @@ labels <- as.numeric(energy_data_labeled$Zone)
 zip_codes <- energy_data_labeled$Zip.Code
 
 # Prepare matrix for PCA (remove label and zip code in last columns)
-labels_index <- ncol(energy_data_labeled)
-zip_index <- ncol(energy_data_labeled) - 1
+remove <- c("Zone","Zip.Code")
 
 # Prepared matrix for PCA
-pca_energy <- energy_data_labeled[-c(labels_index, zip_index)]
+pca_energy <- energy_data_labeled[,!names(energy_data_labeled) %in% remove]
 
 # Apply PCA to the matrices
 unscaled_energy_pca <- prcomp(pca_energy, scale. = FALSE)
@@ -232,10 +233,10 @@ rd_pca_scaled <- data.frame(cbind(rd_pca_scaled, zip_codes,labels))
 ##############################################################
 # FEATURE SELECTION
 # Fisher's Ratio
-# CORRIGIR ESTA PARTE 
 
 # Removing zip codes as they are a numeric but symbolic value
-fr_no_zip <- energy_data_labeled[-zip_index]
+remove <- c("Zip.Code")
+fr_no_zip <- energy_data_labeled[,!names(energy_data_labeled) %in% remove]
 
 # Prepare fisher's ratio matrix by removing Zip codes (Unique variable)
 # Zips are removed because they are a numeric, but symbolic value
@@ -311,13 +312,12 @@ ggplot(
 
 
 ############ TODO #################
+
 # Compare consumption per hour of all days of a month
 # And try to create a new dataset labeling if there or there wasn't an event at 
 # that day and time
 # Example, SL Benfica game day, Zip Code = 1500
 # We chose Benfica due to bigger fan mass, not any club related choice
-slbenfica_Zip = 1500
-energy_benfica = energy_data[energy_data$Zip.Code == slbenfica_zip, ]
-energy_benfica <- convertTimestamps(energy_benfica)
+
 
 
