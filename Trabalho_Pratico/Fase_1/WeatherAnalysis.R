@@ -9,7 +9,7 @@ rm(libs)
 
 # AUX FUNCTIONS
 ######################
-if(!exists("getCategoricalFeatures", mode="function")) 
+if(!exists("getCategoricalFeatures", mode="function"))
   source("helperfunctions.R")
 #########################
 
@@ -48,6 +48,7 @@ apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 # Get only lisbon power consumption
 lisbon_zip_code <- 1000
 energy_data <- energy_data[energy_data$Zip.Code == lisbon_zip_code,]
+rm(lisbon_zip_code)
 
 # 1 - Convert Timestamps to same format
 # Take Date and Hour features and join them in the same format as weather dataset
@@ -96,7 +97,11 @@ rm(importance, attributes)
 rd_variance_threshold <- VarianceThresholdFeatureSelection(lisbon_zipcode_consumption, selection_threshold)
 
 # Comparison between the metrics
-View(cbind(rd_fishers_ratio, rd_info_gain, rd_variance_threshold))
+bind_order <- names(rd_variance_threshold)
+metric_comparison <- cbind(rd_variance_threshold[bind_order], rd_fishers_ratio[bind_order], rd_info_gain[bind_order])
+colnames(metric_comparison) <- c("Variance Threshold", "Fisher's Ratio", "Information Gain")
+View(metric_comparison)
+rm(bind_order)
 
 # Discretize all the type double values in the dataset
 lisbon_zipcode_discretized <- lisbon_zipcode_consumption
@@ -110,6 +115,7 @@ for(i in 1:ncol(lisbon_zipcode_discretized)){
   lisbon_zipcode_discretized[,i] <- col
   rm(col)
 }
+rm(i)
 
 # Obtain the dataset after feature selection
 rd_fishers_ratio_dataset <- selectMostRelevantFeatures(lisbon_zipcode_discretized, rd_fishers_ratio, selection_threshold, class_label)

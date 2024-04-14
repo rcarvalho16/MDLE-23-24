@@ -1,6 +1,8 @@
 libs <- c("ggplot2", "lubridate")
+
 # Install libraries
-install.packages(libs)
+# install.packages(libs)
+
 # Load libraries
 sapply(libs, library, character.only = TRUE)
 rm(libs)
@@ -44,8 +46,8 @@ weather_data$severerisk[is.na(weather_data$severerisk) | weather_data$severerisk
 apply(weather_data, MARGIN = 2, function(col) sum(is.na(col)))
 
 # Get only lisbon power consumption
-energy_data <- energy_data[energy_data$Zip.Code <= 1999,]
-# energy_data_lisbon <- [energy_data$Zip.Code == 1000,]
+lisbon_zip_code <- 1000
+energy_data <- energy_data[energy_data$Zip.Code == lisbon_zip_code,]
 
 # 1 - Convert Timestamps to same format
 # Take Date and Hour features and join them in the same format as weather dataset
@@ -56,11 +58,10 @@ energy_data$Date.Time <- apply(
 )
 
 #######################################################
-# Study how the weather affects the energy consumption for a certain zip code
-lisbon_zip_code <- 1000
+# Study how the weather affects the energy consumption in Lisbon
 
 # Obtain only the energy data related to the chosen zip code
-lisbon_zipcode_energy_data <- energy_data[energy_data$Zip.Code == lisbon_zip_code, ]
+lisbon_zipcode_energy_data <- energy_data
 
 # Merge the weather data with energy data
 lisbon_zipcode_consumption <- merge(weather_data, lisbon_zipcode_energy_data, by.x = "datetime", by.y = "Date.Time")
@@ -73,9 +74,6 @@ lisbon_zipcode_consumption <- convertTimestamps(lisbon_zipcode_consumption)
 remove <- c("Zip.Code", "name", "stations", "icon")
 lisbon_zipcode_consumption <- lisbon_zipcode_consumption[,!names(lisbon_zipcode_consumption) %in% remove]
 
-# Normalize the energy consumption
-lisbon_zipcode_consumption$Active.Energy..kWh. <- lisbon_zipcode_consumption$Active.Energy..kWh./max(lisbon_zipcode_consumption$Active.Energy..kWh.)
-
 # Plot the conditions and consumption per Zip.Code in a bar chart
 ggplot(lisbon_zipcode_consumption, aes(x = conditions, y = Active.Energy..kWh., fill = factor(Day_of_Week))) +
   geom_bar(stat = "identity", position = "dodge") +
@@ -85,3 +83,16 @@ ggplot(lisbon_zipcode_consumption, aes(x = conditions, y = Active.Energy..kWh., 
        fill = "Day of Week",
        margin = element_text()) +
   theme_minimal()
+
+# Discretize all the type double values in the dataset
+for(i in 1:ncol(lisbon_zipcode_consumption)){
+  col <- lisbon_zipcode_consumption[,i]
+  
+  if(is.double(col)){
+    col <- equalFrequencyBinning(col)
+  }
+  
+  lisbon_zipcode_consumption[,i] <- col
+  rm(col)
+}
+rm(i)

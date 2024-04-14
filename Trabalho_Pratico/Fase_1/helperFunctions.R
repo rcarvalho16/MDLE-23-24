@@ -74,6 +74,9 @@ VarianceThresholdFeatureSelection = function(dataset, threshold){
   # Step 3: Calculate the variance of each feature
   variances_dataset <- apply(dataset, 2, var)
   
+  # Replace Na values with 0
+  variances_dataset[is.na(variances_dataset)] <- 0
+  
   # Sort variances
   variances_dataset <- sort(variances_dataset, na.last = TRUE, decreasing = TRUE)
   
@@ -81,8 +84,6 @@ VarianceThresholdFeatureSelection = function(dataset, threshold){
 }
 
 FisherRatioFeatureSelection = function(dataset, class_label, threshold){
-  dataset_original <- dataset
-  
   dataset <- convertQualitativeFeatures(dataset)
   
   # Normalize the data
