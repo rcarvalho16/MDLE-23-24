@@ -77,8 +77,6 @@ VarianceThresholdFeatureSelection = function(dataset, threshold){
   # Sort variances
   variances_dataset <- sort(variances_dataset, na.last = TRUE, decreasing = TRUE)
   
-  View(variances_dataset)
-  
   return(variances_dataset)
 }
 
@@ -147,14 +145,12 @@ convertTimestamps = function(dataset){
   rm(dates)
   
   # Remove redundant date columns
-  #dataset <- dataset[, -c(1,2,3)]
   remove <- c("Date.Time", "Date", "Hour", "datetime")
   dataset <- dataset[, !names(dataset) %in% remove]
   
   # Reorder columns
   order <- unique(c("Day", "Month", "Year", "Hours", "Day_of_Week", names(dataset)))
   dataset <- dataset[, order]
-  #dataset <- dataset[, c(6,5,4,7,3,2,1)]
   
   return(dataset)
 }
