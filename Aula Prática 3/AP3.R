@@ -36,37 +36,30 @@ df.local<- cbind(df.l,df) #bind them together
 
 df <- copy_to(sc, df.local)
 
+################# G2 #######################
+
 # a) Check the schema of the df variable
 sdf_schema(df)
 
-
-################# G2 #######################
 # b) Check the content of the SPARK data frame df using the head function
 head(df)
 
 # Get a glimpse of the first and last 10 rows of the dataset
 head(df, n = 10)
 
-#Glimpse of the data set
-# Function stopifnot() prints NULL if all statements are true
-# Sparklyr's equivalent of nrow is sdf_nrow()
-print(stopifnot(sdf_nrow(df) != 2190))
-
 
 # Get the actual number of rows and columns in the Spark DataFrame df
-actual_rows <- nrow(df)
-actual_cols <- ncol(df)
+actual_rows <- sdf_nrow(df)
+actual_cols <- sdf_ncol(df)
+
 # Compare the actual and expected values using stopifnot
-stopifnot(actual_rows == expected_rows,
-          actual_cols == expected_cols)
+# If any expression is not TRUE then it will call stop (exception)
+stopifnot(actual_rows == nrow(df.local), actual_cols == ncol(df.local))
 
 ################# G3 #######################
 #Feature Selection
 idx <- c(1,2,5,6,9,10,11,14,16,17,19,21,24,25,26,31,32,33,34,35,41,44,49,50,54)
 
-# Select the features using the select function and magrittr's pipe operator
-df.sel <- df %>%
-  select(selected_indexes)
 
 # Reduce features from df
 df.sel <- df %>% select(all_of(idx))
@@ -74,37 +67,25 @@ df.sel <- df %>% select(all_of(idx))
 # Overview the resulting dataset
 head(df.sel)
 
-# Display the resulting Spark DataFrame df.sel
-df.sel
-head(df.sel)
 
 ################# G4 #######################
 
-# Set the seed for reproducibility
-set.seed(123)
+# a) Apply the sparklyr sdf random split function to produce two datasets: one for training (2/3) and other
+# for testing (1/3). Use the seed value 123, for this and all random functions from this point forward.
 
 # Define the split proportions
 train_proportion <- 2 / 3
 test_proportion <- 1 - train_proportion
 
 # Split the dataset into training and testing sets
-splits <- sdf_random_split(df.sel, training = train_proportion, test = test_proportion)
+splits <- sdf_random_split(df.sel, training = train_proportion, test = test_proportion, seed = 123)
 
 # Extract the training and testing sets
 df.train <- splits[[1]]
 df.test <- splits[[2]]
 
-#Generating train and test data
-
-# Split the dataframe into training (2/3) and testing (1/3) sets
-df.split <- df.sel %>% sdf_random_split(seed = 123, training = 2/3, testing = 1/3)
-
-# Assign training and testing dataframes
-df_train <- df.split$training
-df_test <- df.split$testing
-
-#TODO Baseline
-rf_model <- ml_random_forest(df_train, CLASS ~ ., type = "classification")
+# b) Use the R table function to determine the number of instances for each class in both datasets. Explain
+# why this function cannot be used directly on df.train and df.test.
 
 # Convert Spark DataFrames to R data frames
 df.train_local <- collect(df.train)
@@ -114,20 +95,20 @@ df.test_local <- collect(df.test)
 class_distribution_train <- table(df.train_local$CLASS)
 class_distribution_test <- table(df.test_local$CLASS)
 
+View(class_distribution_test)
+View(class_distribution_train)
+
 # Display the class distributions
 print("Class Distribution in Training Set:")
 print(class_distribution_train)
 print("Class Distribution in Testing Set:")
 print(class_distribution_test)
 
-# Define the formula for classification
-formula <- "CLASS ~ ."
+
+# c) Use the ml random forest function to generate a classification model, with the formula: “CLASS ~ .”.
 
 # Train a Random Forest classification model
-rf_model <- ml_random_forest(df.train, formula)
-
-# Print the trained model
-print(rf_model)
+rf_model <- ml_random_forest(df.train, CLASS ~ ., type = "classification")
 
 # Make predictions on the test dataset
 predictions <- mdle.predict(rf_model, df.test)
@@ -136,13 +117,62 @@ predictions <- mdle.predict(rf_model, df.test)
 mdle.printConfusionMatrix(predictions, "")
 
 ################# G5 #######################
-#Using imbalanced correcting sampling techniques
-#df.pos.train<- #TODO
-#df.neg.train<- #TODO
-#TODO
+# Using imbalanced correcting sampling techniques
 
-#Oversampling
-#TODO
+# a) What is the number of instances for each class in the training set after the undersampling?
+
+df.pos.train<- df.train %>% filter(CLASS == 1)
+df.neg.train<- df.train %>% filter(CLASS == 0)
+
+# Calculate the fraction to be sampled from the majority class to match the minority class
+sampling_fraction <- df.pos.train %>% sdf_nrow() / df.neg.train %>% sdf_nrow()
+
+# Given the positive class having way less samples, then we need to undersample the negative class
+undersampled_neg <- df.train %>%
+  filter(CLASS == 0) %>% sdf_sample(fraction = sampling_fraction, replacement = TRUE, seed = 123)
+
+# Bind both datasets together
+df.undersample <- df.pos.train %>% sdf_bind_rows(undersampled_neg)
+
+# Number of instances for each class
+table(collect(df.undersample)$CLASS)
+
+
+
+# b) Repeat points 4.c) and 4.d), and compare the results with the previous models.
+undersample_rf_model <- ml_random_forest(df.undersample, CLASS ~ ., type = "classification")
+
+# Make predictions on the test dataset
+undersample_predictions <- mdle.predict(undersample_rf_model, df.test)
+
+# Print confusion matrix and evaluate model performance
+mdle.printConfusionMatrix(undersample_predictions, "")
+
+
+
+# c) What is the number of instances for each class in the training set after the oversampling?
+
+# Given the positive class having way less samples, then we need to oversample it to match negative class
+oversampled_pos <- df.train %>%
+  filter(CLASS == 1) %>% sdf_sample(fraction = 1/sampling_fraction, replacement = TRUE, seed = 123)
+
+# Bind both datasets together
+df.oversample <- df.neg.train %>% sdf_bind_rows(oversampled_pos)
+
+# Number of instances for each class
+table(collect(df.oversample)$CLASS)
+
+
+# d) Repeat points 4.c) and 4.d), and compare the results with the previous models
+oversample_rf_model <- ml_random_forest(df.oversample, CLASS ~ ., type = "classification")
+
+# Make predictions on the test dataset
+oversample_predictions <- mdle.predict(oversample_rf_model, df.test)
+
+# Print confusion matrix and evaluate model performance
+mdle.printConfusionMatrix(oversample_predictions, "")
+
+
 
 #BSMOTE
 #TODO
