@@ -106,14 +106,7 @@ rm(bind_order)
 # Discretize all the type double values in the dataset
 lisbon_zipcode_discretized <- lisbon_zipcode_consumption
 for(i in 1:ncol(lisbon_zipcode_discretized)){
-  col <- lisbon_zipcode_discretized[,i]
-  
-  if(is.double(col)){
-    col <- equalFrequencyBinning(col)
-  }
-  
-  lisbon_zipcode_discretized[,i] <- col
-  rm(col)
+  lisbon_zipcode_discretized[,i] <- equalFrequencyBinning(lisbon_zipcode_discretized[,i])
 }
 rm(i)
 

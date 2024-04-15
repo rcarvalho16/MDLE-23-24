@@ -157,19 +157,19 @@ convertTimestamps = function(dataset){
 }
 
 equalFrequencyBinning = function(data){
-  if(class(data) %in% c("numeric", "integer")){
+  if(all(class(data) == "numeric")){
     # Sturge's Rule
     n_bins <- ceiling(log(length(unique(data)), 2)+1)
     if(n_bins == 0){
-      next
+      return(data)
     }
     bin_breaks <- quantile(data, probs = seq(0,1,1/n_bins)[-1])
     bin_breaks <- unique(bin_breaks)
     if(length(bin_breaks) <= 1){
-      next
+      return(data)
     }
     bin_breaks <- c(-Inf, bin_breaks)
-    data <- cut(data, breaks = bin_breaks)
+    data <- base::cut(data, breaks = bin_breaks)
   }
   
   return(data)
