@@ -175,7 +175,22 @@ mdle.printConfusionMatrix(oversample_predictions, "")
 
 
 #BSMOTE
-#TODO
+# e) Apply Borderline-SMOTE Sampling to balance the number of cases of each class
+BLSMOTE_train_x <- as.data.frame(collect(df.train %>% select(!CLASS)))
+BLSMOTE_train_y <- as.data.frame(collect(df.train %>% select(CLASS)))
+BLSMOTE_train_oversampled <- BLSMOTE(X = BLSMOTE_train_x, target = BLSMOTE_train_y)
+BLSMOTE_train_oversampled <- as.data.frame(BLSMOTE_train_oversampled$data)
+
+BLSMOTE_train_oversampled <- copy_to(sc, BLSMOTE_train_oversampled)
+
+# f) Repeat points 4.c) and 4.d), and compare the results with the previous models
+oversample_blsmote_rf_model <- ml_random_forest(BLSMOTE_train_oversampled, class ~ ., type = "classification")
+
+# Make predictions on the test dataset
+oversample_blsmote_predictions <- mdle.predict(oversample_blsmote_rf_model, df.test)
+
+# Print confusion matrix and evaluate model performance
+mdle.printConfusionMatrix(oversample_blsmote_predictions, "")
 
 ################# Spark cleanup ################
 spark_disconnect(sc)
