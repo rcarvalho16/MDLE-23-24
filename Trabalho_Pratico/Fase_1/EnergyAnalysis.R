@@ -222,8 +222,12 @@ rd_pca_scaled <- as.matrix(rd_pca_scaled)
 # Observe correlation plot
 ggcorrplot(cor(rd_pca_scaled))
 
+rd_pca_scaled <- as.data.frame(rd_pca_scaled)
 # Compute discretization on features
-rd_pca_scaled <- apply(rd_pca_scaled, MARGIN = 2, arules::discretize)
+for(i in 1:ncol(rd_pca_scaled)){
+  rd_pca_scaled[,i] <- equalFrequencyBinning(rd_pca_scaled[,i])
+}
+rm(i)
 
 # Reattach zip codes and labels
 rd_pca_scaled <- data.frame(cbind(rd_pca_scaled, zip_codes,labels))
