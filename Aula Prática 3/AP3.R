@@ -39,12 +39,16 @@ df <- copy_to(sc, df.local)
 ################# G2 #######################
 
 # a) Check the schema of the df variable
-sdf_schema(df)
+schema_list <- sdf_schema(df)
+types <- sapply(schema_list, function(x) x$type)
+
+# Convert the list to a data frame
+schema_df <- data.frame(name = names(schema_list), type = types, stringsAsFactors = FALSE)
+
+# View the data frame
+View(schema_df)
 
 # b) Check the content of the SPARK data frame df using the head function
-head(df)
-
-# Get a glimpse of the first and last 10 rows of the dataset
 head(df, n = 10)
 
 
