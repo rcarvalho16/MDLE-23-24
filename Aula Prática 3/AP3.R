@@ -96,8 +96,12 @@ df.train_local <- collect(df.train)
 df.test_local <- collect(df.test)
 
 # Use the table function to determine the number of instances for each class in both datasets
-class_distribution_train <- table(df.train_local$CLASS)
-class_distribution_test <- table(df.test_local$CLASS)
+class_distribution_train <- table(df.train_local$CLASS) %>% as.data.frame()
+class_distribution_test <- table(df.test_local$CLASS) %>% as.data.frame()
+
+column_names <- c("CLASS", "#Instances")
+colnames(class_distribution_test) <- column_names
+colnames(class_distribution_train) <- column_names
 
 View(class_distribution_test)
 View(class_distribution_train)
@@ -139,8 +143,11 @@ undersampled_neg <- df.train %>%
 df.undersample <- df.pos.train %>% sdf_bind_rows(undersampled_neg)
 
 # Number of instances for each class
-table(collect(df.undersample)$CLASS)
+df.undersample_local <- collect(df.undersample)
+class_distribution_undersample <- table(df.undersample_local$CLASS) %>% as.data.frame()
 
+colnames(class_distribution_undersample) <- column_names
+View(class_distribution_undersample)
 
 
 # b) Repeat points 4.c) and 4.d), and compare the results with the previous models.
@@ -164,7 +171,11 @@ oversampled_pos <- df.train %>%
 df.oversample <- df.neg.train %>% sdf_bind_rows(oversampled_pos)
 
 # Number of instances for each class
-table(collect(df.oversample)$CLASS)
+df.oversample_local <- collect(df.oversample)
+class_distribution_oversample <- table(df.oversample_local$CLASS) %>% as.data.frame()
+
+colnames(class_distribution_oversample) <- column_names
+View(class_distribution_oversample)
 
 
 # d) Repeat points 4.c) and 4.d), and compare the results with the previous models
