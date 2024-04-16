@@ -114,3 +114,8 @@ rm(i)
 rd_fishers_ratio_dataset <- selectMostRelevantFeatures(lisbon_zipcode_discretized, rd_fishers_ratio, selection_threshold, class_label)
 rd_info_gain_dataset <- selectMostRelevantFeatures(lisbon_zipcode_discretized, rd_info_gain, selection_threshold, class_label)
 rd_variance_threshold_dataset <- selectMostRelevantFeatures(lisbon_zipcode_discretized, rd_variance_threshold, selection_threshold)
+
+# View resulting datasets
+View(rd_fishers_ratio_dataset)
+View(rd_info_gain_dataset)
+View(rd_variance_threshold_dataset)

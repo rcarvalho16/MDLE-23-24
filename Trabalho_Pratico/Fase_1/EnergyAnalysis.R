@@ -232,6 +232,9 @@ rm(i)
 # Reattach zip codes and labels
 rd_pca_scaled <- data.frame(cbind(rd_pca_scaled, zip_codes,labels))
 
+# Check discretized pca reduced dataset
+View(rd_pca_scaled)
+
 
 
 ##############################################################
@@ -289,11 +292,13 @@ View(cbind(fr_scaled, fr_unscaled, ig_energy))
 
 fs_reduced_energy <- energy_data_labeled[, c("Zip.Code", "Active.Energy..kWh.", "Zone")]
 
-# Discretize FS result
-fs_reduced_energy$Active.Energy..kWh. <- arules::discretize(fs_reduced_energy$Active.Energy..kWh., breaks = 20)
+# Apply discretization by Sturges Law
+for(i in 1:ncol(fs_reduced_energy)){
+  fs_reduced_energy[,i] <- equalFrequencyBinning(fs_reduced_energy[,i])
+}
+
 View(fs_reduced_energy)
 
-# Plot the discretized consumption by zone
 
 # Randomly select 500 indices
 set.seed(123)
@@ -320,8 +325,7 @@ ggplot(
 # Compare consumption per hour of all days of a month
 # And try to create a new dataset labeling if there or there wasn't an event at 
 # that day and time
-# Example, SL Benfica game day, Zip Code = 1500
-# We chose Benfica due to bigger fan mass, not any club related choice
+# Example, Football game day, Zip Code = 1500
 
 
 
