@@ -193,7 +193,9 @@ mdle.printConfusionMatrix(oversample_predictions, "")
 # e) Apply Borderline-SMOTE Sampling to balance the number of cases of each class
 BLSMOTE_train_x <- as.data.frame(collect(df.train %>% select(!CLASS)))
 BLSMOTE_train_y <- as.data.frame(collect(df.train %>% select(CLASS)))
+
 BLSMOTE_train_oversampled <- BLSMOTE(X = BLSMOTE_train_x, target = BLSMOTE_train_y, K = 7, C = 4, method = c("type1", "type2"))
+
 BLSMOTE_train_oversampled <- as.data.frame(BLSMOTE_train_oversampled$data)
 
 BLSMOTE_train_oversampled <- copy_to(sc, BLSMOTE_train_oversampled)
