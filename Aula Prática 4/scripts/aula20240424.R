@@ -488,6 +488,42 @@ names(grid) <- c("row", "col")
 
 ## THIS CODE BELOW IS PURPOSELY WRONG. CORRECT IT
 
+# O que faz função:
+# As principais operações são `tm` para processamento de texto e `dplyr`
+# para manipulação de dados.
+# A Função `get_top_terms` realiza as seguintes etapas:
+# Pré-processamento do Texto
+# (Cria um conjunto de documentos "corpus" de texto a partir dos dados 
+# fornecidos.
+# Converte o texto para minúsculas e remove números, pontuação e palavras
+# comuns 'stop words'. Reduz à sua raiz as palavras - por exemplo,
+# "correr", "corrido" e "corria" tornam-se "corr").
+#
+# converte o 'corpus' numa matriz de termos e documentos (TDM), 
+# onde as linhas representam termos únicos
+# e as colunas representam documentos.
+# Remove termos raros (com uma frequência de termos inferior a 0.95).
+#
+# Converte a matriz de termos e documentos num data frame. 
+# Renomeia as colunas do data frame,
+# adicionando um prefixo para evitar problemas com nomes de colunas
+# inválidos. Adiciona uma coluna 'terms' para armazenar os termos e
+# uma coluna 'category' para armazenar a categoria fornecida.
+#
+# Agregação e Seleção dos Termos Principais utilizando a função `gather()`
+# para transformar o data frame de formato amplo para longo, 
+# para facilitar a agregação. Agrupa os termos por categoria e documento,
+# e então calcula a contagem total de cada termo em cada categoria.
+# Realiza uma segunda agregação por categoria, selecionando os 15 termos
+# mais comuns em cada categoria com base na contagem total.
+# Ordena os termos por categoria e pela contagem total em ordem 
+# decrescente.
+# Retorno do Data Frame com os Termos Principais agrupados por categoria,
+# pronto para ser usado em análises posteriores.
+# Em resumo, a função é útil para extrair e analisar os termos mais 
+# comuns em diferentes categorias de documentos de texto, como revisões
+# de produtos, comentários de clientes, etc.
+
 # define function for getting top ranking terms
 get_top_terms <- function(data, category) {
   corpus <- VCorpus(VectorSource(data))
@@ -508,10 +544,12 @@ get_top_terms <- function(data, category) {
     summarize(total_count = sum(term_count)) %>%
     group_by(category) %>%
     top_n(15, total_count) %>%
-    arrange(desc(total_count))
+    arrange(category, desc(total_count))
 }
+# Na função arrange() faltava o argumento category para garantir 
+# a ordenação por categoria.
 
-install.packages("tidyr")
+#install.packages("tidyr")
 library("tidyr")
 
 df_top_terms <- lapply(unique(df$country)[1:10], function(cat) {
