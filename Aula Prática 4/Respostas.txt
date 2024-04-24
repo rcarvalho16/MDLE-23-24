@@ -1,0 +1,23 @@
+# QUESTION: Comment the following results 
+
+# Expected results:
+# Dataset Shape:  129971x13 
+#                    Name    dtypes Missing Uniques
+#1                country character      63      44
+#2            description character       0  119955
+#3            designation character   37465   37980
+#4                 points   integer       0      21
+#5                  price   numeric    8996     391
+#6               province character      63     426
+#7               region_1 character   21247    1230
+#8               region_2 character   79460      18
+#9            taster_name character   26244      20
+#10 taster_twitter_handle character   31213      16
+#11                 title character       0  118840
+#12               variety character       1     708
+#13                winery character       0   16757
+
+A função resumetable é uma função descritiva de uma dataframe R onde são apresentadas algumas estatísticas das features nomeadamente o Nome, tipo, valores em falta e valores únicos de cada feature.
+Após observação da dataframe construida, conclui-se que se trata de um conjunto de dados relacionado com provas de vários tipos de vinhos. Este conjunto de dados inclui informação acerca do país (country) onde foi feita a prova, a descrição (description) e designação (designation) do vinho, bem como a respetiva pontuação (points) atribuida pelo provador (taster_name) identificado pelo nome e conta de twitter (taster_twitter_handle).
+Quanto ao vinho, este é caracterizado pela provincia (province) e região (region_1 e region_2), o seu nome (title), tipo (variety), e a adega (winery).
+Da observação dos valores em falta, podemos aferir que em certas features, este conjunto de dados é esparso nomeadamente nas regiões, preço, designação e identificação dos provadores, tanto o seu nome como a handle do twitter.

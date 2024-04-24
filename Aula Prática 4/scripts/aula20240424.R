@@ -46,7 +46,7 @@ CalcOutliers <- function(df_num) {
   #Calculating the higher and lower cut values
   lower <- data_mean - cut
   upper <- data_mean + cut
-  
+
   # creating an array of lower, higher and total outlier values 
   outliers_lower <- df_num[df_num < lower]
   outliers_higher <- df_num[df_num > upper]
@@ -55,6 +55,10 @@ CalcOutliers <- function(df_num) {
   # array without outlier values
   outliers_removed <- df_num[df_num > lower & df_num < upper]
   
+  # printing lower cut values:
+  cat("Lower cut values: ", round(lower), "\n")
+  # printing upper cut values: 
+  cat("Upper cut values: ", round(upper), "\n")
   # printing total number of values in lower cut of outliers
   cat("Identified lowest outliers: ", length(outliers_lower), "\n") 
   # printing total number of values in higher cut of outliers
@@ -103,6 +107,7 @@ resumetable(df)
 #11                 title character       0  118840
 #12               variety character       1     708
 #13                winery character       0   16757
+
 
 # ------------------  TODO  ------------------
 library(Hmisc)
@@ -221,7 +226,7 @@ ggsave("./plots/DistribuitionPrices.pdf")
 # ------------------ TODO: Outlier Points ------------------
 
 # Complete the function to find the outliers. Fill in the missing field
-CalcOutliers(....)
+CalcOutliers(df$price %>% na.omit())
 
 # QUESTION: Comment the following results 
 
