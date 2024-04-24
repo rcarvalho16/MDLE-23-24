@@ -138,7 +138,7 @@ countplot <- ggplot(df) +
   labs(title="Points Count distribution", x="Points", y="Count") +
   theme(plot.title = element_text(size=20), 
         axis.title = element_text(size=15))
-ggsave("./plots/PointsDistribution.pdf")
+ggsave("./plots/n/PointsDistribution.pdf")
 
 # QUESTION: Could you explain the results? What do the plot distributions look 
 # like?
@@ -168,18 +168,19 @@ df$rating_cat <- sapply(df$points, cat_points)
 
 # Ploting Rating categories
 
-ggplot(df, aes(x=rating_cat, fill=rating_cat)) + 
-  geom_bar(color="black") +
-  scale_fill_manual(values=c("darkgreen")) +
-  labs(title="Point Categories Counting Distribution", x="Categories", 
-       y="Total Count") +
-  theme(plot.title = element_text(size=20, face="bold"), 
-        axis.text = element_text(size=15), 
-        axis.title = element_text(size=15)) +
-  geom_text(stat='count', aes(label=scales::percent(after_stat(count)/nrow(df))), 
-            position=position_stack(vjust=0.5), size=5) +
-  ylim(0, max(table(df$rating_cat)) * 1.15)
-ggsave("./plots/RatingCategories.pdf")
+ggplot(df, aes(x = rating_cat, fill = rating_cat)) + 
+  geom_bar(color = "black") +
+  scale_fill_manual(values = c("darkgreen")) +
+  labs(title = "Point Categories Counting Distribution", x = "Categories", 
+       y = "Total Count") +
+  theme(plot.title = element_text(size = 12, face = "bold"),  # Tamanho e estilo do título do gráfico
+        axis.text = element_text(size = 10),  # Tamanho do texto dos eixos
+        axis.title = element_text(size = 10)) +  # Tamanho dos títulos dos eixos
+  geom_text(stat = 'count', aes(label = scales::percent(after_stat(count)/nrow(df))), 
+            position = position_stack(vjust = 0.5), size = 4) +  # Ajustes para o texto
+  ylim(0, max(table(df$rating_cat)) * 1.15)  # Ajuste dos limites do eixo y
+
+ggsave("./plots/n/RatingCategories.pdf")
 
 # ------------------  TODO  -----------------
 
@@ -201,22 +202,26 @@ CalcOutliers(df$points)
 # Outliers in prices
 # Filtered price lower than 300.
 
-g <- ggplot(data=na.omit(df), aes(x=log(price+1))) + 
-  geom_histogram(color='white', fill='darkgreen',bins=30) +
-  labs(title="Price Log distribuition", x="Price(Log)", y="Frequency LOG") +
-  theme(plot.title = element_text(size=20), axis.text=element_text(size=15), 
-        axis.title=element_text(size=15))
-ggsave("./plots/PriceLogDistribution.pdf")
+g <- ggplot(data = na.omit(df), aes(x = log(price + 1))) + 
+  geom_histogram(color = 'white', fill = 'darkgreen', bins = 30) +
+  labs(title = "Price Log distribution", x = "Price(Log)", y = "Frequency LOG") +
+  theme(plot.title = element_text(size = 12),  # Tamanho do título do gráfico
+        axis.text = element_text(size = 10),  # Tamanho do texto dos eixos
+        axis.title = element_text(size = 10))  # Tamanho dos títulos dos eixos
+
+ggsave("./plots/n/PriceLogDistribution.pdf")
 
 install.packages("tidyr")
 library(tidyr)
 
-ggplot(data=df %>% drop_na(price), aes(x=seq_along(price), y=price)) + 
-  geom_point(color='darkgreen') +
-  labs(title="Distribuition of prices", x="Index", y="Prices(US)") +
-  theme(plot.title = element_text(size=20), axis.text=element_text(size=15), 
-        axis.title=element_text(size=15))
-ggsave("./plots/DistribuitionPrices.pdf")
+ggplot(data = df %>% drop_na(price), aes(x = seq_along(price), y = price)) + 
+  geom_point(color = 'darkgreen') +
+  labs(title = "Distribution of prices", x = "Index", y = "Prices(US)") +
+  theme(plot.title = element_text(size = 8),  # Tamanho do título do gráfico
+        axis.text = element_text(size = 6),  # Tamanho do texto dos eixos
+        axis.title = element_text(size = 6))  # Tamanho dos títulos dos eixos
+
+ggsave("./plots/n/DistribuitionPrices.pdf")
 
 # ------------------ TODO: Outlier Points ------------------
 
@@ -239,10 +244,10 @@ g + geom_density(fill = "darkgreen", alpha = 0.5) +
   ggtitle("Price Distribution Filtered 300") +
   xlab("Prices(US)") +
   ylab("Frequency Distribution") +
-  theme(plot.title = element_text(size = 20),
-        axis.title.x = element_text(size = 15),
-        axis.title.y = element_text(size = 15))
-ggsave("./plots/DistributionPrices300.pdf")
+  theme(plot.title = element_text(size = 10),
+        axis.title.x = element_text(size = 8),
+        axis.title.y = element_text(size = 8))
+ggsave("./plots/n/DistributionPrices300.pdf")
 
 # QUESTION: What price range do the majority of the analyzed wines fall under?
 
@@ -257,8 +262,8 @@ ggplot(data = df %>% drop_na(price_log), aes(x = points, y = price_log)) +
   xlab("Points") +
   ylab("Price (log)") +
   ggtitle("Points x Price Distribuition") +
-  theme(plot.title = element_text(size = 20))
-ggsave("./plots/DistributionPointsPrices.pdf")
+  theme(plot.title = element_text(size = 10))
+ggsave("./plots/n/DistributionPointsPrices.pdf")
 
 # QUESTION: What characteristics distinguish the highest-priced wine from the 
 # one with the highest score? Do you consider it relevant to use the recommendation 
@@ -289,7 +294,7 @@ g <- ggplot(data = subset(df, country %in% country20), aes(x = country,
   ggtitle("Country Of Wine Origin Count") +
   xlab("Country's") +
   ylab("Count")
-ggsave("../plots/CountryWineOriginCount.pdf")
+ggsave("./plots/n/CountryWineOriginCount.pdf")
 
 # Plot 2: Boxplot of Price by Country
 g <-ggplot(data = subset(df %>% drop_na(country), country %in% country20), 
@@ -300,7 +305,7 @@ g <-ggplot(data = subset(df %>% drop_na(country), country %in% country20),
   ylab("Price") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   theme(legend.position = "none") 
-ggsave("../plots/PriceCountryOrigin.pdf")
+ggsave("./plots/n/PriceCountryOrigin.pdf")
 
 # Plot 3: Boxplot of Points by Country
 g <-ggplot(data = subset(df %>% drop_na(country), country %in% country20), 
@@ -309,9 +314,13 @@ g <-ggplot(data = subset(df %>% drop_na(country), country %in% country20),
   ggtitle("Points by Country Of Wine Origin") +
   xlab("Country's") +
   ylab("Points") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  theme(legend.position = "none") 
-ggsave("../plots/PointsCountryOrigin.pdf")
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8),  # Tamanho do texto do eixo x
+        axis.text.y = element_text(size = 8),  # Tamanho do texto do eixo y
+        axis.title = element_text(size = 10),  # Tamanho dos títulos dos eixos
+        plot.title = element_text(size = 12),  # Tamanho do título do gráfico
+        legend.position = "none")  # Remover a legenda
+
+ggsave("./plots/n/PointsCountryOrigin.pdf")
 
 # QUESTION: What are your conclusions?Are the results as you expected? Have you 
 # checked online to validate the results?
@@ -331,15 +340,15 @@ province20 <- names(sort(table(df$province), decreasing = TRUE))[1:20]
 
 # Plot 1: Countplot of Taster Name
 
-ggsave("../plots/CountTasterName20.pdf")
+ggsave("./plots/n/CountTasterName20.pdf")
 
 # Plot 2: Boxplot of Prices by Taster Name
 
-ggsave("../plots/PriceTasterNameDistribution.pdf")
+ggsave("./plots/n/PriceTasterNameDistribution.pdf")
 
 # Plot 3: Boxplot of Points by Taster Name
 
-ggsave("../plots/PointsTasterName.pdf")
+ggsave("./plots/n/PointsTasterName.pdf")
 
 
 # ------------------ (2) Province Exploration ------------------
@@ -351,15 +360,15 @@ province20 <- names(sort(table(df$province), decreasing = TRUE))[1:20]
 
 # Plot 1: Countplot of Provinces
  
-ggsave("../plots/CountProvinces.pdf")
+ggsave("./plots/n/CountProvinces.pdf")
 
 # Plot 2: Boxplot of Prices by Province
 
-ggsave("../plots/PriceProvincesOrigin.pdf")
+ggsave("./plots/n/PriceProvincesOrigin.pdf")
 
 # Plot 3: Boxplot of Points by Province
 
-ggsave("../plots/PointsProvincesOrigin.pdf")
+ggsave("./plots/n/PointsProvincesOrigin.pdf")
 
 # ------------------ (3) Variety Feature ------------------
 # Plot a variety of wine origin count
@@ -370,15 +379,15 @@ variety20 <- names(sort(table(df$variety), decreasing = TRUE))[1:20]
 
 # Plot 1: Countplot of Variety
 
-ggsave("../plots/CountVariety20.pdf")
+ggsave("./plots/n/CountVariety20.pdf")
 
 # Plot 2: Boxplot of Prices by Variety 20
 
-ggsave("../plots/PriceVarietyDistribution.pdf")
+ggsave("./plots/n/PriceVarietyDistribution.pdf")
 
 # Plot 3: Boxplot of Points by Taster Name
 
-ggsave("../plots/PointsVariety.pdf")
+ggsave("./plots/n/PointsVariety.pdf")
 
 
 # ------------------ (4) Winery Distributions ------------------
@@ -390,22 +399,22 @@ winery20 <- names(sort(table(df$winery), decreasing = TRUE))[1:20]
 
 # Plot 1: Countplot of Winery
 
-ggsave("../plots/Top20Winery.pdf")
+ggsave("./plots/n/Top20Winery.pdf")
 
 # Plot 2: Boxplot of Prices by Winery
 
-ggsave("../plots/PriceWinery.pdf")
+ggsave("./plots/n/PriceWinery.pdf")
 
 # Plot 3: Boxplot of Points by Winery's
 
-ggsave("../plots/PointsWinery.pdf")
+ggsave("./plots/n/PointsWinery.pdf")
 
 
 ## Better understanding the length of reviews
 df['desc_length'] = nchar(df$description)
 
 
-ggsave("../plots/PointsDescriptionLength.pdf")
+ggsave("./plots/n/PointsDescriptionLength.pdf")
 
 # 5. Wordcloud of descriptions
 
@@ -426,7 +435,7 @@ library(tm)
 library(tmap)
 
 
-pdf(file = "../plots/WordcloudDescriptions.pdf")   
+pdf(file = "./plots/n/WordcloudDescriptions.pdf")   
 
 
 # Create a text corpus
@@ -461,9 +470,85 @@ dev.off()
 
 
 # You should answer, for example:
+
 # Do provinces have the same number of wines?
+
+# Assuming you have a dataframe 'df' with a column 'province' indicating the provinces
+# Count the number of wines for each province
+wine_counts <- table(df$province)
+# Perform chi-squared test for independence
+chi_sq_test <- chisq.test(wine_counts)
+# Print the test results
+print(chi_sq_test)
+# Interpret the results
+if (chi_sq_test$p.value < 0.05) {
+  print("Provinces do not have the same number of wines.")
+} else {
+  print("Provinces have the same number of wines.")
+}
+
 # What is the distribution of prices and points by province?
+
+# Scatter Plot: Prices vs. Points by Province
+scatter_plot <- ggplot(df, aes(x = price, y = points, color = province)) +
+  geom_point(alpha = 0.6) +
+  labs(title = "Prices vs. Points by Province",
+       x = "Price (US$)",
+       y = "Points") +
+  theme_minimal()
+
+# Box Plot: Distribution of Prices and Points by Province
+box_plot <- ggplot(df, aes(x = province, y = price)) +
+  geom_boxplot() +
+  labs(title = "Distribution of Prices by Province",
+       x = "Province",
+       y = "Price (US$)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+box_plot_points <- ggplot(df, aes(x = province, y = points)) +
+  geom_boxplot() +
+  labs(title = "Distribution of Points by Province",
+       x = "Province",
+       y = "Points") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save plots as PDF files
+ggsave("./plots/n/scatter_plot.pdf", plot = scatter_plot, width = 8, height = 6)
+ggsave("./plots/n/box_plot_price.pdf", plot = box_plot, width = 8, height = 6)
+ggsave("./plots/n/box_plot_points.pdf", plot = box_plot_points, width = 8, height = 6)
+
+# Display plots
+print(scatter_plot)
+print(box_plot)
+print(box_plot_points)
+
 # How are the countries distributed?
+
+# Bar Plot: Count of Wines by Country
+bar_plot <- ggplot(df, aes(x = country)) +
+  geom_bar(fill = "darkgreen") +
+  labs(title = "Count of Wines by Country",
+       x = "Country",
+       y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Pie Chart: Proportion of Wines by Country
+pie_chart <- ggplot(df, aes(x = "", fill = country)) +
+  geom_bar(width = 1) +
+  coord_polar(theta = "y") +
+  labs(title = "Proportion of Wines by Country",
+       fill = "Country") +
+  theme_void()
+
+# Display plots
+print(bar_plot)
+print(pie_chart)
+
+# Save plots as PDF files
+ggsave("./plots/n/bar_plot_country.pdf", plot = bar_plot, width = 8, height = 6)
+ggsave("./plots/n/pie_chart_country.pdf", plot = pie_chart, width = 8, height = 6)
+
+
 # Do the tasters have the same number of votes?
 # What's the distribution of points and prices by taster's name?
 # View the wordclouds.

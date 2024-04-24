@@ -1,0 +1,86 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Laboratório 3 - Manipulação de Instâncias}
+
+\author{\IEEEauthorblockN{Nuno Gomes}
+\IEEEauthorblockA{\textit{DEETC - MEIC} \\
+\textit{Instituto Superior Engenharia de Lisboa}\\
+Lisboa, Portugal \\
+A18364@alunos.isel.ipl.pt}
+\and
+\IEEEauthorblockN{Ricardo Ramos}
+\IEEEauthorblockA{\textit{DEETC - MEIC} \\
+\textit{Instituto Superior Engenharia de Lisboa}\\
+Lisboa, Portugal \\
+A46638@alunos.isel.ipl.pt}
+\and
+\IEEEauthorblockN{Rafael Carvalho}
+\IEEEauthorblockA{\textit{DEETC - MEIC} \\
+\textit{Instituto Superior Engenharia de Lisboa}\\
+Lisboa, Portugal \\
+A47663@alunos.isel.ipl.pt}
+}
+
+\maketitle
+
+\begin{abstract}
+Este laboratório prático tem por objetivo compreender o conceito de seleção e manipulação de instâncias
+bem como compreender os diferentes métodos de amostragem e de que forma influenciam a performance
+de um modelo de aprendizagem baseado no algoritmo \textit{Random Forest}.
+Em simultâneo, pretende-se desenvolver alguma aptidão com a ferramenta de processamento de dados em larga escala Apache Spark \cite{b1}
+\end{abstract}
+
+\begin{IEEEkeywords}
+Megadados, Amostragem, Aprendizagem Automática, \textit{Random Forest}
+\end{IEEEkeywords}
+
+\section{Introdução}
+Num contexto de informação, maiores \textit{datasets} não representam necessariamente melhores dados.
+Grandes \textit{datasets} são complexos, e por vezes esparsos, o que produzem em grande maioria má \textit{performance} em algoritmos de mineração de dados. Desta forma surge a necessidade de fazer a manipulação dos \textit{datasets}, tipicamente reduzindo o número de instâncias, ou aplicar técnicas de amostragem que permitam melhorar a \textit{performance} dos algoritmos de aprendizagem, e obter modelos mais robustos. \par
+O laboratório 3 tem por objetivo estudar as técnicas de amostragem lecionadas em aula, nomeadamente o \textit{oversampling}, \textit{undersampling} e técnicas não lineares de geração de instâncias, como o \textit{Synthetic Minority Oversampling Technique - SMOTE}. Pretende-se comparar a \textit{performance} do algoritmo \textit{Random Forest} para diferentes conjuntos de treino obtidos das diferentes técnicas mencionadas.
+Em simultâneo, pretende-se desenvolver competências com a ferramenta de processamento de dados em larga Apache Spark no treino de algoritmos de \textit{data mining}.
+
+\section{Visualização do conjunto de dados}
+\par O conjunto de dados fornecido denominado \textit{Influenza} apresenta 545 \textit{features}, 2 \textit{class labels} e 2190 instâncias, onde o problema proposto é realizar a classificação com base no conjunto de dados não balanceado. Isto é, uma \textit{class label} apresenta um número de instâncias significativamente maior que outra.
+
+\subsection{\textit{Schema} e conteúdo}
+\par Pela observação do \textit{schema}, compreendemos que à exceção da \textit{class label}, todas as \textit{features} são do tipo \textit{Integer Type}.
+\textbf{COLOCAR IMAGEM DO SCHEMA AQUI}
+Selecionando os primeiros 10 elementos da \textit{dataframe} notamos que as instâncias estão dispostas de forma crescente do valor das várias \textit{features}.
+\textbf{COLOCAR IMAGEM DO HEAD AQUI}
+Para confirmar que o número de instâncias e \textit{features} na \textit{dataframe} está correto, utilizamos o método \textit{stopifnot} onde determinamos se o conjunto de linhas e colunas da \textit{dataframe} local corresponde às da \textit{dataframe Spark} criada, para tal, utilizaram-se, respetivamente os métodos \textit{nrow\//ncol} e \textit{sdf\_nrow\//sdf\_ncol}. O método \textit{stopifnot} não retorna um erro, pelo que conclui-se que as dimensões são idênticas. 
+
+\section{Feature Selection}
+\par Do \textit{dataset} fornecido, são destacadas apenas um conjunto de \textit{features}, onde se pretende fazer a redução de dimensionalidade utilizando o operador de \textit{pipe} de \textit{magrittr} denotado pelo conjunto de símbolos "\%$>$\%". Dadas as \textit{features} a manter, o resultado obtido demonstra-se abaixo
+\textbf{COLOCAR IMAGEM DO HEAD AQUI}
+
+\section{Técnicas genéricas para amostragem}
+
+\section{Técnicas de amostragem não equilibrada}
+
+\section{Comparação}
+
+\section{Conclusão}
+
+\begin{thebibliography}{00}
+\bibitem{b1} https://apache.spark.org
+\bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
+\bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
+\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
+\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
+\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
+\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
+\end{thebibliography}
+
+\end{document}
