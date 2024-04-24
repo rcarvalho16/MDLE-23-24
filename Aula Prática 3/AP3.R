@@ -116,7 +116,7 @@ print(class_distribution_test)
 # c) Use the ml random forest function to generate a classification model, with the formula: “CLASS ~ .”.
 
 # Train a Random Forest classification model
-rf_model <- ml_random_forest(df.train, CLASS ~ ., type = "classification")
+rf_model <- ml_random_forest(df.train, CLASS ~ ., type = "classification", seed = 123)
 
 # Make predictions on the test dataset
 predictions <- mdle.predict(rf_model, df.test)
@@ -151,7 +151,7 @@ View(class_distribution_undersample)
 
 
 # b) Repeat points 4.c) and 4.d), and compare the results with the previous models.
-undersample_rf_model <- ml_random_forest(df.undersample, CLASS ~ ., type = "classification")
+undersample_rf_model <- ml_random_forest(df.undersample, CLASS ~ ., type = "classification", seed = 123)
 
 # Make predictions on the test dataset
 undersample_predictions <- mdle.predict(undersample_rf_model, df.test)
@@ -179,7 +179,7 @@ View(class_distribution_oversample)
 
 
 # d) Repeat points 4.c) and 4.d), and compare the results with the previous models
-oversample_rf_model <- ml_random_forest(df.oversample, CLASS ~ ., type = "classification")
+oversample_rf_model <- ml_random_forest(df.oversample, CLASS ~ ., type = "classification", seed = 123)
 
 # Make predictions on the test dataset
 oversample_predictions <- mdle.predict(oversample_rf_model, df.test)
@@ -193,13 +193,15 @@ mdle.printConfusionMatrix(oversample_predictions, "")
 # e) Apply Borderline-SMOTE Sampling to balance the number of cases of each class
 BLSMOTE_train_x <- as.data.frame(collect(df.train %>% select(!CLASS)))
 BLSMOTE_train_y <- as.data.frame(collect(df.train %>% select(CLASS)))
-BLSMOTE_train_oversampled <- BLSMOTE(X = BLSMOTE_train_x, target = BLSMOTE_train_y, K = 7, C = 4)
+
+BLSMOTE_train_oversampled <- BLSMOTE(X = BLSMOTE_train_x, target = BLSMOTE_train_y, K = 7, C = 4, method = c("type1", "type2"))
+
 BLSMOTE_train_oversampled <- as.data.frame(BLSMOTE_train_oversampled$data)
 
 BLSMOTE_train_oversampled <- copy_to(sc, BLSMOTE_train_oversampled)
 
 # f) Repeat points 4.c) and 4.d), and compare the results with the previous models
-oversample_blsmote_rf_model <- ml_random_forest(BLSMOTE_train_oversampled, class ~ ., type = "classification")
+oversample_blsmote_rf_model <- ml_random_forest(BLSMOTE_train_oversampled, class ~ ., type = "classification", seed = 123)
 
 # Make predictions on the test dataset
 oversample_blsmote_predictions <- mdle.predict(oversample_blsmote_rf_model, df.test)
