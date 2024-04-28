@@ -332,18 +332,40 @@ ggsave("../plots/PointsCountryOrigin.pdf")
 # Boxplot of top 20 taster name by price and rating
 
 # Province Exploration
-province20 <- names(sort(table(df$province), decreasing = TRUE))[1:20]
+taster20 <- names(sort(table(df$taster_name), decreasing = TRUE))[1:20]
 
 # Plot 1: Countplot of Taster Name
-
+g <- ggplot(data = subset(df, taster_name %in% taster20), aes(x = taster_name, 
+                                                             fill = taster_name)) +
+  geom_bar() +
+  theme_bw() +
+  theme(legend.position = "none") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("Taster Name Count") +
+  xlab("Tasters") +
+  ylab("Count")
 ggsave("../plots/CountTasterName20.pdf")
 
 # Plot 2: Boxplot of Prices by Taster Name
-
+g <-ggplot(data = subset(df %>% drop_na(taster_name), taster_name %in% taster20), 
+           aes(x = taster_name, y = price_log, fill = taster_name)) +
+  geom_boxplot() +
+  ggtitle("Price by Taster Name") +
+  xlab("Tasters") +
+  ylab("Price") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") 
 ggsave("../plots/PriceTasterNameDistribution.pdf")
 
 # Plot 3: Boxplot of Points by Taster Name
-
+g <-ggplot(data = subset(df %>% drop_na(taster_name), taster_name %in% taster20), 
+           aes(x = taster_name, y = points, fill = taster_name)) +
+  geom_boxplot() +
+  ggtitle("Points by Taster Name") +
+  xlab("Tasters") +
+  ylab("Points") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") 
 ggsave("../plots/PointsTasterName.pdf")
 
 
@@ -355,15 +377,37 @@ ggsave("../plots/PointsTasterName.pdf")
 province20 <- names(sort(table(df$province), decreasing = TRUE))[1:20]
 
 # Plot 1: Countplot of Provinces
- 
+g <- ggplot(data = subset(df, province %in% province20), aes(x = province, 
+                                                             fill = province)) +
+  geom_bar() +
+  theme_bw() +
+  theme(legend.position = "none") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("Province Of Wine Origin Count") +
+  xlab("Provinces") +
+  ylab("Count")
 ggsave("../plots/CountProvinces.pdf")
 
 # Plot 2: Boxplot of Prices by Province
-
+g <-ggplot(data = subset(df %>% drop_na(province), province %in% province20), 
+           aes(x = province, y = price_log, fill = province)) +
+  geom_boxplot() +
+  ggtitle("Price by Province Of Wine Origin") +
+  xlab("Provinces") +
+  ylab("Price") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") 
 ggsave("../plots/PriceProvincesOrigin.pdf")
 
 # Plot 3: Boxplot of Points by Province
-
+g <-ggplot(data = subset(df %>% drop_na(province), province %in% province20), 
+           aes(x = province, y = points, fill = province)) +
+  geom_boxplot() +
+  ggtitle("Points by Province Of Wine Origin") +
+  xlab("Provinces") +
+  ylab("Points") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") 
 ggsave("../plots/PointsProvincesOrigin.pdf")
 
 # ------------------ (3) Variety Feature ------------------
@@ -374,15 +418,37 @@ ggsave("../plots/PointsProvincesOrigin.pdf")
 variety20 <- names(sort(table(df$variety), decreasing = TRUE))[1:20]
 
 # Plot 1: Countplot of Variety
-
+g <- ggplot(data = subset(df, variety %in% variety20), aes(x = variety, 
+                                                             fill = variety)) +
+  geom_bar() +
+  theme_bw() +
+  theme(legend.position = "none") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("Variety Of Wine Count") +
+  xlab("Variety") +
+  ylab("Count")
 ggsave("../plots/CountVariety20.pdf")
 
 # Plot 2: Boxplot of Prices by Variety 20
-
+g <-ggplot(data = subset(df %>% drop_na(variety), variety %in% variety20), 
+           aes(x = variety, y = price_log, fill = variety)) +
+  geom_boxplot() +
+  ggtitle("Price by Variety of Wine") +
+  xlab("Variety") +
+  ylab("Price") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") 
 ggsave("../plots/PriceVarietyDistribution.pdf")
 
 # Plot 3: Boxplot of Points by Taster Name
-
+g <-ggplot(data = subset(df %>% drop_na(variety), variety %in% variety20), 
+           aes(x = variety, y = points, fill = variety)) +
+  geom_boxplot() +
+  ggtitle("Points Variety of Wine") +
+  xlab("Variety") +
+  ylab("Points") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") 
 ggsave("../plots/PointsVariety.pdf")
 
 
@@ -394,15 +460,37 @@ ggsave("../plots/PointsVariety.pdf")
 winery20 <- names(sort(table(df$winery), decreasing = TRUE))[1:20]
 
 # Plot 1: Countplot of Winery
-
+g <- ggplot(data = subset(df, winery %in% winery20), aes(x = winery, 
+                                                           fill = winery)) +
+  geom_bar() +
+  theme_bw() +
+  theme(legend.position = "none") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("Winery Count") +
+  xlab("Winery") +
+  ylab("Count")
 ggsave("../plots/Top20Winery.pdf")
 
 # Plot 2: Boxplot of Prices by Winery
-
+g <-ggplot(data = subset(df %>% drop_na(winery), winery %in% winery20), 
+           aes(x = winery, y = price_log, fill = winery)) +
+  geom_boxplot() +
+  ggtitle("Price by Winery") +
+  xlab("Winery") +
+  ylab("Price") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") 
 ggsave("../plots/PriceWinery.pdf")
 
 # Plot 3: Boxplot of Points by Winery's
-
+g <-ggplot(data = subset(df %>% drop_na(winery), winery %in% winery20), 
+           aes(x = winery, y = points, fill = winery)) +
+  geom_boxplot() +
+  ggtitle("Points by Winery") +
+  xlab("Winery") +
+  ylab("Points") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(legend.position = "none") 
 ggsave("../plots/PointsWinery.pdf")
 
 
