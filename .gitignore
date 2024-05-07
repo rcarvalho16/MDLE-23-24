@@ -2,3 +2,4 @@
 *.RData
 Trabalho_Pratico/Fase_1/data/*
 *.log
+.Rproj.user
