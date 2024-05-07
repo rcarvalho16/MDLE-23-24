@@ -681,9 +681,9 @@ dev.off()
 # Closer the vectors, smaller will be the angle and larger the cosine
 
 
-install.packages("RANN")
+#install.packages("RANN")
 
-install.packages("Matrix")
+#install.packages("Matrix")
 library(Matrix)
 library(RANN)
 
@@ -692,7 +692,7 @@ wine1 <- df[, col]
 wine1 <- wine1[complete.cases(wine1), ]
 wine1 <- wine1[!duplicated(wine1[, c("province", "variety")]), ]
 wine1 <- wine1[wine1$points > 85, ]
-install.packages("reshape2")
+#install.packages("reshape2")
 library(reshape2)
 
 wine_pivot <- reshape2::dcast(wine1, variety ~ province, value.var = "points", 
@@ -702,11 +702,16 @@ sparsity <- sum(wine_pivot_matrix == 0)/(dim(wine_pivot_matrix)[1]*
                                            dim(wine_pivot_matrix)[2])
 knn_model <- nn2(wine_pivot_matrix, k = 10)
 
+row.names(wine_pivot) <- wine_pivot[,1]
 ## THIS CODE BELOW IS PURPOSELY WRONG. CORRECT IT
+example <- c(83, 269, 605, 103, 54)
 for (n in 1:5) {
-  query_index <- sample(nrow(wine_pivot_matrix), 1)
-  indices <- knn_model$nn.idx(wine_pivot[query_index,], k = 6)
-  distances <- knn_model$nn.dists(wine_pivot[query_index,], k = 6)
+  #query_index <- sample(nrow(wine_pivot_matrix), 1)
+  query_index <- example[n]
+  #indices <- knn_model$nn.idx(wine_pivot[query_index,], k = 6)
+  #distances <- knn_model$nn.dists(wine_pivot[query_index,], k = 6)
+  indices <- knn_model$nn.idx[query_index, 1:6]
+  distances <- knn_model$nn.dists[query_index, 1:6]
   print(paste0("Recommendation for ## ", rownames(wine_pivot)[query_index], " ##:"))
   for (i in 2:6) {
     print(paste0(i-1, ": ", rownames(wine_pivot)[indices[i]], " with distance: ", distances[i]))
