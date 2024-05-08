@@ -550,8 +550,23 @@ plot(wordcloud, main = "WORD CLOUD - DESCRIPTION", col.axis = "black",
      col.lab = "black")
 dev.off()
 
-#  ------------------ TODO: Wordcloud of wine titles
+#  ------------------ Wordcloud of wine titles
+corpus_titles <- Corpus(VectorSource(df$title))
+corpus_titles <- as.character(corpus_titles)
 
+wordcloud_titles <- wordcloud(
+  words = na.omit(corpus_titles),
+  #scale = c(4, 0.5),
+  max.words = 300,
+  min.freq = 1,
+  random.order = FALSE,
+  rot.per = 0.35,
+  colors = brewer.pal(8, "Dark2"),
+  random.color = TRUE,
+  use.r.layout = FALSE,
+  fixed.asp = TRUE,
+  stopwords = stopwords
+)
 
 # You should answer, for example:
 # Do provinces have the same number of wines?
@@ -574,7 +589,7 @@ library(tidytext)
 grid = expand.grid(seq(1, 5), seq(1, 2))
 names(grid) <- c("row", "col")
 
-## THIS CODE BELOW IS PURPOSELY WRONG. CORRECT IT
+## THIS CODE BELOW IS PURPOSELY WRONG. CORRECT IT - Already corrected!
 
 # O que faz função:
 # As principais operações são `tm` para processamento de texto e `dplyr`
@@ -643,7 +658,7 @@ library("tidyr")
 df_top_terms <- lapply(unique(df$country)[1:10], function(cat) {
   data <- df %>%
     filter(country == cat) %>%
-    pull(description)
+    pull(description)                   # selects a feature and turns it into a vector
   top_terms <- get_top_terms(data, cat)
   top_terms$rank <- seq(1, nrow(top_terms))
   top_terms
@@ -653,14 +668,15 @@ df_top_terms <- lapply(unique(df$country)[1:10], function(cat) {
 p_list <- lapply(unique(df_top_terms$category), function(cat) {
   df_plot <- df_top_terms %>%
     filter(category == cat) %>%
-    mutate(term = reorder(term, rank))
-  ggplot(df_plot, aes(x = term, y = total_count, fill = category)) +
+    mutate(terms = reorder(terms, rank))
+  ggplot(df_plot, aes(x = terms, y = total_count, fill = category)) +
     geom_col() +
     ggtitle(paste0("Wines from ", cat, " N-grams")) +
     theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
           axis.text.x = element_text(angle = 90, hjust = 1)) +
     labs(x = NULL, y = NULL, fill = NULL) +
     scale_fill_manual(values = c("#F8766D", "#00BFC4", "#E76BF3", "#7CAE00", "#D55E00", "#0072B2", "#2F4B7C", "#CC79A7", "#56B4E9", "#009E73"))
+  ggsave(paste("../plots/",cat, ".pdf"))
 })
 
 
@@ -703,7 +719,7 @@ sparsity <- sum(wine_pivot_matrix == 0)/(dim(wine_pivot_matrix)[1]*
 knn_model <- nn2(wine_pivot_matrix, k = 10)
 
 row.names(wine_pivot) <- wine_pivot[,1]
-## THIS CODE BELOW IS PURPOSELY WRONG. CORRECT IT
+## THIS CODE BELOW IS PURPOSELY WRONG. CORRECT IT - Corrected
 example <- c(83, 269, 605, 103, 54)
 for (n in 1:5) {
   #query_index <- sample(nrow(wine_pivot_matrix), 1)
@@ -761,3 +777,37 @@ for (n in 1:5) {
 
 ## TODO: Maybe it would be interesting to build an RS to find cheapest wines 
 # with the same quality.
+
+
+col <- c('province', 'variety', 'points', 'price')
+wine1 <- df[, col]
+wine1 <- wine1[complete.cases(wine1), ]
+wine1 <- wine1[!duplicated(wine1[, c("province", "variety")]), ]
+wine1 <- wine1[wine1$points > 85, ]
+wine1 <- wine1[wine1$price < 100, ]
+#install.packages("reshape2")
+library(reshape2)
+
+wine_pivot <- reshape2::dcast(wine1, variety ~ province, value.var = "points", 
+                              fill = 0)
+wine_pivot_matrix <- Matrix::Matrix(as.matrix(wine_pivot[, -1]), sparse = TRUE)
+sparsity <- sum(wine_pivot_matrix == 0)/(dim(wine_pivot_matrix)[1]*
+                                           dim(wine_pivot_matrix)[2])
+knn_model <- nn2(wine_pivot_matrix, k = 10)
+
+row.names(wine_pivot) <- wine_pivot[,1]
+## THIS CODE BELOW IS PURPOSELY WRONG. CORRECT IT - Corrected
+example <- c(83, 269, 605, 103, 54)
+for (n in 1:5) {
+  #query_index <- sample(nrow(wine_pivot_matrix), 1)
+  query_index <- example[n]
+  #indices <- knn_model$nn.idx(wine_pivot[query_index,], k = 6)
+  #distances <- knn_model$nn.dists(wine_pivot[query_index,], k = 6)
+  indices <- knn_model$nn.idx[query_index, 1:6]
+  distances <- knn_model$nn.dists[query_index, 1:6]
+  print(paste0("Recommendation for ## ", rownames(wine_pivot)[query_index], " ##:"))
+  for (i in 2:6) {
+    print(paste0(i-1, ": ", rownames(wine_pivot)[indices[i]], " with distance: ", distances[i]))
+  }
+  cat("\n")
+}
