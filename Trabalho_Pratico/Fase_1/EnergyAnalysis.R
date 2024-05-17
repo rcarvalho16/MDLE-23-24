@@ -1,4 +1,4 @@
-libs <- c("dplyr","ggplot2","lubridate","cowplot","ggcorrplot","factoextra","arulesCBA","FSelectorRcpp")
+libs <- c("dplyr","ggplot2","lubridate","cowplot","ggcorrplot","factoextra","arulesCBA","FSelectorRcpp", "caret", "e1071")
 
 # Install libraries, uncomment only on the 1st run
 # install.packages(libs)
@@ -38,8 +38,8 @@ calculate_summary(energy_data)
 
 # Examples of residential Zip Codes:
 # These will be classified as Residential
-res_zip_codes <- c(1000, 1600, 1700, 2120, 2230, 2675, 2735, 2745, 3610, 3630, 4910, 6060,
-                   7350, 7630, 7700)
+res_zip_codes <- c(1000, 1600, 1700, 2120, 2230, 2675, 2735, 2745, 3250, 3600, 3610, 3630, 4660, 4910, 6060,
+                   7240, 7350, 7630, 7700, 8400, 8670, 8700)
 energy_data_res <- energy_data[energy_data$Zip.Code %in% res_zip_codes, ]
 energy_data_res <- convertTimestamps(energy_data_res)
 
@@ -318,6 +318,11 @@ ggplot(
   theme_minimal() +
   theme(axis.title = element_text(size = 12),  # Adjust axis label size
         axis.text = element_text(size = 10))  # Adjust axis tick label size
+
+
+# Saving files to data
+#write.csv(fs_reduced_energy, "Path\\reduced_fs_energy.csv", row.names = FALSE)
+#write.csv(rd_pca_scaled, "Path\\reduced_fr_energy.csv", row.names = FALSE)
 
 
 ############ TODO #################

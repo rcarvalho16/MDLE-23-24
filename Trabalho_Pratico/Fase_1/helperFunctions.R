@@ -135,7 +135,7 @@ selectMostRelevantFeatures = function(dataset, ordered_relevance_table, threshol
 convertTimestamps = function(dataset){
   
   # Add day of the week
-  dataset$Day_of_Week <- wday(dataset$Date, label = TRUE, abbr = FALSE)
+  dataset$Day_of_Week <- wday(dataset$Date)
   
   # Convert date into different columns
   dates <- as.Date(dataset$Date)

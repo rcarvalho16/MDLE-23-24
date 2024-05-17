@@ -776,8 +776,9 @@ for (n in 1:5) {
 
 
 ## TODO: Maybe it would be interesting to build an RS to find cheapest wines 
-# with the same quality.
+# with the same quality. - Done
 
+# RS to find cheapest wines with the same quality
 
 col <- c('province', 'variety', 'points', 'price')
 wine1 <- df[, col]
@@ -796,7 +797,7 @@ sparsity <- sum(wine_pivot_matrix == 0)/(dim(wine_pivot_matrix)[1]*
 knn_model <- nn2(wine_pivot_matrix, k = 10)
 
 row.names(wine_pivot) <- wine_pivot[,1]
-## THIS CODE BELOW IS PURPOSELY WRONG. CORRECT IT - Corrected
+
 example <- c(83, 269, 605, 103, 54)
 for (n in 1:5) {
   #query_index <- sample(nrow(wine_pivot_matrix), 1)
