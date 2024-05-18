@@ -5,6 +5,9 @@ library(sparklyr) #spark
 library(smotefamily) #For SMOTE sampling
 library(data.table) #To be used when possible, as a more performant data.frame
 
+if(!exists("printConfusionMatrix", mode="function")) 
+  source("helperfunctions.R")
+
 ################# Spark setup ################
 
 spark_disconnect_all() #just preventive code
@@ -20,6 +23,8 @@ ig_dataset <- read.csv("data\\reduced_fs_ig.csv", header = TRUE, stringsAsFactor
 var_dataset <- read.csv("data\\reduced_fs_var.csv", header = TRUE, stringsAsFactors = FALSE)
 
 df.fratio <- copy_to(sc, fratio_dataset)
+df.ig <- copy_to(sc, ig_dataset)
+df.var <- copy_to(sc, var_dataset)
 
 ################# Model training ###################
 
@@ -53,8 +58,8 @@ print(class_distribution_test)
 rf_model_fratio <- fratio_training %>% ml_random_forest(conditions ~ ., type = "regression")
 pred_fratio <- ml_predict(rf_model_fratio, fratio_test)
 
-print("Root Mean Squared Error")
-ml_regression_evaluator(pred_fratio, label_col = "conditions")
+print("Error Calculations")
+ml_regression_evaluations(pred_fratio, label_col = "conditions")
 
 ################# Applying oversampling ##################
 
@@ -77,7 +82,7 @@ classes_to_oversample <- class_distribution_train %>%
 
 # Oversample each class
 oversampled_dfs <- lapply(classes_to_oversample, function(class) {
-  oversample_class(fratio_training, class, target_size)
+  sample_class(fratio_training, class, target_size)
 })
 
 
@@ -98,13 +103,52 @@ print(new_class_distribution)
 
 # Model training and evaluation
 rf_model_fratio_oversample <- oversampled_df %>% ml_random_forest(conditions ~ ., type = "regression")
-pred_fratio <- ml_predict(rf_model_fratio_oversample, fratio_test)
+pred_fratio_oversample <- ml_predict(rf_model_fratio_oversample, fratio_test)
 
-print("Root Mean Squared Error")
-ml_regression_evaluator(pred_fratio, label_col = "conditions")
+print("Error Calculations")
+ml_regression_evaluations(pred_fratio_oversample, label_col = "conditions")
+
 
 ################# Applying undersampling ##################
 
+# Find the minority class
+class_distribution_train <- 
+  class_distribution_train[order(class_distribution_train$'#Instances', decreasing = FALSE),]
 
+minority_class <- class_distribution_train %>% slice(1) %>% pull(conditions) %>% as.numeric
 
+# Find target sample size
+target_size <- class_distribution_train %>%
+  filter(conditions == minority_class) %>% 
+  pull('#Instances')
 
+# Determine classes that need oversampling
+classes_to_undersample <- class_distribution_train %>%
+  filter(conditions != minority_class) %>%
+  pull(conditions) %>% as.numeric
+
+# Undersample each class
+undersampled_df <- lapply(classes_to_undersample, function(class) {
+  sample_class(fratio_training, class, target_size)
+})
+
+# Combine the undersampled data with the original minority class data
+minority_class_df <- fratio_training %>% filter(conditions == minority_class)
+undersampled_df <- do.call(sdf_bind_rows, c(list(minority_class_df), undersampled_df))
+
+# Check the new class distribution
+new_class_distribution <- undersampled_df %>%
+  group_by(conditions) %>%
+  summarise(count = n()) %>%
+  collect()
+
+# Display the class distributions
+print("Class Distribution in Training Set:")
+print(new_class_distribution)
+
+# Model training and evaluation
+rf_model_fratio_undersample <- undersampled_df %>% ml_random_forest(conditions ~ ., type = "regression")
+pred_fratio_undersample <- ml_predict(rf_model_fratio_undersample, fratio_test)
+
+print("Error Calculations")
+ml_regression_evaluations(pred_fratio_undersample, label_col = "conditions")

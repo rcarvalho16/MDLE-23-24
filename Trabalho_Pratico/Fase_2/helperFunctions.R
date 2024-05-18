@@ -35,7 +35,7 @@ mdle.predict<-function(model,test)
 }
 
 
-oversample_class <- function(df, target_class, target_size) {
+sample_class <- function(df, target_class, target_size) {
   # Filter the target class
   class_df <- df %>% filter(conditions == target_class)
   
@@ -44,8 +44,20 @@ oversample_class <- function(df, target_class, target_size) {
   reps <- ceiling(target_size / current_size)
   
   # Repeat the samples
-  oversampled_df <- class_df %>%
+  sampled_df <- class_df %>%
     sdf_sample(fraction = target_size/current_size, replace = TRUE)
   
-  return(oversampled_df)
+  return(sampled_df)
+}
+
+ml_regression_evaluations <- function(x, label_col) {
+  rmse_result <- ml_regression_evaluator(x, label_col, metric_name = 'rmse')
+  mse_result <- ml_regression_evaluator(x, label_col, metric_name = 'mse')
+  r2_result <- ml_regression_evaluator(x, label_col, metric_name = 'r2')
+  mae_result <- ml_regression_evaluator(x, label_col, metric_name = 'mae')
+  
+  cat(paste('rmse :', round(rmse_result, 3), '\n'))
+  cat(paste('mse  :', round(mse_result, 3), '\n'))
+  cat(paste('r2   :', round(r2_result, 3), '\n'))
+  cat(paste('mae  :', round(mae_result, 3), '\n'))
 }
