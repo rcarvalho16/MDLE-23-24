@@ -194,11 +194,11 @@ rf_model_var_oversample <- var_oversampled_df %>% ml_random_forest(conditions ~ 
 pred_var_oversample <- ml_predict(rf_model_var_oversample, var_test)
 
 
-print("Error Calculations fratio")
+print("Error Calculations fratio oversampled")
 ml_regression_evaluations(pred_fratio_oversample, label_col = "conditions")
-print("Error Calculations ig")
+print("Error Calculations ig oversampled")
 ml_regression_evaluations(pred_ig_oversample, label_col = "conditions")
-print("Error Calculations var")
+print("Error Calculations var oversampled")
 ml_regression_evaluations(pred_var_oversample, label_col = "conditions")
 
 
@@ -287,9 +287,9 @@ pred_ig_undersample <- ml_predict(rf_model_ig_undersample, ig_test)
 rf_model_var_undersample <- var_undersampled_df %>% ml_random_forest(conditions ~ ., type = "regression")
 pred_var_undersample <- ml_predict(rf_model_var_undersample, var_test)
 
-print("Error Calculations fratio")
+print("Error Calculations fratio undersampled")
 ml_regression_evaluations(pred_fratio_undersample, label_col = "conditions")
-print("Error Calculations ig")
+print("Error Calculations ig undersampled")
 ml_regression_evaluations(pred_ig_undersample, label_col = "conditions")
-print("Error Calculations var")
+print("Error Calculations var undersampled")
 ml_regression_evaluations(pred_var_undersample, label_col = "conditions")
