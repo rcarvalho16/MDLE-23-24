@@ -21,6 +21,14 @@ tr.data <- c(list.files(basepath , pattern = ".csv")) #The data to use
 freduction_energy <- read.csv("data\\reduced_fr_energy.csv", header = TRUE, stringsAsFactors = FALSE)
 fselection_energy <- read.csv("data\\reduced_fs_energy.csv", header = TRUE, stringsAsFactors = FALSE)
 
+# Since BLSMOTE uses only numeric values, we must convert all discretized ranges
+# To a numeric equivalent
+
+freduction_energy[1:5] <- lapply(freduction_energy[1:5], as.factor) %>% lapply(as.numeric)
+
+fselection_energy[2] <- lapply(freduction_energy[2], as.factor) %>% lapply(as.numeric)
+colnames(fselection_energy)[3] <- "labels"
+
 df.freduction_energy <- copy_to(sc, freduction_energy)
 df.fselection_energy <- copy_to(sc, fselection_energy)
 
@@ -115,7 +123,7 @@ colnames(class_distribution_oversample) <- column_names
 View(class_distribution_oversample)
 
 
-# d) Repeat points 4.c) and 4.d), and compare the results with the previous models
+# Train the model again
 oversample_rf_model <- ml_random_forest(df.oversample, labels ~ ., type = "classification", seed = 123)
 
 # Make predictions on the test dataset
@@ -126,10 +134,16 @@ mdle.printConfusionMatrix(oversample_predictions, "")
 
 ################# Applying BL-SMOTE #################
 
+# To apply BLSMOTE, all values must be numeric and therefore we need to convert
+# the discretized ranges to numeric values.
+# NÃO CONSIGO APLICAR NÃO COMPREENDO PORQUÊ (JÁ OLHEI PARA O SOURCE CODE DA FUNÇÃO
+# E COMPREENDO PORQUE NÃO CORRE MAS NÃO COMPREENDO PORQUE É QUE DÁ AQUELES RESULTS)
+
+
 BLSMOTE_train_x <- as.data.frame(collect(df.train %>% select(!labels)))
 BLSMOTE_train_y <- as.data.frame(collect(df.train %>% select(labels)))
 
-BLSMOTE_train_oversampled <- BLSMOTE(X = BLSMOTE_train_x, target = BLSMOTE_train_y, K = 7, C = 4, method = c("type1", "type2"))
+BLSMOTE_train_oversampled <- BLSMOTE(X = BLSMOTE_train_x, target = BLSMOTE_train_y, K = 5, C = 5, method = c("type1","type2"))
 
 BLSMOTE_train_oversampled <- as.data.frame(BLSMOTE_train_oversampled$data)
 

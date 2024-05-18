@@ -119,3 +119,18 @@ rd_variance_threshold_dataset <- selectMostRelevantFeatures(lisbon_zipcode_discr
 View(rd_fishers_ratio_dataset)
 View(rd_info_gain_dataset)
 View(rd_variance_threshold_dataset)
+
+# Convert all discretized data to an integer number
+rd_fishers_ratio_dataset <- lapply(rd_fishers_ratio_dataset, as.factor)
+rd_fishers_ratio_dataset <- lapply(rd_fishers_ratio_dataset, as.numeric)
+
+rd_info_gain_dataset <- lapply(rd_info_gain_dataset, as.factor)
+rd_info_gain_dataset <- lapply(rd_info_gain_dataset, as.numeric)
+
+rd_variance_threshold_dataset <- lapply(rd_variance_threshold_dataset, as.factor)
+rd_variance_threshold_dataset <- lapply(rd_variance_threshold_dataset, as.numeric)
+
+# Save data into csv file
+#write.csv(rd_info_gain_dataset, "Path\\reduced_fs_ig.csv", row.names = FALSE)
+#write.csv(rd_fishers_ratio_dataset, "Path\\reduced_fs_fratio.csv", row.names = FALSE)
+#write.csv(rd_variance_threshold_dataset, "Path\\reduced_fs_var.csv", row.names = FALSE)
