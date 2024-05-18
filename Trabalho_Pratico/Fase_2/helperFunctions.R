@@ -33,3 +33,19 @@ mdle.predict<-function(model,test)
 {
   return (ml_predict(model,test))
 }
+
+
+oversample_class <- function(df, target_class, target_size) {
+  # Filter the target class
+  class_df <- df %>% filter(conditions == target_class)
+  
+  # Calculate the number of repetitions needed
+  current_size <- class_df %>% summarise(count = n()) %>% collect() %>% pull(count)
+  reps <- ceiling(target_size / current_size)
+  
+  # Repeat the samples
+  oversampled_df <- class_df %>%
+    sdf_sample(fraction = target_size/current_size, replace = TRUE)
+  
+  return(oversampled_df)
+}
