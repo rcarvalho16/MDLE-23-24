@@ -18,14 +18,14 @@ mdle.printConfusionMatrix<-function(sp.pred, method)
   
   cfxmat<-confusionMatrix(table(as.vector(pred$labels),as.vector(pred$prediction)),mode = "everything",positive = "1")
   cat(noquote(paste("Confusion Matrix and Statistics:",method,"\n")))
-  print(cfxmat$table) 
+  print(cfxmat$table)
   
   cat(noquote(paste("False Positive Rate :",format(round(1-cfxmat$byClass[[3]], 3), nsmall = 3),"\n" )))
   cat(noquote(paste("Accuracy            :",format(round(cfxmat$overall[[1]], 3), nsmall = 3),"\n" )))
   cat(noquote(paste("Kappa               :",format(round(cfxmat$overall[[2]], 3), nsmall = 3),"\n" )))
   cat(noquote(paste("Pos Pred Value      :",format(round(cfxmat$byClass[[3]], 3), nsmall = 3),"\n" )))
-  cat(noquote(paste("Neg Pred Value      :",format(round(cfxmat$byClass[[4]], 3), nsmall = 3) )))
-  
+  cat(noquote(paste("Neg Pred Value      :",format(round(cfxmat$byClass[[4]], 3), nsmall = 3),"\n" )))
+  cat(noquote(paste("F1 Score            :",format(round(cfxmat$byClass[[7]], 3), nsmall = 3) )))
   
 }
 
