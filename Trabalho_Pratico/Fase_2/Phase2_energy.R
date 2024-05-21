@@ -1,5 +1,6 @@
 ################# Preparation ################
-#install.packages(c("dplyr", "sparklyr", "smotefamily", "data.table", "caret"))
+#install.packages(c("dplyr", "sparklyr", "smotefamily", "data.table", "caret", "pROC"))
+library(pROC)
 library(dplyr) #data manipulation
 library(sparklyr) #spark 
 library(smotefamily) #For SMOTE sampling
@@ -38,7 +39,7 @@ train_proportion <- 2 / 3
 test_proportion <- 1 - train_proportion
 
 # Split the dataset into training and testing sets
-splits <- sdf_random_split(df.freduction_energy, training = train_proportion, test = test_proportion, seed = 123)
+splits <- sdf_random_split(df.fselection_energy, training = train_proportion, test = test_proportion, seed = 123)
 
 # Extract the training and testing sets
 df.train <- splits[[1]]
@@ -76,6 +77,12 @@ predictions <- mdle.predict(rf_model, df.test)
 # Print confusion matrix and evaluate model performance
 mdle.printConfusionMatrix(predictions, "")
 
+predictions <- predictions %>% select('labels', 'prediction')  %>% collect
+roc_value <- roc(df.test_local$labels, predictions$prediction)
+auc_value <- auc(roc_value)
+print("Area under ROC:")
+print(auc_value)
+
 ################# Applying undersampling ##################
 
 
@@ -107,6 +114,12 @@ undersample_predictions <- mdle.predict(undersample_rf_model, df.test)
 # Print confusion matrix and evaluate model performance
 mdle.printConfusionMatrix(undersample_predictions, "")
 
+undersample_predictions <- undersample_predictions %>% select('labels', 'prediction')  %>% collect
+roc_value <- roc(df.test_local$labels, undersample_predictions$prediction)
+auc_value <- auc(roc_value)
+print("Area under ROC:")
+print(auc_value)
+
 ################# Applying oversampling ##################
 
 # Given the positive class having way less samples, then we need to oversample it to match negative class
@@ -131,6 +144,12 @@ oversample_predictions <- mdle.predict(oversample_rf_model, df.test)
 
 # Print confusion matrix and evaluate model performance
 mdle.printConfusionMatrix(oversample_predictions, "")
+
+oversample_predictions <- oversample_predictions %>% select('labels', 'prediction')  %>% collect
+roc_value <- roc(df.test_local$labels, oversample_predictions$prediction)
+auc_value <- auc(roc_value)
+print("Area under ROC:")
+print(auc_value)
 
 ################# Applying BL-SMOTE #################
 
