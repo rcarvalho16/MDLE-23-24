@@ -1,5 +1,5 @@
 ################# Preparation ################
-#install.packages(c("dplyr", "sparklyr", "smotefamily", "data.table", "caret"))
+install.packages(c("dplyr", "sparklyr", "smotefamily", "data.table", "caret"))
 library(dplyr) #data manipulation
 library(sparklyr) #spark 
 library(smotefamily) #For SMOTE sampling

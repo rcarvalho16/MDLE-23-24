@@ -39,7 +39,7 @@ train_proportion <- 2 / 3
 test_proportion <- 1 - train_proportion
 
 # Split the dataset into training and testing sets
-splits <- sdf_random_split(df.fselection_energy, training = train_proportion, test = test_proportion, seed = 123)
+splits <- sdf_random_split(df.freduction_energy, training = train_proportion, test = test_proportion, seed = 321)
 
 # Extract the training and testing sets
 df.train <- splits[[1]]
@@ -69,7 +69,7 @@ print(class_distribution_test)
 # Class 2: Residential county
 
 # Train a Random Forest classification model
-rf_model <- ml_random_forest(df.train, labels ~ ., type = "classification", seed = 123)
+rf_model <- ml_random_forest(df.train, labels ~ ., type = "classification", seed = 321)
 
 # Make predictions on the test dataset
 predictions <- mdle.predict(rf_model, df.test)
@@ -94,7 +94,7 @@ sampling_fraction <- df.pos.train %>% sdf_nrow() / df.neg.train %>% sdf_nrow()
 
 # Given the positive class having way less samples, then we need to undersample the negative class
 undersampled_neg <- df.train %>%
-  filter(labels == 2) %>% sdf_sample(fraction = sampling_fraction, replacement = TRUE, seed = 123)
+  filter(labels == 2) %>% sdf_sample(fraction = sampling_fraction, replacement = TRUE, seed = 321)
 
 # Bind both datasets together
 df.undersample <- df.pos.train %>% sdf_bind_rows(undersampled_neg)
@@ -106,7 +106,7 @@ colnames(class_distribution_undersample) <- column_names
 View(class_distribution_undersample)
 
 # Train the model again
-undersample_rf_model <- ml_random_forest(df.undersample, labels ~ ., type = "classification", seed = 123)
+undersample_rf_model <- ml_random_forest(df.undersample, labels ~ ., type = "classification", seed = 321)
 
 # Make predictions on the test dataset
 undersample_predictions <- mdle.predict(undersample_rf_model, df.test)
@@ -124,7 +124,7 @@ print(auc_value)
 
 # Given the positive class having way less samples, then we need to oversample it to match negative class
 oversampled_pos <- df.train %>%
-  filter(labels == 1) %>% sdf_sample(fraction = 1/sampling_fraction, replacement = TRUE, seed = 123)
+  filter(labels == 1) %>% sdf_sample(fraction = 1/sampling_fraction, replacement = TRUE, seed = 321)
 
 # Bind both datasets together
 df.oversample <- df.neg.train %>% sdf_bind_rows(oversampled_pos)
@@ -137,7 +137,7 @@ View(class_distribution_oversample)
 
 
 # Train the model again
-oversample_rf_model <- ml_random_forest(df.oversample, labels ~ ., type = "classification", seed = 123)
+oversample_rf_model <- ml_random_forest(df.oversample, labels ~ ., type = "classification", seed = 321)
 
 # Make predictions on the test dataset
 oversample_predictions <- mdle.predict(oversample_rf_model, df.test)
@@ -169,7 +169,7 @@ BLSMOTE_train_oversampled <- as.data.frame(BLSMOTE_train_oversampled$data)
 BLSMOTE_train_oversampled <- copy_to(sc, BLSMOTE_train_oversampled)
 
 # f) Repeat points 4.c) and 4.d), and compare the results with the previous models
-oversample_blsmote_rf_model <- ml_random_forest(BLSMOTE_train_oversampled, class ~ ., type = "classification", seed = 123)
+oversample_blsmote_rf_model <- ml_random_forest(BLSMOTE_train_oversampled, class ~ ., type = "classification", seed = 321)
 
 # Make predictions on the test dataset
 oversample_blsmote_predictions <- mdle.predict(oversample_blsmote_rf_model, df.test)
