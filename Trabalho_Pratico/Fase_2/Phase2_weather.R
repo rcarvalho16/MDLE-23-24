@@ -52,15 +52,18 @@ print("Class Distribution in ig Testing Set:")
 print(fratio_class_distribution_test)
 
 # Model training and evaluation
+rf_model_fratio <- fratio_training %>% ml_random_forest(formula = "Active_Energy_kWh ~ .")
 lr_model_fratio <- fratio_training %>% ml_linear_regression(formula = "Active_Energy_kWh ~ .")
 dt_model_fratio <- fratio_training %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .")
 gbt_model_fratio <- fratio_training %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .")
 
+rf_pred_fratio <- ml_predict(rf_model_fratio, fratio_test)
 lr_pred_fratio <- ml_predict(lr_model_fratio, fratio_test)
 dt_pred_fratio <- ml_predict(dt_model_fratio, fratio_test)
 gbt_pred_fratio <- ml_predict(gbt_model_fratio, fratio_test)
 
 print("Error Calculations ig")
+ml_regression_evaluations(rf_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(lr_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(dt_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(gbt_pred_fratio, label_col = "Active_Energy_kWh")
@@ -105,15 +108,18 @@ print("Class Distribution in ig Training Set:")
 print(fratio_new_class_distribution)
 
 # Model training and evaluation
+rf_model_fratio <- fratio_oversampled_df %>% ml_random_forest(formula = "Active_Energy_kWh ~ .")
 lr_model_fratio <- fratio_oversampled_df %>% ml_linear_regression(formula = "Active_Energy_kWh ~ .")
 dt_model_fratio <- fratio_oversampled_df %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .")
 gbt_model_fratio <- fratio_oversampled_df %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .")
 
+rf_pred_fratio <- ml_predict(rf_model_fratio, fratio_test)
 lr_pred_fratio <- ml_predict(lr_model_fratio, fratio_test)
 dt_pred_fratio <- ml_predict(dt_model_fratio, fratio_test)
 gbt_pred_fratio <- ml_predict(gbt_model_fratio, fratio_test)
 
 print("Error Calculations ig")
+ml_regression_evaluations(rf_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(lr_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(dt_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(gbt_pred_fratio, label_col = "Active_Energy_kWh")
@@ -156,15 +162,18 @@ print("Class Distribution in ig Training Set:")
 print(fratio_new_class_distribution)
 
 # Model training and evaluation
+rf_model_fratio <- fratio_undersampled_df %>% ml_random_forest(formula = "Active_Energy_kWh ~ .")
 lr_model_fratio <- fratio_undersampled_df %>% ml_linear_regression(formula = "Active_Energy_kWh ~ .")
 dt_model_fratio <- fratio_undersampled_df %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .")
 gbt_model_fratio <- fratio_undersampled_df %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .")
 
+rf_pred_fratio <- ml_predict(rf_model_fratio, fratio_test)
 lr_pred_fratio <- ml_predict(lr_model_fratio, fratio_test)
 dt_pred_fratio <- ml_predict(dt_model_fratio, fratio_test)
 gbt_pred_fratio <- ml_predict(gbt_model_fratio, fratio_test)
 
 print("Error Calculations ig")
+ml_regression_evaluations(rf_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(lr_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(dt_pred_fratio, label_col = "Active_Energy_kWh")
 ml_regression_evaluations(gbt_pred_fratio, label_col = "Active_Energy_kWh")
