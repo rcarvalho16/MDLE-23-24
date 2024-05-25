@@ -1,7 +1,7 @@
 ################# Preparation ################
 #install.packages(c("dplyr", "sparklyr", "smotefamily", "data.table", "caret"))
 library(dplyr) #data manipulation
-library(sparklyr) #spark 
+library(sparklyr) #spark
 library(smotefamily) #For SMOTE sampling
 library(data.table) #To be used when possible, as a more performant data.frame
 
@@ -52,10 +52,10 @@ print("Class Distribution in ig Testing Set:")
 print(fratio_class_distribution_test)
 
 # Model training and evaluation
-rf_model_fratio <- fratio_training %>% ml_random_forest(formula = "Active_Energy_kWh ~ .")
+rf_model_fratio <- fratio_training %>% ml_random_forest(formula = "Active_Energy_kWh ~ .", seed = 1111)
 lr_model_fratio <- fratio_training %>% ml_linear_regression(formula = "Active_Energy_kWh ~ .")
-dt_model_fratio <- fratio_training %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .")
-gbt_model_fratio <- fratio_training %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .")
+dt_model_fratio <- fratio_training %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .", seed = 1111)
+gbt_model_fratio <- fratio_training %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .", seed = 1111)
 
 rf_pred_fratio <- ml_predict(rf_model_fratio, fratio_test)
 lr_pred_fratio <- ml_predict(lr_model_fratio, fratio_test)
@@ -108,10 +108,10 @@ print("Class Distribution in ig Training Set:")
 print(fratio_new_class_distribution)
 
 # Model training and evaluation
-rf_model_fratio <- fratio_oversampled_df %>% ml_random_forest(formula = "Active_Energy_kWh ~ .")
+rf_model_fratio <- fratio_oversampled_df %>% ml_random_forest(formula = "Active_Energy_kWh ~ .", seed = 1111)
 lr_model_fratio <- fratio_oversampled_df %>% ml_linear_regression(formula = "Active_Energy_kWh ~ .")
-dt_model_fratio <- fratio_oversampled_df %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .")
-gbt_model_fratio <- fratio_oversampled_df %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .")
+dt_model_fratio <- fratio_oversampled_df %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .", seed = 1111)
+gbt_model_fratio <- fratio_oversampled_df %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .", seed = 1111)
 
 rf_pred_fratio <- ml_predict(rf_model_fratio, fratio_test)
 lr_pred_fratio <- ml_predict(lr_model_fratio, fratio_test)
@@ -162,10 +162,10 @@ print("Class Distribution in ig Training Set:")
 print(fratio_new_class_distribution)
 
 # Model training and evaluation
-rf_model_fratio <- fratio_undersampled_df %>% ml_random_forest(formula = "Active_Energy_kWh ~ .")
+rf_model_fratio <- fratio_undersampled_df %>% ml_random_forest(formula = "Active_Energy_kWh ~ .", seed = 1111)
 lr_model_fratio <- fratio_undersampled_df %>% ml_linear_regression(formula = "Active_Energy_kWh ~ .")
-dt_model_fratio <- fratio_undersampled_df %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .")
-gbt_model_fratio <- fratio_undersampled_df %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .")
+dt_model_fratio <- fratio_undersampled_df %>% ml_decision_tree_regressor(formula = "Active_Energy_kWh ~ .", seed = 1111)
+gbt_model_fratio <- fratio_undersampled_df %>% ml_gradient_boosted_trees(formula = "Active_Energy_kWh ~ .", seed = 1111)
 
 rf_pred_fratio <- ml_predict(rf_model_fratio, fratio_test)
 lr_pred_fratio <- ml_predict(lr_model_fratio, fratio_test)
